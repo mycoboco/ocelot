@@ -1,0 +1,466 @@
+  libLE contains several libraries for which slightly different copyright
+  notices apply. Instead of providing several LICENSE files, this file lists
+  names of all libraries with their copyright notices following. They are simply
+  copied from the doxymain.h files in the libraries.
+
+
+  The Arena Library (cbl/arena)
+  =============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a lifetime-based memory allocator implementation by Jun Woong.
+  The implementation was written so as to conform with the Standard C published
+  by ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Assertion Library (cbl/assert)
+  ==================================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is an assertion facility implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+
+  The Exception Handling Library (cbl/except)
+  ===========================================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is an exception handling facility implementation by Jun Woong.
+  The implementation was written so as to conform with the Standard C published
+  by ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Memory Management Library (cbl/memory)
+  ==========================================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a memory management implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Text Library (cbl/text)
+  ===========================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a string manipulation implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Doubly-Linked List Library (cdsl/dlist)
+  ===========================================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a doubly-linked list manipulation implementation by Jun Woong.
+  The implementation was written so as to conform with the Standard C published
+  by ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Hash Library (cdsl/hash)
+  ============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a hash table implementation by Jun Woong. The implementation
+  was written so as to conform with the Standard C published by ISO 9899:1990
+  and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The List Library (cdsl/list)
+  ============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a singly-linked list implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Set Library (cdsl/set)
+  ============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a set list implementation by Jun Woong. The implementation was
+  written so as to conform with the Standard C published by ISO 9899:1990 and
+  ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Stack Library (cdsl/stack)
+  ==============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a stack list implementation by Jun Woong. The implementation
+  was written so as to conform with the Standard C published by ISO 9899:1990
+  and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Table Library (cdsl/table)
+  ==============================
+
+  I do not wholly hold the copyright of this library; it is mostly held by David
+  Hanson as stated in his book, "C: Interfaces and Implementations:"
+
+  Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  For the parts I added or modified, the following applies:
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a table list implementation by Jun Woong. The implementation
+  was written so as to conform with the Standard C published by ISO 9899:1990
+  and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Configuration File Library (cel/conf)
+  =========================================
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is a configuration file reader implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The Option Parsing Library (cel/opt)
+  ====================================
+
+  Copyright (C) 2009 by Jun Woong.
+
+  This package is an option parser implementation by Jun Woong. The
+  implementation was written so as to conform with the Standard C published by
+  ISO 9899:1990 and ISO 9899:1999.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+
+  The following disclaimer applies in common to all of libraries in this
+  package:
+
+  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+  FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR
+  OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  POSSIBILITY OF SUCH DAMAGE.
