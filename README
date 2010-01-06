@@ -1,20 +1,20 @@
-  libLE: Language Extension Library
-  =================================
+  libLE: The Language Extension Library
+  =====================================
 
-  This is a set of libraries to provide features that the C language lacks,
-  various data structures that most programs use in common, and facilities for
-  interaction between a program and its environment. Each library has its own
-  version number and modification logs.
+  libLE is a collection of libraries to provide features that the C language
+  lacks, various data structures that most programs use in common, and
+  facilities for interaction between a program and its environment. Each library
+  has its own version number and modification logs.
 
   This package collects libraries into three categories called CBL, CDSL and
   CEL. Libraries belonging to CBL (C Basic Library) provide features that the C
   language lacks and include alternative memory allocators and an exception
   handling facility. Those to CDSL (C Data Structure Library) implement various
   data structures frequently used by most programs. Those to CEL (C Environment
-  Library) aid interaction between a program and its execution environment.
+  Library) aid interaction between programs and the execution environment.
 
-  The cbl, cdsl and cel directories contain sub-directories for the libraries
-  of each category:
+  The cbl, cdsl and cel directories contain sub-directories for the libraries of
+  each category:
   - cbl: C Basic Library
       - arena: The Arena Library (lifetime-based memory allocator)
       - assert: The Assertion Library

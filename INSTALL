@@ -5,26 +5,26 @@
   building them, you need to copy by yourself the resulting files into
   appropriate places.
 
-  Executing "make" with no targe specified lists supported targets:
+  Executing the make utility with no targe specified lists supported targets:
 
-      all: builds all the libraries into the "build" directory. The directory
-           has two sub-directories, "include" to which header files go and "lib"
-           to which static and shared objects go.
+      all: builds all the libraries into the build directory. The directory has
+           two sub-directories, one for header files and the other for static
+           and shared objects.
 
       cbl: builds only the libraries belonged to CBL. Since the Memory
            Management Library has two versions, two versions of CBL are
-           generated with different names; "cbl" for production code and "cbld"
-           for debugging code. Necessary headers are also placed in the
-           "build/include" directory.
+           generated with different names; cbl for production code and cbld for
+           debugging code. Necessary headers are also placed in the
+           build/include directory.
 
       cdsl: builds only the libraries belonged to CDSL. Necessary headers are
-            also placed in the "build/include" directory.
+            also placed in the build/include directory.
 
       cel: builds only the libraries belonged to CEL. Necessary headers are also
-           placed in the "build/include" directory.
+           placed in the build/include directory.
 
       clean: deletes all files generated when buliding the libraries. Unless you
-             add files, "make clean" leaves only the files that were in the
+             add files, this leaves only the files that were in the
              distribution.
 
   Even if separate building of libraries is specified, all libraries in CDSL and
