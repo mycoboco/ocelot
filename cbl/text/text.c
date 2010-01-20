@@ -738,8 +738,14 @@ int (text_cmp)(text_t s1, text_t s2)
  *
  *  @return    saved state of text space
  *
- *  @todo    - text_save() and text_restore() can be improved to detect an erroneous call shown in
- *             the above example.
+ *  @todo    Some improvements are possible and planned:
+ *           - text_save() and text_restore() can be improved to detect an erroneous call shown in
+ *             the above example;
+ *           - the stack-like storage management by text_save() and text_restore() unnecessarily
+ *             keeps the Text Library from being used in ohter libraries. For example,
+ *             text_restore() invoked by a clean-up function of a library can destroy the storage
+ *             for texts that are still in use by a program. The approach used by the Arena Library
+ *             would be more appropriate.
  *
  *  @internal
  *

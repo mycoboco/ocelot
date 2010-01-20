@@ -430,7 +430,8 @@ void *(mem_resize)(void *p, size_t n, const char *file, int line)
  *
  *  @return    pointer to allocated (zero-filled) memory block
  *
- *  @todo    - The C standard requires calloc() return a null pointer if it can allocates no storage
+ *  @todo    Improvements are possible and planned:
+ *           - the C standard requires calloc() return a null pointer if it can allocates no storage
  *             of the size @p c * @p n in bytes, which allows no overflow in computing the
  *             multiplication. So overflow checking is necessary to mimic the behavior of calloc().
  */

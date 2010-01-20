@@ -128,7 +128,8 @@ list_t *(list_list)(void *data, ...)
  *
  *  @return    appended list whose (pointer) value should be the same as @p list
  *
- *  @todo    - The time complexity of the current implementation is O(N) where N indicates the
+ *  @todo    Improvements are possible and planned:
+ *           - the time complexity of the current implementation is O(N) where N indicates the
  *             number of nodes in a list. With a circular list, where the next node of the last
  *             node set to the head node, it is possible for both pushing and appending to be done
  *             in a constant time.

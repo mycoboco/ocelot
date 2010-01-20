@@ -329,7 +329,8 @@ size_t (table_length)(const table_t *table)
  *
  *  @return    nothing
  *
- *  @todo    - It sometimes serves better to call a user callback for key-value pairs in order they
+ *  @todo    Improvements are possible and planned:
+ *           - it sometimes serves better to call a user callback for key-value pairs in order they
  *             are stored.
  *
  *  @internal
@@ -430,7 +431,8 @@ void *(table_remove)(table_t *table, const void *key)
  *
  *  @return    array generated from table
  *
- *  @todo    - It sometimes serves better to call a user callback for key-value pairs in order they
+ *  @todo    Improvements are possible and planned:
+ *           - it sometimes serves better to call a user callback for key-value pairs in order they
  *             are stored.
  */
 void **(table_toarray)(const table_t *table, void *end)

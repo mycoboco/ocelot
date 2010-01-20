@@ -149,7 +149,8 @@
  *  valued 1 when encounters an operand as if the operand is an option-argument for the option whose
  *  short name has the value 1.
  *
- *  @todo    - Some additional functions to help parsing program arguments when in the
+ *  @todo    Improvements are possible and planned:
+ *           - some additional functions to help parsing program arguments when in the
  *             @c REQUIRE_ORDER or @c RETURN_IN_ORDER mode would be useful.
  */
 typedef struct opt_t {

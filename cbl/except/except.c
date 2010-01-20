@@ -35,7 +35,8 @@ except_frame_t *except_stack = NULL;
  *
  *  @return    except_raise() cannot return anything
  *
- *  @todo    - It would be useful to show stack traces when an uncaught exception leads to abortion
+ *  @todo    Improvements are possible and planned:
+ *           - it would be useful to show stack traces when an uncaught exception leads to abortion
  *             of a program. The stack traces should include as much information as possible, for
  *             example, names of caller functions, calling sites (file name, function name and line
  *             number) and arguments.

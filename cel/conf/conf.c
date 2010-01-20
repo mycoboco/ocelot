@@ -329,8 +329,9 @@ static const char *lower(char *s)
  *  @retval    CONF_ERR_OK    success
  *  @retval    others         failure
  *
- *  @todo    - Some adjustment of arguments to table_new() is necessary.
- *           - Considering changes to the format of a configuration file as a program to accept it
+ *  @todo    Improvements are possible and planned:
+ *           - some adjustment on arguments to table_new() is necessary;
+ *           - considering changes to the format of a configuration file as a program to accept it
  *             is upgraded, making it a recoverable error to encounter a non-preset section or
  *             variable name would be useful; this enables an old version of the program to accept
  *             a new configuration file with diagnostics.
@@ -482,7 +483,8 @@ static int escseq(int c)
  *  @retval    0           success
  *  @retval    positive    line number on which error occurred
  *
- *  @todo    - Some adjustment on arguments to table_new() is necessary.
+ *  @todo    Improvements are possible and planned:
+ *           - some adjustment on arguments to table_new() is necessary.
  *
  *  @internal
  *
@@ -1077,7 +1079,8 @@ const char *(conf_getstr)(const char *var)
  *  @retval    CONF_ERR_OK    success
  *  @retval    others         failure
  *
- *  @todo    - Some adjustment on arguments to table_new() is necessary.
+ *  @todo    Improvements are possible and planned:
+ *           - some adjustment on arguments to table_new() is necessary.
  *
  *  @internal
  *

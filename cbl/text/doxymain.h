@@ -190,7 +190,14 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_storage Replacing Stack-based Storage Management
+ *
+ *  The stack-like storage management by text_save() and text_restore() needs to be replaced so that
+ *  other libraries are free to use the Text Library. With the current approach, invoking a clean-up
+ *  function of a library that calls text_restore() for the library's texts can also destroy the
+ *  storage for the program's texts. Since this effectively discourages libraries not to use the
+ *  Text Library, it would be better to hire a lifetime-based approach like that used in the Arena
+ *  Library.
  *
  *
  *  @section sec_contact Contact Me

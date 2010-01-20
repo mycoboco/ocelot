@@ -48,9 +48,10 @@
  * @c member, even if such a violation does not happen in practice. Putting a dummy member of the
  * struct @c member pointer type at the beginning of struct @c set_t can solve the problem.
  *
- * @todo    - Improvement is possible for some of the set operations if hash numbers are stored in
- *            struct @c member, which enables a user-provided hashing function called only once for
- *            each member and a user-provided comparison function called only when the hash numbers
+ * @todo    Improvements are possible and planned:
+ *          - some of the set operations can be improved if if hash numbers are stored in struct
+ *            @c member, which enables a user-provided hashing function called only once for each
+ *            member and a user-provided comparison function called only when the hash numbers
  *            differ.
  */
 struct set_t {
@@ -534,8 +535,9 @@ void **(set_toarray)(set_t *set, void *end)
  *
  *  @return    union set
  *
- *  @todo    - Improvement is possible when two given sets have the same number of buckets; the
- *             operation can be performed on each pair of corresponding buckets.
+ *  @todo    Improvements are possible and planned:
+ *           - the code can be modified so that the operation is performed on each pair of
+ *             corresponding buckets when two given sets have the same number of buckets.
  */
 set_t *(set_union)(set_t *s, set_t *t)
 {
@@ -577,8 +579,9 @@ set_t *(set_union)(set_t *s, set_t *t)
  *
  *  @return    intersection set
  *
- *  @todo    - Improvement is possible when two given sets have the same number of buckets; the
- *             operation can be performed on each pair of corresponding buckets.
+ *  @todo    Improvements are possible and planned:
+ *           - the code can be modified so that the operation is performed on each pair of
+ *             corresponding buckets when two given sets have the same number of buckets.
  */
 set_t *(set_inter)(set_t *s, set_t *t)
 {
@@ -633,8 +636,9 @@ set_t *(set_inter)(set_t *s, set_t *t)
  *
  *  @return    difference set, @p s - @p t
  *
- *  @todo    - Improvement is possible when two given sets have the same number of buckets; the
- *             operation can be performed on each pair of corresponding buckets.
+ *  @todo    Improvements are possible and planned:
+ *           - the code can be modified so that the operation is performed on each pair of
+ *             corresponding buckets when two given sets have the same number of buckets.
  */
 set_t *(set_minus)(set_t *s, set_t *t) {
     if (!s) {    /* s is empty, t not empty */
@@ -685,8 +689,9 @@ set_t *(set_minus)(set_t *s, set_t *t) {
  *
  *  @return    symmetric difference set
  *
- *  @todo    - Improvement is possible when two given sets have the same number of buckets; the
- *             operation can be performed on each pair of corresponding buckets.
+ *  @todo    Improvements are possible and planned:
+ *           - the code can be modified so that the operation is performed on each pair of
+ *             corresponding buckets when two given sets have the same number of buckets.
  */
 
 set_t *(set_diff)(set_t *s, set_t *t)

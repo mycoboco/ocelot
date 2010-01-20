@@ -333,7 +333,8 @@ void *(arena_alloc)(arena_t *arena, size_t n, const char *file, int line)
  *
  *  @return    zero-filled storage allocated for arena
  *
- *  @todo    - The C standard requires calloc() return a null pointer if it cannot allocates storage
+ *  @todo    Some improvements are possible and planned:
+ *           - the C standard requires calloc() return a null pointer if it cannot allocates storage
  *             of the size @p c * @p n in bytes, which allows no overflow in computing the
  *             multiplication. So overflow checking is necessary to mimic the behavior of calloc().
  */
