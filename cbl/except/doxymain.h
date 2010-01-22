@@ -7,7 +7,7 @@
  *  @mainpage    C Basic Library: Exception Handling Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -226,7 +226,13 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_stack Stack Traces
+ *
+ *  The current implementation provides no information about the execution stack of a program when
+ *  an exception occurred leads it to abnormal termination. This imposes a burden on programmers
+ *  since they have to track function calls by themselves to pinpoint the problem. Thus, showing
+ *  stack traces on an uncaught exception would be useful especially when they include enough
+ *  information like callers' names, calling sites and arguments.
  *
  *
  *  @section sec_contact Contact Me

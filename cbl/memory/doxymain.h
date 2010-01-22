@@ -7,7 +7,7 @@
  *  @mainpage    C Basic Library: Memory Management Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -149,7 +149,12 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_minor Minor Changes
+ *
+ *  To mimic the behavior of calloc() specified by the standard, it is required for the debugging
+ *  version of MEM_CALLOC() to successfully return a null pointer when it cannot allocate the
+ *  storage of the requested size. Since this does not allow overflow, it has to carefully check
+ *  overflow when calculating the total size.
  *
  *
  *  @section sec_contact Contact Me

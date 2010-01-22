@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Set Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -136,7 +136,18 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_hash Storing Hash Numbers
+ *
+ *  Modifying the data structure for sets have hash numbers explicitly makes it possible for a
+ *  user-provided hashing function to be called only once for each member in sets and for a
+ *  user-provided comparison function to be called only when the hash numbers differ, which leads to
+ *  the performance improvement.
+ *
+ *  @subsection subsec_setop Improvement on Set Operations
+ *
+ *  Set operations like set_union(), set_inter(), set_minus() and set_diff() can be improved when
+ *  two sets on which the operations are performed have the same number of buckets by applying the
+ *  operations to each pair of corresponding buckets.
  *
  *
  *  @section sec_contact Contact Me

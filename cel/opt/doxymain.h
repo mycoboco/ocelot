@@ -7,7 +7,7 @@
  *  @mainpage    C Environment Library: Option Parsing Library
  *  @version     0.2.0
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction

@@ -148,10 +148,6 @@
  *  In addition, setting the first long-named option to "-" makes opt_parse() returns the character
  *  valued 1 when encounters an operand as if the operand is an option-argument for the option whose
  *  short name has the value 1.
- *
- *  @todo    Improvements are possible and planned:
- *           - some additional functions to help parsing program arguments when in the
- *             @c REQUIRE_ORDER or @c RETURN_IN_ORDER mode would be useful.
  */
 typedef struct opt_t {
     char *lopt;    /*!< long-named option (optional for some cases) */

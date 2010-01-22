@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Table Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -129,7 +129,13 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_order Retaining Sequence
+ *
+ *  The Table Library offers two functions that scan every key-value pair maintained in tables.
+ *  These functions visit key-value pairs in order that is dependent on the internal structure of
+ *  the table, which might force a user to sort them properly if certain sequence is desired. It
+ *  would be thus helpful to have those functions to retain sequence in which key-value pairs are
+ *  stored into tables.
  *
  *
  *  @section sec_contact Contact Me

@@ -7,7 +7,7 @@
  *  @mainpage    C Environment Library: Configuration File Library
  *  @version     0.2.0
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -313,7 +313,20 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_recover Recoverable Errors
+ *
+ *  The current implementation does not provide a way to recover from errors like encountering
+ *  unrecognized sections or variables. Recovering from them is sometimes necessary; for example, a
+ *  programmer might want to issue a diagnostic message when a user uses an old version of the
+ *  configuration file format, or to construct a certain part of the configuration file format
+ *  dynamically depending on other parts of it.
+ *
+ *  @subsection subsec_minor Minor Changes
+ *
+ *  table_new() used by the Configuration File Library to create tables for storing configuration
+ *  data takes a hint for the expected size of the table to create. Even if the performance is not a
+ *  big issue in this library and granting a good hint improves the performance of operations on
+ *  tables, providing a reasonable one to table_new() is necessary.
  *
  *
  *  @section sec_contact Contact Me

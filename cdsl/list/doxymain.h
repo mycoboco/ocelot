@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: List Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-22
  *
  *
  *  @section sec_intro Introduction
@@ -161,7 +161,12 @@
  *
  *  @section sec_future Future Directions
  *
- *  No future change on this library planned yet.
+ *  @subsection subsec_append Circular Lists
+ *
+ *  Making lists circular enables appending a new node to them to be done in a constant time. The
+ *  current implementation where the last nodes point to nothing makes list_append() take time
+ *  proportional to the number of nodes in a list, which is, in other words, the time complexity of
+ *  list_append() is O(N).
  *
  *
  *  @section sec_contact Contact Me

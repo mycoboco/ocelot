@@ -7,7 +7,7 @@
  *  @mainpage    C Basic Library: Text Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2009-12-29
+ *  @date        last modified on 2010-01-21
  *
  *
  *  @section sec_intro Introduction
@@ -198,6 +198,12 @@
  *  storage for the program's texts. Since this effectively discourages libraries not to use the
  *  Text Library, it would be better to hire a lifetime-based approach like that used in the Arena
  *  Library.
+ *
+ *  @subsection subsec_minor Minor Changes
+ *
+ *  If the stack-like strategy for managing the storage is not replaced as described above,
+ *  detecting some erroneous sequences of text_save() and text_restore() would be useful. For more
+ *  information, see the example given in text_save().
  *
  *
  *  @section sec_contact Contact Me
