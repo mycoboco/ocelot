@@ -142,7 +142,7 @@ const char *(hash_string)(const char *str)
 const char *(hash_int)(long n)
 {
     int len;
-    char str[1 + sizeof(long)*CHAR_BIT/3 + 1];
+    char str[1 + (sizeof(long)*CHAR_BIT+2)/3 + 1];
              /* sign + possible number of octal digits in long + null character */
 
     len = sprintf(str, "%ld", n);    /* len does not count null character */
