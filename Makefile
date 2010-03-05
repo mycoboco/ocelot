@@ -18,7 +18,6 @@ RMDIR = rmdir
 TAR = tar
 
 SHAREDOPT = -shared
-CFLAGS = -g
 ALL_CFLAGS = -I$I -Wall -W -fPIC $(CFLAGS)
 
 .c.o:

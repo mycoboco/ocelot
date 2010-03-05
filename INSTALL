@@ -30,6 +30,14 @@
   Even if separate building of libraries is specified, all libraries in CDSL and
   most in CEL depend on CBL, thus require it.
 
+  Some libraries in CBL should be informed of the maximum alignment requirement
+  imposed by the execution environment. If the macro named MEM_MAXALIGN is not
+  defined, they try to guess the requirement. If the guess fails (and it often
+  does), a program that depends on them also might fail. In such a case, an
+  explicit value should be given by setting the CFLAGS variable as in:
+
+      CFLAGS="-DMEM_MAXALIGN=8" make all
+
   After the libraries built, you can install them by placing the library files
   into a library directory for your system (e.g., /usr/local/lib), the headers
   into an include directory (e.g., /usr/local/include) and the man-pages into a
