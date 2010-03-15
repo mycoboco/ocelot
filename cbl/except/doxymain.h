@@ -73,7 +73,7 @@
  *              fprintf(stderr,
  *                      "An internal error occurred with no way to recover.\n"
  *                      "Please report this error to somebody@somewhere.\n\n");
- *              RERAISE;
+ *              EXCEPT_RERAISE;
  *          EXCEPT_END;
  *
  *          return 0;
