@@ -31,7 +31,7 @@
 
 
 /* exception for assertion failure */
-const except_t assert_exceptfail;
+extern const except_t assert_exceptfail;
 
 
 #endif    /* ASSERT_STDC_VER */

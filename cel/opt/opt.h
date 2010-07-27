@@ -156,7 +156,6 @@ typedef struct opt_t {
     int arg;       /*!< value for flag variable or type of additional argument */
 } opt_t;
 
-
 /*! @brief    defines enum contants for types of argument conversion.
  */
 enum {

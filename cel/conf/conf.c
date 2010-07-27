@@ -861,11 +861,11 @@ const void *conf_conv(const char *val, int type)
  *
  *  Unchecked errors: none
  *
- *  @param[in]    var
+ *  @param[in]    var    section/variable name
  *
- *  @return
- *  @retval    non-null
- *  @retval    NULL
+ *  @return    pointer to storage that contains value or null pointer
+ *  @retval    non-null    value retrieved
+ *  @retval    NULL        failure
  */
 const void *(conf_get)(const char *var)
 {
@@ -1343,7 +1343,7 @@ const char *(conf_errstr)(int code)
         "space in section/variable name",    /* CONF_ERR_SPACE */
         "invalid character encountered",     /* CONF_ERR_CHAR */
         "invalid line encountered",          /* CONF_ERR_LINE */
-        "no following line for slicing",     /* CONF_ERR_BSLASH */
+        "no following line for splicing",    /* CONF_ERR_BSLASH */
         "section not found",                 /* CONF_ERR_SEC */
         "variable not found",                /* CONF_ERR_VAR */
         "data type mismatch",                /* CONF_ERR_TYPE */

@@ -51,7 +51,6 @@ typedef struct conf_t {
     char *defval;    /*!< default value */
 } conf_t;
 
-
 /*! @brief    defines enum constants for types of values.
  */
 enum {

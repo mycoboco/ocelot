@@ -35,7 +35,6 @@ typedef struct except_frame_t {
     const except_t *exception;      /* name of exception */
 } except_frame_t;
 
-
 /* @brief    indicates the state of exception handling.
  *
  * Note that @c EXCEPT_ENTERED is set to zero, which is the value returned from the initial call

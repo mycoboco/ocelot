@@ -6,6 +6,7 @@
 #include "cbl/assert.h"
 #include "cbl/except.h"    /* except_t */
 
+
 /*! @brief    exception for assertion failure.
  */
 const except_t assert_exceptfail = { "Assertion failed" };

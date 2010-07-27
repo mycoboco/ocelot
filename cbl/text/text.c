@@ -87,6 +87,7 @@ struct chunk {
     char *limit;           /*!< points to past end of chunk */
 };
 
+
 /* @brief    heads the list of memory chunks for the text space; see alloc().
  */
 static struct chunk head = { NULL, NULL, NULL };

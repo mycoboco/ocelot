@@ -15,15 +15,6 @@
 #include "arena.h"
 
 
-/*! @brief    exception for arena creation failure.
- */
-const except_t arena_exceptfailNew = { "Arena creation failed" };
-
-/*! @brief    exception for arena memory allocation failure.
- */
-const except_t arena_exceptfailAlloc = { "Arena allocation failed" };
-
-
 /* smallest multiple of y that is greater than or equal to x */
 #define MULTIPLE(x, y) ((((x)+(y)-1)/(y)) * (y))
 
@@ -41,7 +32,6 @@ const except_t arena_exceptfailAlloc = { "Arena allocation failed" };
 #else    /* C90, uintptr_t surely not supported */
 typedef unsigned long uintptr_t;
 #endif    /* __STDC_VERSION__ */
-
 
 /* @struct    arena_t    arena.c
  * @brief    implements an arena.
@@ -138,6 +128,15 @@ union header {
     arena_t b;
     union align a;
 };
+
+
+/*! @brief    exception for arena creation failure.
+ */
+const except_t arena_exceptfailNew = { "Arena creation failed" };
+
+/*! @brief    exception for arena memory allocation failure.
+ */
+const except_t arena_exceptfailAlloc = { "Arena allocation failed" };
 
 
 /* @brief    threads memory chunks that have been deallocated.
