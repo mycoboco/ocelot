@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Generates documents from code for libLE (for internal use only)
+# Generates documents from code for Ocelot (for internal use only)
 #
 
 # man-page number

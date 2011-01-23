@@ -1,5 +1,5 @@
-  How To Build and Install libLE
-  ==============================
+  How To Build and Install Ocelot
+  ===============================
 
   This package does not provide an automated way to install the libraries. After
   building them, you need to copy by yourself the resulting files into

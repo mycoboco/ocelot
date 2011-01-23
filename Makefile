@@ -1,5 +1,5 @@
 #
-# Makefile for buliding libLE
+# Makefile for buliding Ocelot
 #
 
 SHELL = /bin/sh

@@ -1,4 +1,4 @@
-  libLE contains several libraries for which slightly different copyright
+  Ocelot contains several libraries for which slightly different copyright
   notices apply. Instead of providing several LICENSE files, this file lists
   names of all libraries with their copyright notices following. They are simply
   copied from the doxymain.h files in the libraries.
@@ -24,7 +24,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a lifetime-based memory allocator implementation by Jun Woong.
   The implementation was written so as to conform with the Standard C published
@@ -61,7 +61,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is an assertion facility implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
@@ -98,7 +98,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is an exception handling facility implementation by Jun Woong.
   The implementation was written so as to conform with the Standard C published
@@ -135,7 +135,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a memory management implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
@@ -172,7 +172,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a string manipulation implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
@@ -209,7 +209,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a doubly-linked list manipulation implementation by Jun Woong.
   The implementation was written so as to conform with the Standard C published
@@ -246,7 +246,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a hash table implementation by Jun Woong. The implementation
   was written so as to conform with the Standard C published by ISO 9899:1990
@@ -283,7 +283,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a singly-linked list implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
@@ -320,7 +320,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a set list implementation by Jun Woong. The implementation was
   written so as to conform with the Standard C published by ISO 9899:1990 and
@@ -357,7 +357,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a stack list implementation by Jun Woong. The implementation
   was written so as to conform with the Standard C published by ISO 9899:1990
@@ -394,7 +394,7 @@
 
   For the parts I added or modified, the following applies:
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a table list implementation by Jun Woong. The implementation
   was written so as to conform with the Standard C published by ISO 9899:1990
@@ -414,7 +414,7 @@
   The Configuration File Library (cel/conf)
   =========================================
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is a configuration file reader implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
@@ -434,7 +434,7 @@
   The Option Parsing Library (cel/opt)
   ====================================
 
-  Copyright (C) 2009 by Jun Woong.
+  Copyright (C) 2009-2011 by Jun Woong.
 
   This package is an option parser implementation by Jun Woong. The
   implementation was written so as to conform with the Standard C published by
