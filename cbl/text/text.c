@@ -575,7 +575,7 @@ text_t (text_reverse)(text_t s)
         int i;
 
         i = text.len = s.len;
-        text.str = p = alloc(s.len);
+        p = (unsigned char *)(text.str = alloc(s.len));
         while (--i >= 0)    /* avoids i-- > 0 to use s.str[i] */
             *p++ = ((unsigned char *)s.str)[i];
 
@@ -653,7 +653,7 @@ text_t (text_map)(text_t s, const text_t *from, const text_t *to)
         unsigned char *p;
 
         text.len = s.len;
-        text.str = p = alloc(s.len);
+        p = (unsigned char *)(text.str = alloc(s.len));
         for (i = 0; i < s.len; i++)
             *p++ = map[((unsigned char *)s.str)[i]];
 
