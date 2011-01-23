@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Table Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2010-01-21
+ *  @date        last modified on 2011-01-24
  *
  *
  *  @section sec_intro Introduction
@@ -168,7 +168,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009 by Jun Woong.
+ *  Copyright (C) 2009-2011 by Jun Woong.
  *
  *  This package is a table implementation by Jun Woong. The implementation was written so as to
  *  conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.
