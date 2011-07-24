@@ -49,7 +49,8 @@
  *  stack_new(). Calling it returns a new and empty stack.
  *
  *  Once a stack has benn created, you can push data into or pop it from a stack using stack_push()
- *  and stack_pop(), respectively. Because popping an empty stack triggers an exception
+ *  and stack_pop(), respectively. stack_peek() also can be used to see what is stored at the top of
+ *  a stack without popping it out. Because popping an empty stack triggers an exception
  *  @c assert_exceptfail, calling stack_empty() is recommended to inspect if a stack is empty before
  *  applying stack_pop() to it.
  *
@@ -63,7 +64,7 @@
  *
  *  @code
  *      int c;
- *      char *p;
+ *      char *p, *q;
  *      stack_t *mystack;
  *
  *      mystack = stack_new();
@@ -74,7 +75,9 @@
  *      }
  *
  *      while (!stack_empty(mystack)) {
- *          p = stack_pop(mystack);
+ *          p = stack_peek(mystack);
+ *          q = stack_pop(mystack);
+ *          assert(p == q);
  *          putchar(*p);
  *          MEM_FREE(p);
  *      }

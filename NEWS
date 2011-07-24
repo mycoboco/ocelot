@@ -1,5 +1,6 @@
   What's New in Ocelot?
   =====================
 
+  2011-07-24  stack_peek() added.
   2011-01-23  The project name changed to Ocelot and some bugs fixed.
   2010-12-30  First release.
