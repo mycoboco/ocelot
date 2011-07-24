@@ -124,6 +124,30 @@ void *(stack_pop)(stack_t *stk)
 }
 
 
+/*! @brief    peeks the top-most data in a stack.
+ *
+ *  stack_peek() provides a way to inspect the top-most data in a stack without popping it up.
+ *
+ *  Possible exceptions:
+ *
+ *  Unchecked errors:
+ *
+ *  @param[in]    stk    stack to peek
+ *
+ *  @return    top-most data in stack
+ */
+void *(stack_peek)(const stack_t *stk)
+{
+    void *data;
+    struct node *t;
+
+    assert(stk);
+    assert(stk->head);
+
+    return (void *)((struct node *)stk->head)->data;
+}
+
+
 /*! @brief    destroys a stack.
  *
  *  stack_free() deallocates all storages for a stack and set the pointer passed through @p stk to a
