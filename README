@@ -1,5 +1,5 @@
-  ocelot: The Language Extension Library
-  ======================================
+  ocelot: A Language Extension Library
+  ====================================
 
   ocelot is a collection of libraries to provide features that the C language
   lacks, various data structures that most programs use in common, and
