@@ -1,5 +1,5 @@
 #
-# Makefile for buliding Ocelot
+# Makefile for buliding ocelot
 #
 
 SHELL = /bin/sh
