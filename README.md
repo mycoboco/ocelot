@@ -33,11 +33,11 @@ libraries of each category:
     - `conf`: The Configuration File Library (configuration file parser)
     - `opt`: The Option Parsing Library (option parser)
 
-Libraries are documented by `Doxygen`(http://www.doxygen.org). The `doc`
-directory contains HTML, PDF and man-page versions of the documents.
+Libraries are documented by [`Doxygen`](http://www.doxygen.org). The `doc`
+directory contains HTML, PDF and `man`-page versions of the documents.
 
-`INSTALL` explains how to build and install the libraries. For the copyright
-issues, see the accompanying `LICENSE` file.
+`INSTALL.md` explains how to build and install the libraries. For the copyright
+issues, see the accompanying `LICENSE.md` file.
 
 If you have a question or suggestion, do not hesitate to contact me via email
 (woong.jun at gmail.com) or web (http://code.woong.org/).

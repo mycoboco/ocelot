@@ -112,7 +112,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2011 by Jun Woong.
+ *  Copyright (C) 2009-2012 by Jun Woong.
  *
  *  This package is an assertion facility implementation by Jun Woong. The implementation was
  *  written so as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

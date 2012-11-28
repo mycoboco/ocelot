@@ -343,7 +343,7 @@
  *
  *  @section sec_license Copyright
  *
- *  Copyright (C) 2009-2011 by Jun Woong.
+ *  Copyright (C) 2009-2012 by Jun Woong.
  *
  *  This package is a configuration file reader implementation by Jun Woong. The implementation was
  *  written so as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.
