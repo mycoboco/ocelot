@@ -5,7 +5,7 @@ This package does not provide an automated way to install the libraries. After
 building them, you need to copy by yourself the resulting files into
 appropriate places.
 
-Executing the make utility with no targe specified lists supported targets:
+Executing the `make` utility with no targe specified lists supported targets:
 
 -  `all`: builds all the libraries into the build directory. The directory has
    two sub-directories, one for header files and the other for static and

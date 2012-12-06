@@ -2,10 +2,11 @@ ocelot: A Language Extension Library
 ====================================
 
 `ocelot` contains several libraries for which slightly different copyright
-notices apply. Instead of providing several `LICENSE.md` files, this file lists
-names of all libraries with their copyright notices merged. They are copied
-with a few changes for [Markdown](http://daringfireball.net/projects/markdown/)
-from the `doxymain.h` files in the libraries.
+notices apply. Instead of providing several `LICENSE.md` files, the names of
+all libraries are listed here with their copyright notices merged. They are
+copied with a few changes for
+[Markdown](http://daringfireball.net/projects/markdown/) from the `doxymain.h`
+files in the libraries.
 
 -------------------------------------------------------------------------------
 
