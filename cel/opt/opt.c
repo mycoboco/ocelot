@@ -835,7 +835,7 @@ void (opt_free)(void)
 #if 0    /* example code */
 #include <assert.h>    /* assert */
 #include <stddef.h>    /* NULL */
-#include <stdio.h>     /* puts, putchar, printf */
+#include <stdio.h>     /* puts, putchar, printf, fprintf, stderr */
 #include <stdlib.h>    /* EXIT_FAILURE */
 #include <limits.h>    /* UCHAR_MAX */
 
