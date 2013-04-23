@@ -11,14 +11,14 @@
 #include "bitv.h"
 
 
-#define BPW (8 * sizeof(unsigned long))    /*!< number of bits per word */
+#define BPW (8 * sizeof(unsigned long))    /* number of bits per word */
 
-#define nword(len) (((len)+BPW-1) / BPW)    /*!< number of words for bit-vector of length @c len */
-#define nbyte(len) (((len)+8-1) / 8)        /*!< number of bytes for bit-vector of length @c len */
+#define nword(len) (((len)+BPW-1) / BPW)    /* number of words for bit-vector of length @c len */
+#define nbyte(len) (((len)+8-1) / 8)        /* number of bytes for bit-vector of length @c len */
 
-#define BIT(set, n) (((set)->byte[(n)/8] >> ((n)%8)) & 1)    /*!< extracts bit from bit-vector */
+#define BIT(set, n) (((set)->byte[(n)/8] >> ((n)%8)) & 1)    /* extracts bit from bit-vector */
 
-/*!< body for functions that work on the range */
+/* body for functions that work on the range */
 #define range(op, fcmp, cmp)                                   \
     do {                                                       \
         assert(set);                                           \
@@ -36,7 +36,7 @@
             set->byte[l/8] op##= cmp (msb[l%8] & lsb[h%8]);    \
     } while(0)
 
-/*!< function body for set operations */
+/* function body for set operations */
 #define setop(eq, sn, tn, op)                               \
     do {                                                    \
         assert(s || t);                                     \

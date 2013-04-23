@@ -11,8 +11,8 @@
 #include "set.h"
 
 
-#define MAX(x, y) ((x) > (y)? (x): (y))    /*!< returns the larger of two */
-#define MIN(x, y) ((x) > (y)? (y): (x))    /*!< returns the smaller of two */
+#define MAX(x, y) ((x) > (y)? (x): (y))    /* returns the larger of two */
+#define MIN(x, y) ((x) > (y)? (y): (x))    /* returns the smaller of two */
 
 
 /* @struct    set_t    set.c

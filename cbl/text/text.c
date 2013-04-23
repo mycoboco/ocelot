@@ -59,8 +59,8 @@
  * @c current, but @c avail should be remembered since it is mutable.
  */
 struct text_save_t {
-    struct chunk *current;    /*!< points to chunk to restore later */
-    char *avail;              /*!< points to start of free area of saved chunk */
+    struct chunk *current;    /* points to chunk to restore later */
+    char *avail;              /* points to start of free area of saved chunk */
 };
 
 /* @struct    chunk    text.c
@@ -82,9 +82,9 @@ struct text_save_t {
  * compute the size of the free space in a chunk.
  */
 struct chunk {
-    struct chunk *link;    /*!< points to next chunk */
-    char *avail;           /*!< points to start of free area in chunk */
-    char *limit;           /*!< points to past end of chunk */
+    struct chunk *link;    /* points to next chunk */
+    char *avail;           /* points to start of free area in chunk */
+    char *limit;           /* points to past end of chunk */
 };
 
 
