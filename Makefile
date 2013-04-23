@@ -36,8 +36,8 @@ CBLOBJS = cbl/arena/arena.o cbl/assert/assert.o cbl/except/except.o cbl/memory/m
 	cbl/text/text.o
 CBLDOBJS = cbl/arena/arena.o cbl/assert/assert.o cbl/except/except.o cbl/memory/memoryd.o \
 	cbl/text/text.o
-CDSLOBJS = cdsl/dlist/dlist.o cdsl/hash/hash.o cdsl/list/list.o cdsl/set/set.o cdsl/stack/stack.o \
-	cdsl/table/table.o
+CDSLOBJS = cdsl/bitv/bitv.o cdsl/dlist/dlist.o cdsl/hash/hash.o cdsl/list/list.o cdsl/set/set.o \
+	cdsl/stack/stack.o cdsl/table/table.o
 CELOBJS = cel/conf/conf.o cel/opt/opt.o
 
 CBLHORIG = $(CBLOBJS:.o=.h)
@@ -45,8 +45,8 @@ CDSLHORIG = $(CDSLOBJS:.o=.h)
 CELHORIG = $(CELOBJS:.o=.h)
 
 CBLHCOPY = $I/cbl/arena.h $I/cbl/assert.h $I/cbl/except.h $I/cbl/memory.h $I/cbl/text.h
-CDSLHCOPY = $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl/set.h $I/cdsl/stack.h \
-	$I/cdsl/table.h
+CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl/set.h \
+	$I/cdsl/stack.h $I/cdsl/table.h
 CELHCOPY = $I/cel/conf.h $I/cel/opt.h
 
 M = 1
@@ -115,13 +115,14 @@ $I/cel:
 	$(MKDIR) $I/cel
 
 
-cbl/arena/arena.o:    cbl/arena/arena.c   cbl/arena/arena.h   cbl/assert/assert.h cbl/except/except.h
-cbl/assert/assert.o:  cbl/assert/assert.c cbl/assert/assert.h cbl/except/except.h
-cbl/except/except.o:  cbl/except/except.c cbl/except/except.h cbl/assert/assert.h
-cbl/memory/memory.o:  cbl/memory/memory.c cbl/memory/memory.h cbl/assert/assert.h cbl/except/except.h
+cbl/arena/arena.o:    cbl/arena/arena.c    cbl/arena/arena.h   cbl/assert/assert.h cbl/except/except.h
+cbl/assert/assert.o:  cbl/assert/assert.c  cbl/assert/assert.h cbl/except/except.h
+cbl/except/except.o:  cbl/except/except.c  cbl/except/except.h cbl/assert/assert.h
+cbl/memory/memory.o:  cbl/memory/memory.c  cbl/memory/memory.h cbl/assert/assert.h cbl/except/except.h
 cbl/memory/memoryd.o: cbl/memory/memoryd.c cbl/memory/memory.h cbl/assert/assert.h cbl/except/except.h
-cbl/text/text.o:      cbl/text/text.c     cbl/text/text.h     cbl/assert/assert.h cbl/memory/memory.h
+cbl/text/text.o:      cbl/text/text.c      cbl/text/text.h     cbl/assert/assert.h cbl/memory/memory.h
 
+cdsl/bitv/bitv.o:   cdsl/bitv/bitv.c   cdsl/bitv/bitv.h   cbl/assert/assert.h cbl/memory/memory.h
 cdsl/dlist/dlist.o: cdsl/dlist/dlist.c cdsl/dlist/dlist.h cbl/assert/assert.h cbl/memory/memory.h
 cdsl/hash/hash.o:   cdsl/hash/hash.c   cdsl/hash/hash.h   cbl/assert/assert.h cbl/memory/memory.h
 cdsl/list/list.o:   cdsl/list/list.c   cdsl/list/list.h	  cbl/assert/assert.h cbl/memory/memory.h

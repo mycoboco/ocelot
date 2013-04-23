@@ -16,8 +16,8 @@ DOCDIRS="${DOCHTML} ${DOCMAN} ${DOCMAN}/cbl ${DOCMAN}/cdsl ${DOCMAN}/cel ${DOCPD
 
 # directories for document sources
 #
-SRCDIRS="cbl/arena cbl/assert cbl/except cbl/memory cbl/text cdsl/dlist cdsl/hash cdsl/list \
-         cdsl/stack cdsl/set cdsl/table cel/conf cel/opt"
+SRCDIRS="cbl/arena cbl/assert cbl/except cbl/memory cbl/text cdsl/bitv cdsl/dlist cdsl/hash \
+         cdsl/list cdsl/stack cdsl/set cdsl/table cel/conf cel/opt"
 
 # directories that doxygen generates
 #
@@ -41,11 +41,19 @@ DOXYMAIN="doxymain.h"
 
 # files to exclude from man-pages
 #
-MANTRASH="\@*.3 ALIGNED.3 EQUAL.3 FREE_THRESHOLD.3 HASH.3 IDX.3 ISATEND.3 MULTIPLE.3 \
-          NDESCRIPTORS.3 NELEMENT.3 RAISE_EXCEPT_IF_INVALID.3 SWAP.3 afile.3 afunc.3 aline.3 \
-          asize.3 ifile.3 ifunc.3 iline.3 len.3 logfuncFreefree.3 logfuncResizefree.3 p.3 size.3 \
-          str.3 todo.3 uintptr_t.3 NALLOC.3 BUFLEN.3 VALID_CHR.3 defval.3 type.3 var.3 MAX.3 MIN.3 \
-          data.3 next UC.3 arg.3 flag.3 lopt.3 order.3 sopt.3"
+MANTRASH="\@*.3 ALIGNED.3 EQUAL.3 FREE_THRESHOLD.3 HASH.3 IDX.3 ISATEND.3 MULTIPLE.3 NALLOC.3 \
+          NDESCRIPTORS.3 NELEMENT.3 RAISE_EXCEPT_IF_INVALID.3 SWAP.3 afile.3 afunc.3 align.3 \
+          aline.3 asize.3 avail.3 a.3 b.3 chunk.3 current.3 descriptor.3 d.3 env.3 exception.3 \
+          file.3 fp.3 free.3 f.3 header.3 ifile.3 ifunc.3 iline.3 i.3 ld.3 len.3 limit.3 line.3 \
+          link.3 list logfuncFreefree.3 logfuncResizefree.3 lp.3 l.3 prev.3 ptr.3 p.3 size.3 \
+          str.3 todo.3 uintptr_t.3 BIT.3 BPW.3 MAX.3 MIN.3 bucket.3 byte.3 cmp.3 data.3 hash.3 \
+          head.3 key.3 lastidx.3 lastnode.3 length.3 len.3 link.3 member.3 nbyte.3 next.3 nword.3 \
+          prev.3 range.3 setop.3 size.3 str.3 timestamp.3 todo.3 value.3 word.3 BUFLEN.3 UC.3 \
+          VALID_CHR.3 arg.3 defval.3 flag.3 freep.3 list lopt.3 order.3 sopt.3 todo.3 type.3 \
+          valnode_t.3 val.3 var.3 arena_t.3 except_frame_t.3 except_t.3 text_save_t.3 bitv_t.3 \
+          dlist_t.3 hash_t.3 set_t.3 stack_t.3 table_t.3 dlist_t_node.3 set_t_member.3 \
+          stack_t_node.3 table_t_binding.3"
+
 
 fatal() {
     echo "$0: $1"
