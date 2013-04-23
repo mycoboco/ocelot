@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Hash Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -30,15 +30,15 @@
  *
  *  @section sec_usage How to Use The Library
  *
- *  The Hash Library implements a hash table and is one of the most frequently used libraries; it is
- *  essential to get a hash key for datum before putting it into a table by the Table Library or a
- *  set by the Set Library. The storage used to maintain the hash table is managed by the library
+ *  The Hash Library implements a hash table and is one of the most frequently used libraries; it
+ *  is essential to get a hash key for datum before putting it into tables by the Table Library or
+ *  sets by the Set Library. The storage used to maintain the hash table is managed by the library
  *  and no function in the library demands memory allocation done by user code.
  *
  *  The Hash Library provides one global hash table, so that there is no function that creates a
- *  table or destroy it. A user can start to use the hash table without its creation just by putting
- *  data to it using an appropriate function: hash_string() for C strings, hash_int() for signed
- *  integers and hash_new() for other arbitrary forms of data. Of course, since the library
+ *  table or destroy it. A user can start to use the hash table without its creation just by
+ *  putting data to it using an appropriate function: hash_string() for C strings, hash_int() for
+ *  signed integers and hash_new() for other arbitrary forms of data. Of course, since the library
  *  internally allocates storage to manage hash keys and values, functions to remove a certain key
  *  from the table and to completely clean up the table are offered: hash_free() and hash_reset().
  *  In addition, since strings are very often used to generate hash keys for them, hash_vload() and
@@ -87,14 +87,14 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the lastest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the lastest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -115,7 +115,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is a hash table implementation by Jun Woong. The implementation was written so as
  *  to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

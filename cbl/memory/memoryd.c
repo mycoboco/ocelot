@@ -144,8 +144,8 @@ void (*logfuncResizefree)(FILE *, const mem_loginfo_t *);
  *
  * @c htab is an array of pointers to implement a hash table and its pointer elements point to
  * lists for block descriptors. @c htab contains every memory block descriptor whether it describes
- * a freed or used block. For example, suppose there are 3 entries in a table and 3 descriptors
- * each of which has its own allocated memory block. The following depicts this:
+ * a freed or used block. For example, suppose there are 3 entries in a table and 3 descriptors,
+ * each of which has its own allocated memory blocks. The following depicts this situation:
  *
  * @code
  *     +-+    +-+    +-+
@@ -217,7 +217,7 @@ static struct descriptor *descfind(const void *p)
  *
  *  logprint() prints a proper log message depending on the type of errors. This function is
  *  activated when @c logfile is set to a non-null pointer by mem_log() and deactivated when
- *  it is set to a null pointer by the same function. If a user print function is registered by
+ *  it is set to a null pointer by the same function. If a user output function is registered by
  *  mem_log(), logprint() calls it with proper arguments. See mem_log() for details.
  *
  *  @param[in]    p       pointer given to mem_free() or mem_resize()
@@ -344,7 +344,7 @@ static void logprint(void *p, size_t n, struct descriptor *bp, const char *file,
  *  @internal
  *
  *  mem_free() in the debugging version frees a memory block by adding it to the free block list,
- *  which is marking it as "freed." Note that setting the @c free member in a descriptor structure
+ *  which is marking it as "freed." Note that changing the @c free member in a descriptor structure
  *  from a null pointer to a non-null pointer indicates that it is a freed block when inspecting
  *  the block descriptors.
 
@@ -378,7 +378,7 @@ void (mem_free)(void *p, const char *file, int line)
  *  Unchecked errors: none
  *
  *  @param[in]    p       pointer to memory block whose size to be adjusted
- *  @param[in]    n       new size for memory block
+ *  @param[in]    n       new size for memory block in bytes
  *  @param[in]    file    file name in which adjustment requested
  *  @param[in]    func    function name in which adjustment requested (if C99 supported)
  *  @param[in]    line    line number on which adjustment requested
@@ -433,7 +433,7 @@ void *(mem_resize)(void *p, size_t n, const char *file, int line)
  *  @todo    Improvements are possible and planned:
  *           - the C standard requires calloc() return a null pointer if it can allocates no storage
  *             of the size @p c * @p n in bytes, which allows no overflow in computing the
- *             multiplication. So overflow checking is necessary to mimic the behavior of calloc().
+ *             multiplication. Overflow checking is necessary to mimic the behavior of calloc().
  */
 #if __STDC_VERSION__ >= 199901L    /* C99 version */
 void *(mem_calloc)(size_t c, size_t n, const char *file, const char *func, int line)
@@ -464,7 +464,7 @@ void *(mem_calloc)(size_t c, size_t n, const char *file, int line)
  *
  * @warning    The storage for descriptors allocated by descalloc() is never deallocated. For
  *             example, when 512 descriptors had been consumed and there is a request for new one,
- *             descalloc() forgives tracking of the former 512 descriptors and allocates new 512
+ *             descalloc() gives up tracking of the former 512 descriptors and allocates new 512
  *             descriptors to @c avail. This surely causes memory leak, but is not a big deal
  *             since the purpose of the library is to debug. A tool to check memory leak like
  *             Valgrind would report that descalloc() does not return to an OS storages it
@@ -522,7 +522,7 @@ static struct descriptor *descalloc(void *p, size_t n, const char *file, int lin
  *
  *  Unchecked errors: none
  *
- *  @param[in]    n       size of memory block requested
+ *  @param[in]    n       size of memory block requested in bytes
  *  @param[in]    file    file name in which allocation requested
  *  @param[in]    func    function name in which allocation requested (if C99 supported)
  *  @param[in]    line    linu number on which allocation requested
@@ -536,16 +536,16 @@ static struct descriptor *descalloc(void *p, size_t n, const char *file, int lin
  *  mem_alloc() first tries to find a memory block whose size is greater than @p n in the free list
  *  maintained by both the hash table @c htab and @c freelist. If there is no one, it allocates a
  *  new block by invoking malloc() and pushes it to the free list to make it a sure find, and then
- *  give it a shot again.
+ *  gives it a shot again.
  *
  *  One of most important things in this debugging version is that mem_alloc() must not return an
- *  address that has been returned by a previous call. To do this, mem_alloc() looks for a memory
- *  block whose size is *greater* than @p n, therefore even if there is one of the exactly same size
- *  as @p n, it is left unused. This is enough to guarantee at least one byte whose address has been
- *  returned is never done again. Besides, if the found block is large enough to satisfy the
- *  specified size @p n, it is split and the *bottom* part is returned as the result preserving the
- *  top address (which has been returned before) in the list. When such split occurs, a new
- *  descriptor given by descalloc() is assigned to that new block.
+ *  address that has been returned by a previous call. To achieve this, mem_alloc() looks for a
+ *  memory block whose size is *greater* than @p n, therefore even if there is one of the exactly
+ *  same size as @p n, it is left unused; it is enough to guarantee at least one byte whose address
+ *  has been returned before not to be returned again. Besides, if the found block is large enough
+ *  to satisfy the specified size @p n, it is split and the *bottom* part is returned as the result
+ *  preserving the top address (which has been returned before) in the list. When such split
+ *  occurs, a new descriptor given by descalloc() is assigned to that new block.
  *
  *  Differently from the original code, this implementation checks with union @c align if the
  *  storage allocated by malloc() is properly aligned and makes assert() fail if not. This signals

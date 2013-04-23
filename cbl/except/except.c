@@ -21,7 +21,7 @@ except_frame_t *except_stack = NULL;
  *
  *  @c EXCEPT_RAISE and @c EXCEPT_RERAISE macros call except_raise() with @c __FILE__ and
  *  @c __LINE__ predefined macros (and @c __func__ if C99 supported) for the @p file and @p line
- *  parameters. So in general there is little chance to call except_raise() directly in application
+ *  parameters. In general there is little chance to call except_raise() directly from application
  *  code.
  *
  *  Possible exceptions: assert_exceptfail

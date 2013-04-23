@@ -11,11 +11,11 @@
 #include "list.h"
 
 
-/*! @brief    pushes a new node to a given list.
+/*! @brief    pushes a new node to a list.
  *
- *  list_push() pushes a pointer value @p data to a given list @p list with creating a new node.
- *  The null pointer given for @p list is considered to indicate an empty list, thus not treated as
- *  an error.
+ *  list_push() pushes a pointer value @p data to a list @p list with creating a new node. A null
+ *  pointer given for @p list is considered to indicate an empty list, thus not treated as an
+ *  error.
  *
  *  Possible exceptions: mem_exceptfail
  *
@@ -41,10 +41,10 @@ list_t *(list_push)(list_t *list, void *data)
 }
 
 
-/*! @brief    constructs a new list using a given sequence of data.
+/*! @brief    constructs a new list using a sequence of data.
  *
  *  list_list() constructs a list whose nodes contain a sequence of data given as arguments; the
- *  first argument is stored in the head (first) node, the second argument in the second node, and
+ *  first argument is stored in the head (first) node, the second argument in the second node and
  *  so on. There should be a way to mark the end of the argument list, which a null pointer is for.
  *  Any argument following a null pointer argument is not invalid, but ignored.
  *
@@ -131,8 +131,8 @@ list_t *(list_list)(void *data, ...)
  *  @todo    Improvements are possible and planned:
  *           - the time complexity of the current implementation is O(N) where N indicates the
  *             number of nodes in a list. With a circular list, where the next node of the last
- *             node set to the head node, it is possible for both pushing and appending to be done
- *             in a constant time.
+ *             node set to the head, it is possible for both pushing and appending to be done in a
+ *             constant time.
  */
 list_t *(list_append)(list_t *list, list_t *tail)
 {
@@ -223,12 +223,12 @@ list_t *(list_copy)(const list_t *list)
 #endif    /* disabled */
 
 
-/*! @brief    pops a node from a list and save its data (pointer) into a given pointer object.
+/*! @brief    pops a node from a list and save its data (pointer) into a pointer object.
  *
  *  list_pop() copies a pointer value stored in the head node of @p list to a pointer object
- *  pointed to by @p pdata and pops the node. If the given list is empty list_pop() does nothing
- *  and just returns @p list. If @p pdata is a null pointer list_pop() just pops without saving
- *  any data.
+ *  pointed to by @p pdata and pops the node. If the list is empty, list_pop() does nothing and
+ *  just returns @p list. If @p pdata is a null pointer list_pop() just pops without saving any
+ *  data.
  *
  *  Possible exceptions: none
  *
@@ -258,8 +258,7 @@ list_t *(list_pop)(list_t *list, void **pdata)
 
 /*! @brief    reverses a list.
  *
- *  list_reverse() reverses a given list, which eventually makes its first node the last and vice
- *  versa.
+ *  list_reverse() reverses a list, which eventually makes its first node the last and vice versa.
  *
  *  Possible exceptions: none
  *
@@ -342,9 +341,9 @@ size_t (list_length)(const list_t *list)
 
 /*! @brief    destroys a list.
  *
- *  list_free() destroys a list by deallocating storages for each node. After the call the list is
+ *  list_free() destroys a list by deallocating storages for each node. After the call, the list is
  *  empty, which means that it makes a null pointer. If @p plist points to a null pointer,
- *  list_free() does nothing since it means an empty list.
+ *  list_free() does nothing since it is already empty.
  *
  *  Possible exceptions: none
  *
@@ -387,9 +386,9 @@ void (list_free)(list_t **plist)
  *  @warning    Be wraned that modification to a list like pushing and popping a node before
  *              finishing list_map() must be done very carefully and highly discouraged. For
  *              example, in a callback function popping a node from the same list list_map() is
- *              applying to may spoil subsequent tasks depending on which node list_map() is dealing
- *              with. It is possible to provide a safer version, but not because such an operation
- *              is not regarded as appropriate to the list.
+ *              applying to may spoil subsequent tasks depending on which node list_map() is
+ *              dealing with. It is possible to provide a safer version, but not done because such
+ *              an operation is not regarded as appropriate to the list.
  *
  *  @param[in,out]    list     list with which @p apply called
  *  @param[in]        apply    user-provided function (callback)
@@ -408,9 +407,9 @@ void (list_map)(list_t *list, void apply(void **, void *), void *cl)
 
 /*! @brief    converts a list to an array.
  *
- *  list_toarray() converts a given list to an array whose elements correspond to the data stored
- *  in nodes of the list. This is useful when, say, sorting a list. A function like array_tolist()
- *  is not necessary because it is easy to construct a list scanning elements of an array, for
+ *  list_toarray() converts a list to an array whose elements correspond to the data stored in
+ *  nodes of the list. This is useful when, say, sorting a list. A function like array_tolist() is
+ *  not necessary because it is easy to construct a list scanning elements of an array, for
  *  example:
  *
  *  @code
@@ -418,8 +417,8 @@ void (list_map)(list_t *list, void apply(void **, void *), void *cl)
  *          list = list_push(list, array[i]);
  *  @endcode
  *
- *  The last element of the constructed array is assigned by @p end, which is a null pointer in most
- *  cases. Do not forget to deallocate the array when it is unnecessary.
+ *  The last element of the constructed array is assigned by @p end, which is a null pointer in
+ *  most cases. Do not forget to deallocate the array when it is unnecessary.
  *
  *  Possible exceptions: mem_exceptfail
  *

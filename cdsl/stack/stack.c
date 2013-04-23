@@ -47,7 +47,7 @@ stack_t *(stack_new)(void)
 
 /*! @brief    inspects if a stack is empty.
  *
- *  stack_empty() inspects if a given stack is empty.
+ *  stack_empty() inspects if a stack is empty.
  *
  *  Possible exceptions: assert_exceptfail
  *
@@ -95,8 +95,8 @@ void (stack_push)(stack_t *stk, void *data)
 
 /*! @brief    pops data from a stack.
  *
- *  stack_pop() pops data from a given stack. If the stack is empty, an exception is raised due to
- *  the assertion failure, so popping all data without knowing the number of nodes remained in the
+ *  stack_pop() pops data from a stack. If the stack is empty, an exception is raised due to the
+ *  assertion failure, so popping all data without knowing the number of nodes remained in the
  *  stack needs to use stack_empty() to decide when to stop.
  *
  *  Possible exceptions: assert_exceptfail
@@ -150,9 +150,9 @@ void *(stack_peek)(const stack_t *stk)
 
 /*! @brief    destroys a stack.
  *
- *  stack_free() deallocates all storages for a stack and set the pointer passed through @p stk to a
- *  null pointer. Note that stack_free() does not deallocate any storage for the data in the stack
- *  to destroy, which must be done by a user.
+ *  stack_free() deallocates all storages for a stack and set the pointer passed through @p stk to
+ *  a null pointer. Note that stack_free() does not deallocate any storage for the data in the
+ *  stack to destroy, which must be done by a user.
  *
  *  Possible exceptions: assert_exceptfail
  *

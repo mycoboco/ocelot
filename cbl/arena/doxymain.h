@@ -7,7 +7,7 @@
  *  @mainpage    C Basic Library: Arena Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -73,8 +73,8 @@
  *      ARENA_FREE(myarena);
  *  @endcode
  *
- *  On the other hand, if the allocator the Arena Library offers is used, only one call to
- *  ARENA_FREE() frees all storages associated with an arena, @c myarena.
+ *  On the other hand, if the allocator that the Arena Library offers is used, only one call to
+ *  ARENA_FREE() frees all storages associated with the arena, @c myarena.
  *
  *  Applying to the problem mentioned to introduce a lifetime-based allocator, all storages for data
  *  structures used while a script is processed can be associated with an arena and get freed
@@ -82,9 +82,9 @@
  *
  *  As <stdlib.h> provides malloc() and calloc(), this library does ARENA_ALLOC() and ARENA_CALLOC()
  *  taking similar arguments. ARENA_FREE() does what free() does (actually, it does more as
- *  explained above). ARENA_NEW() creates an arena with which allocated storages are associated, and
- *  ARENA_DISPOSE() destroys an arena, which means that an arena may be reused repeatedly even after
- *  all storages with it have been freed by ARENA_FREE().
+ *  explained above). ARENA_NEW() creates an arena with which allocated storages will be
+ *  associated, and ARENA_DISPOSE() destroys an arena, which means that an arena itself may be
+ *  reused repeatedly even after all storages with it have been freed by ARENA_FREE().
  *
  *  @subsection subsec_caveats Some Caveats
  *
@@ -95,9 +95,9 @@
  *  compiler option like -D, if available).
  *
  *  Note that the Arena Library does not rely on the Memory Management Library. This means it
- *  constitutes a completely different allocator from the latter. Thus, the debugging version of the
- *  Memory Management Library cannot detect problems occurred in the storages maintained by the
- *  Arena Library.
+ *  constitutes a completely different allocator. Thus, the debugging version of the Memory
+ *  Management Library cannot detect problems occurred in the storages maintained by the Arena
+ *  Library.
  *
  *
  *  @section sec_boilerplate Boilerplate Code
@@ -109,10 +109,10 @@
  *  @endcode
  *
  *  As in the Memory Management Library, you don't need to check the return value of ARENA_NEW();
- *  an exception named @c arena_exceptfailNew is raised if the creation fails (see the Exception
- *  Handling Library for how to handle exceptions). Creating an arena is different from allocating
- *  necessary storages. With an arena, you can freely allocate storages that belong to it with
- *  ARENA_ALLOC() or ARENA_CALLOC() as in:
+ *  an exception named @c arena_exceptfailNew will be raised if the creation fails (see the
+ *  Exception Handling Library for how to handle exceptions). Creating an arena is different from
+ *  allocating a necessary storage. With an arena, you can freely allocate storages that belong to
+ *  it with ARENA_ALLOC() or ARENA_CALLOC() as in:
  *
  *  @code
  *      sometype_t *p = ARENA_ALLOC(myarena, sizeof(*p));
@@ -120,7 +120,7 @@
  *  @endcode
  *
  *  Again, you don't have to check the return value of these invocations. If no storage is able to
- *  be allocated, an exception, @c arena_exceptfailAlloc is raised. Due to problems in
+ *  be allocated, an exception, @c arena_exceptfailAlloc will be raised. Due to problems in
  *  implementation, adjusting the size of the allocated storage is not supported; there is no
  *  ARENA_REALLOC() or ARENA_RESIZE() that corresponds to realloc().
  *
@@ -135,9 +135,9 @@
  *  ARENA_FREE() deallocates any storage belonging to an arena, while ARENA_DISPOSE() does the same
  *  job and also destroy the arena to make it no more usable.
  *
- *  If you will use a tool like Valgrind to detect memory problems, see arena_dispose();
- *  ARENA_DISPOSE() is a simple macro wrapper for arena_dispose() to keep the interface to the
- *  library consistent.
+ *  If you have a plan to use a tool like Valgrind to detect memory-related problems, see
+ *  arena_dispose(); ARENA_DISPOSE() is a simple macro wrapper for arena_dispose() to keep the
+ *  interface consistent.
  *
  *
  *  @section sec_future Future Directions
@@ -145,21 +145,21 @@
  *  @subsection subsec_minor Minor Changes
  *
  *  To mimic the behavior of calloc() specified by the standard, it is required for ARENA_CALLOC()
- *  to successfully return a null pointer when it cannot allocate the storage of the requested size.
+ *  to successfully return a null pointer when it cannot allocate storage of the requested size.
  *  Since this does not allow overflow, it has to carefully check overflow when calculating the
  *  total size.
  *
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the latest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the latest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -180,7 +180,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is a lifetime-based memory allocator implementation by Jun Woong. The
  *  implementation was written so as to conform with the Standard C published by ISO 9899:1990 and

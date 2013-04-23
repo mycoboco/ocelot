@@ -36,14 +36,14 @@ typedef unsigned long uintptr_t;
 /* @struct    arena_t    arena.c
  * @brief    implements an arena.
  *
- * An arena is consisted of a list of memory chunks. Each chuck has struct @c arena_t in its start
- * and a memory area that can be or is used by an application follows it.
+ * An arena is consisted of a list of memory chunks. Each chuck has struct @c arena_t at its start
+ * address, and a memory area that can be or is used by an application follows it.
  *
  * All three pointer members point to somewhere in the previous memory chunk. For example, suppose
- * that there is only one memory chunks allocated so far. The head node that is remembered by an
- * application and passed to, say, arena_free() has three pointers, each of which points to
- * somewhere in that single allocated chunk. And its @c arena_t parts are all set to a null pointer.
- * The following depicts this situation:
+ * that there is only one memory chunks allocated so far. The head node (the node pointed to by
+ * @c arena below) that is remembered by an application and passed to, say, arena_free() has three
+ * pointers, each of which points to somewhere in that single allocated chunk. And its @c arena_t
+ * parts are all set to a null pointer. The following depicts this situation:
  *
  * @code
  *     +---+ <----\       +---+ <------ arena
@@ -59,7 +59,7 @@ typedef unsigned long uintptr_t;
  *     +---+ <---/
  * @endcode
  *
- * After one more chunk has been allocates, @c arena above points to it, and the @c arena_t parts
+ * After one more chunk has been allocated, @c arena above points to it, and the @c arena_t parts
  * of the new chunk point to the previous chunk marked @c A as shown below:
  *
  * @code
@@ -118,11 +118,12 @@ union align {
  *
  * As shown in the explanation of @c arena_t, the memory area that is to be used by an application
  * is attached after the arena_t part of a memory chunk. Because its starting address should be
- * properly aligned as returned by malloc(), it might be necessary to put some padding between the
- * @c arena_t part and the user memory area. union @c header do this job using union @c align. It
- * ensures that there is enough space for @c arena_t and the starting address of the following user
- * area is properly aligned; there should be some padding after the member @c a if necessary in
- * order to make the second element properly aligned in an array of the union @c header type.
+ * properly aligned as those returned by malloc(), it might be necessary to put some padding
+ * between the @c arena_t part and the user memory area. union @c header do this job using union
+ * @c align. It ensures that there is enough space for @c arena_t and the starting address of the
+ * following user area is properly aligned; there should be some padding after the member @c a if
+ * necessary in order to make the second element properly aligned in an array of the union @c
+ * header type.
  */
 union header {
     arena_t b;
@@ -142,22 +143,22 @@ const except_t arena_exceptfailAlloc = { "Arena allocation failed" };
 /* @brief    threads memory chunks that have been deallocated.
  *
  * @c freelist is a list of free memory chunks; to be precise, it points to the first chunk in the
- * free list. When arena_free() called, before it really releases the storage with free(), it set
+ * free list. When arena_free() called, before it really releases the storage with free(), it sets
  * aside that chunk into @c freelist. That reduces necessity of calling malloc(). On the other hand,
  * if @c freelist maintains too many instances of free chunks, invocations for allocation using
  * other memory allocator (for example, mem_alloc()) would too often fail. That is why arena_free()
  * keeps no more than @c FREE_THRESHOLD chunks in @c freelist.
  *
  * Differently from those memory chunks described by @c arena_t, chunks in the free list have their
- * @c limit member point to their own limit (actually no other choices); see @c arena_t for
+ * @c limit member point to their own limits (actually no other choices); see @c arena_t for
  * comparison.
  */
 static arena_t *freelist;
 
 /* @brief    number of free chunks left in @c freelist.
  *
- * @c freenum is incresed when a memory chunk is pushed to @c freelist in arena_free() and decresed
- * when it is pushed back to the @c arena_t list in arena_alloc().
+ * @c freenum is incresed when a memory chunk is pushed to @c freelist by arena_free() and decresed
+ * when it is pushed back to the @c arena_t list by arena_alloc().
  */
 static int freenum;
 
@@ -176,8 +177,9 @@ static int freenum;
  *
  *  mlim_add() is invoked after initialization of fields for a new arena. This is a (probably
  *  meaningless) try to retain consistency of an internal data structure. As warned in the
- *  Exception Handling Library, however, a caller of arena_new() loses control over the new arena if
- *  an exception raised by mlim_add(), which is why mlim_add is called with the last argument 1.
+ *  Exception Handling Library, however, a caller of arena_new() will lose control over the new
+ *  arena if an exception raised by mlim_add(), which is why mlim_add is called with the last
+ *  argument 1.
  */
 arena_t *(arena_new)(void)
 {
@@ -233,7 +235,7 @@ void (arena_dispose)(arena_t **parena)
  *  Unchecked errors: foreign data structure given for @p arena
  *
  *  @param[in,out]    arena    arena for which storage to be allocated
- *  @param[in]        n        size of storage requested
+ *  @param[in]        n        size of storage requested in bytes
  *  @param[in]        file     file name in which storage requested
  *  @param[in]        func     function name in which storage requested (if C99 supported)
  *  @param[in]        line     line number on which storage requested
@@ -335,7 +337,7 @@ void *(arena_alloc)(arena_t *arena, size_t n, const char *file, int line)
  *  @todo    Some improvements are possible and planned:
  *           - the C standard requires calloc() return a null pointer if it cannot allocates storage
  *             of the size @p c * @p n in bytes, which allows no overflow in computing the
- *             multiplication. So overflow checking is necessary to mimic the behavior of calloc().
+ *             multiplication. Overflow checking is necessary to mimic the behavior of calloc().
  */
 #if __STDC_VERSION__ >= 199901L    /* C99 version */
 void *(arena_calloc)(arena_t *arena, size_t c, size_t n, const char *file, const char *func,

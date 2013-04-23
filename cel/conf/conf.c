@@ -52,7 +52,7 @@ static table_t *section;
  */
 static table_t *current;
 
-/* @brief    indicates that a set of supported sections and varialbes are prescribed.
+/* @brief    indicates that a set of supported sections and variables are prescribed.
  *
  * If @c preset is set, conf_init() accepts only what is prescribed via conf_preset() when reading
  * configuration data from a file; unknown sections and variables result in setting an error code
@@ -74,8 +74,8 @@ static int errcode;
 /* @brief    controls some aspects of the library.
  *
  * Through @c control that is set when conf_preset() or conf_init() invoked, a user can control how
- * the library recognizes section or variable names and values. See conf_preset() or conf_init() for
- * details.
+ * the library recognizes section or variable names and values. See conf_preset() or conf_init()
+ * for details.
  */
 static int control;
 
@@ -141,9 +141,9 @@ static char *trimt(char *s)
 
 /* @brief    finds a section or variable name from a string.
  *
- * A string given, sepunit() trims it properly and finds a sub-string that can be a valid section or
- * variable name. If any interleaving space occurs or any invalid character follows, sepunit() sets
- * @c errcode properly and returns its value. If nothing wrong, @p pp is set to points to the
+ * A string given, sepunit() trims it properly and finds a sub-string that can be a valid section
+ * or variable name. If any interleaving space occurs or any invalid character follows, sepunit()
+ * sets @c errcode properly and returns its value. If nothing wrong, @p pp is set to points to the
  * recognized section or variable name. sepunit() clears and sets @c errcode.
  *
  * @warning    sepunit() may change what @p points to, thus the string has to be modifiable.
@@ -395,10 +395,10 @@ int (conf_preset)(const conf_t *tab, int ctrl)
 
 /* @brief    returns a character for a escape sequence character.
  *
- * escseq() returns a character for an escape sequence. Giving the character following the backslash
- * character in an escape sequence, a caller of escseq() can gain the character that the escape
- * sequence refers to. If @c c has a character that is invalid for an escape sequence, escseq() just
- * returns the character unchanged.
+ * escseq() returns a character for an escape sequence. Giving the character following the
+ * backslash character in an escape sequence, a caller of escseq() can gain the character that the
+ * escape sequence refers to. If @c c has a character that is invalid for an escape sequence,
+ * escseq() just returns the character unchanged.
  *
  * escseq() is called only by conf_init() and constitutes a separate function just to make the
  * length of conf_init() shorter for code readability.
@@ -886,7 +886,8 @@ const void *(conf_get)(const char *var)
  *  variable is stored in a string form, and conf_getbool() converts it to a boolean value; the
  *  result is 1 (indicating true) if the string starts with 't', 'T', 'y', 'Y' or '1' ignoring any
  *  leading spaces and 0 (indicating false) otherwise. If there is no variable with the given name
- *  or the preset type of the variable is not @c CONF_TYPE_BOOL, the value of @p errval is returned.
+ *  or the preset type of the variable is not @c CONF_TYPE_BOOL, the value of @p errval is
+ *  returned.
  *
  *  For how to refer to variables in a program, see conf_get().
  *
@@ -1023,9 +1024,9 @@ double (conf_getreal)(const char *var, double errval)
 /*! @brief    retrieves a string with a section/variable name.
  *
  *  conf_getstr() retrieves a string with a section/variable name. Every value for a variable is
- *  stored in a string form, thus conf_getstr() performs no conversion. If there is no variable with
- *  the given name or the preset type of the variable is not @c CONF_TYPE_STR, a null pointer is
- *  returned.
+ *  stored in a string form, thus conf_getstr() performs no conversion. If there is no variable
+ *  with the given name or the preset type of the variable is not @c CONF_TYPE_STR, a null pointer
+ *  is returned.
  *
  *  For how to refer to variables in a program, see conf_get().
  *
@@ -1157,8 +1158,8 @@ int (conf_set)(const char *secvar, const char *value)
 
 /*! @brief    sets the current section.
  *
- *  conf_section() sets the current section to a given section. The global section can be set as the
- *  current section by giving an empty string "" to conf_section(). conf_section() affects how
+ *  conf_section() sets the current section to a given section. The global section can be set as
+ *  the current section by giving an empty string "" to conf_section(). conf_section() affects how
  *  conf_get(), conf_getbool(), conf_getint(), confgetuint(), confgetreal(), confgetstr() and
  *  conf_set() work.
  *
@@ -1260,9 +1261,9 @@ void (conf_free)(void)
 
 /*! @brief    resets the hash table using hash_reset().
  *
- *  conf_hashreset() simply calls hash_reset() to reset the hash table. As explained in conf_free(),
- *  conf_free() does not invoke hash_reset() because the single hash table may be used by other
- *  parts of a user program. Since requiring a reference to hash_reset() when using the
+ *  conf_hashreset() simply calls hash_reset() to reset the hash table. As explained in
+ *  conf_free(), conf_free() does not invoke hash_reset() because the single hash table may be used
+ *  by other parts of a user program. Since requiring a reference to hash_reset() when using the
  *  Configuration File Library is inconsistent and inconvenient (e.g., a user code is obliged to
  *  include "hash.h"), conf_hashreset() is provided as a wrapper for hash_reset().
  *

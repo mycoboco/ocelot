@@ -25,17 +25,17 @@
  *
  *  where whitespaces are allowed before and/or after a section and variable name. The first form
  *  refers to a variable in the global section; there is no concept of the "current" section yet
- *  because conf_section() cannot be invoked before conf_preset() or conf_init(). To mark the end of
- *  a table, set the @c var member to a null pointer.
+ *  because conf_section() cannot be invoked before conf_preset() or conf_init(). To mark the end
+ *  of a table, set the @c var member to a null pointer.
  *
  *  The @c type member specifies the type of a variable and should be one of @c CONF_TYPE_BOOL
  *  (boolean value, int), @c CONF_TYPE_INT (signed integer, long), @c CONF_TYPE_UINT (unsigned
  *  integer, unsigned long), @c CONF_TYPE_REAL (floating-point number, double), and
  *  @c CONF_TYPE_STR (string, char *). Once a variable is set to have a type, there is no way to
- *  change its type; thus, if a variable is supposed to have various types depending on the context,
- *  set to @c CONF_TYPE_STR and use conf_conv(). For @c OPT_TYPE_INT and @c OPT_TYPE_UINT, the
- *  conversion of a given value recognizes the C-style prefixes; numbers starting with 0 are treated
- *  as octal, and those with 0x or 0X are treated as hexadecimal.
+ *  change its type; thus, if a variable is supposed to have various types depending on the
+ *  context, set to @c CONF_TYPE_STR and use conf_conv(). For @c OPT_TYPE_INT and @c OPT_TYPE_UINT,
+ *  the conversion of a given value recognizes the C-style prefixes; numbers starting with 0 are
+ *  treated as octal, and those with 0x or 0X are treated as hexadecimal.
  *
  *  The @c defval member specifies a default value for a variable that is used when a configuration
  *  file dose not set that variable to a value. It cannot be a null pointer but an empty string.

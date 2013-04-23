@@ -10,9 +10,9 @@
 /*! @struct    opt_t    opt.h
  *  @brief    represents an element of an option description table.
  *
- *  @c opt_t represents an element of an option description table that is used for a user program to
- *  specify options and their properties. A option description table is an array of @c opt_t, each
- *  element of which is consisted of four members, two of which have overloaded meanings:
+ *  @c opt_t represents an element of an option description table that is used for a user program
+ *  to specify options and their properties. A option description table is an array of @c opt_t,
+ *  each element of which is consisted of four members, two of which have overloaded meanings:
  *  - @c lopt: long-named option that can be invoked by two precedeeing hypens; optional if a
  *             short-named option given; however, encouraged to always provide a long-named option
  *  - @c sopt: short-named option that can be invoked by a precedeeing hypens; optional if both a
@@ -23,10 +23,10 @@
  *             whether the option-argument is mandatory (with @c OPT_ARG_REQ) or optional (with
  *             @c OPT_ARG_OPT)
  *  - @c arg: if an option does not take an additional argument, @c arg has the value to be stored
- *            into a flag variable when @c lopt or @c sopt option encountered; if an option can take
- *            an additional argument, @c arg specifies the type of the option-argument using
- *            @c OPT_TYPE_BOOL (option-arguments starting with 't', 'T', 'y', 'Y' and '1' means true
- *            and others false, int), @c OPT_TYPE_INT (signed integer, long), @c OPT_TYPE_UINT
+ *            into a flag variable when @c lopt or @c sopt option encountered; if an option can
+ *            take an additional argument, @c arg specifies the type of the option-argument using
+ *            @c OPT_TYPE_BOOL (option-arguments starting with 't', 'T', 'y', 'Y' and '1' means
+ *            true and others false, int), @c OPT_TYPE_INT (signed integer, long), @c OPT_TYPE_UINT
  *            (unsigned integer, unsigned long), @c OPT_TYPE_REAL (floating-point number, double)
  *            and @c OPT_TYPE_STR (string, char *)
  *
@@ -49,8 +49,8 @@
  *  @endcode
  *
  *  This example says that two options ("--verbose" or "-v" and "--brief" or "-b") are recognized
- *  and @c option_verbose is set to 1 when "--verbose" or "-v" given, and set to 0 when "--brief" or
- *  "-b" given.
+ *  and @c option_verbose is set to 1 when "--verbose" or "-v" given, and set to 0 when "--brief"
+ *  or "-b" given.
  *
  *  @code
  *      opt_t options[] = {
@@ -61,10 +61,10 @@
  *      };
  *  @endcode
  *
- *  This example shows options that do not take any additional arguments. Setting the @c flag member
- *  to a null pointer also says the option takes no argument in which case the value of the @c arg
- *  member ignored. Thus, the above example can be written as follows without any change on the
- *  behavior:
+ *  This example shows options that do not take any additional arguments. Setting the @c flag
+ *  member to a null pointer also says the option takes no argument in which case the value of the
+ *  @c arg member ignored. Thus, the above example can be written as follows without any change on
+ *  the behavior:
  *
  *  @code
  *      opt_t options[] = {
@@ -105,10 +105,10 @@
  *      };
  *  @endcode
  *
- *  This example shows options that take additional arguments. @c OPT_ARG_REQ for the @c flag member
- *  specifies that the option requires an option-argument and that the type of the argument is given
- *  in the @c arg member. For @c OPT_TYPE_INT, @c OPT_TYPE_UINT and @c OPT_TYPE_REAL, strtol(),
- *  strtoul() and strtod() are respectively used to convert option-arguments.
+ *  This example shows options that take additional arguments. @c OPT_ARG_REQ for the @c flag
+ *  member specifies that the option requires an option-argument and that the type of the argument
+ *  is given in the @c arg member. For @c OPT_TYPE_INT, @c OPT_TYPE_UINT and @c OPT_TYPE_REAL,
+ *  strtol(), strtoul() and strtod() are respectively used to convert option-arguments.
  *
  *  @code
  *      opt_t options[] = {
@@ -134,8 +134,8 @@
  *  @endcode
  *
  *  Setting the first long-named option to "+" or setting the environment variable named
- *  @c POSIXLY_CORRECT says option processing performed by opt_parse() immediately stops whenever an
- *  operand encountered (which POSIX requires).
+ *  @c POSIXLY_CORRECT says option processing performed by opt_parse() immediately stops whenever
+ *  an operand encountered (which POSIX requires).
  *
  *  @code
  *      opt_t options[] = {
@@ -146,8 +146,8 @@
  *  @endcode
  *
  *  In addition, setting the first long-named option to "-" makes opt_parse() returns the character
- *  valued 1 when encounters an operand as if the operand is an option-argument for the option whose
- *  short name has the value 1.
+ *  valued 1 when encounters an operand as if the operand is an option-argument for the option
+ *  whose short name has the value 1.
  */
 typedef struct opt_t {
     char *lopt;    /*!< long-named option (optional for some cases) */

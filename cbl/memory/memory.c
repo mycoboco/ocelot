@@ -20,8 +20,8 @@ const except_t mem_exceptfail = { "Allocation failed" };
  *
  *  mem_alloc() does the same job as malloc() except:
  *  - mem_alloc() raises an exception when fails the requested allocation;
- *  - mem_alloc() does not take 0 as the byte length to preclude the possibility of returning a null
- *    pointer;
+ *  - mem_alloc() does not take 0 as the byte length to preclude the possibility of returning a
+ *    null pointer;
  *  - mem_alloc() never returns a null pointer.
  *
  *  Possible exceptions: mem_exceptfail, assert_exceptfail
@@ -42,7 +42,7 @@ const except_t mem_exceptfail = { "Allocation failed" };
  *
  *  In the original implementation, all memory allocation functions take a signed integer as the
  *  size for the requested storage in order to prevent a negative value passed mistakenly from
- *  resulting in plausible allocation, but that practice dropped here.
+ *  resulting in plausible allocation, but that practice has been dropped here.
  */
 #if __STDC_VERSION__ >= 199901L    /* C99 version */
 void *(mem_alloc)(size_t n, const char *file, const char *func, int line)
@@ -169,7 +169,7 @@ void (mem_free)(void *p, const char *file, int line)
  *  Unchecked errors: foreign value given for @p p
  *
  *  @param[in]    p       pointer to storage whose size to be adjusted
- *  @param[in]    n       new size for storage
+ *  @param[in]    n       new size for storage in bytes
  *  @param[in]    file    file name in which adjustment requested
  *  @param[in]    func    function name in which adjustment requested (if C99 supported)
  *  @param[in]    line    line number on which adjustment requested

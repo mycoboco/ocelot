@@ -86,8 +86,8 @@ static const char *nopt;
 
 /* @brief    indicates that all remaining arguments are recognized as operands.
  *
- * Encountering an operand in the POSIX-compliant mode or "--" (when @c oprdflag is to be set) makes
- * all remaining arguments recognized as operands.
+ * Encountering an operand in the POSIX-compliant mode or "--" (when @c oprdflag is to be set)
+ * makes all remaining arguments recognized as operands.
  */
 static int oprdflag;
 
@@ -102,12 +102,13 @@ static int oargc;
  * short-named option if it starts with a single hyphen and a non-hyphen character follows (when
  * @c SHORTOPT returned), as a long-named option if it starts with double hyphens and a character
  * follows (when @c LONGOPT returned), as a special mark to indicate all following arguments should
- * be recognized as operands (when @c DMINUS returned), or as an operand (when @c OPERAND returned).
+ * be recognized as operands (when @c DMINUS returned), or as an operand (when @c OPERAND
+ * returned).
  *
  * An option of the form "--" where no character immediately follows makes argcheck() always return
- * @c OPERAND for any remaining arguments; this enables a user to access a file with a name starting
- * with a hyphen character especially when argument permutation performed; see @c opt_t for argument
- * permutation.
+ * @c OPERAND for any remaining arguments; this enables a user to access a file with a name
+ * starting with a hyphen character especially when argument permutation performed; see @c opt_t
+ * for argument permutation.
  *
  * Besides, if the POSIX-compliant behavior is requested (when @c order is @c REQUIRE_ORDER),
  * encountering the first operand also makes argcheck() return @c OPERAND for all remaining
@@ -157,8 +158,8 @@ static int argcheck(const char *arg)
  * unsigned long *, const double * and const char *) before use. If the conversion fails, argconv()
  * returns a null pointer.
  *
- * @warning    A subsequent call to argconv() may overwrite the contents of the buffer pointed to by
- *             the resulting pointer unless type is @c OPT_TYPE_STR.
+ * @warning    A subsequent call to argconv() may overwrite the contents of the buffer pointed to
+ *             by the resulting pointer unless type is @c OPT_TYPE_STR.
  *
  * @param[in]    arg     option-argument to convert
  * @param[in]    type    type based on which conversion performed
@@ -255,9 +256,9 @@ static void chckvalid(const opt_t *o)
 /*! @brief    prepares to start parsing program arguments.
  *
  *  opt_init() prepares to start parsing program arguments. It takes everything necessary to parse
- *  arguments and sets the internal state properly that is referred to by opt_parse() later. It also
- *  constructs a more readable program name by omitting any path preceeding the pure name. To do
- *  this job, it takes a directory separator character through @p sep and a default program name
+ *  arguments and sets the internal state properly that is referred to by opt_parse() later. It
+ *  also constructs a more readable program name by omitting any path preceeding the pure name. To
+ *  do this job, it takes a directory separator character through @p sep and a default program name
  *  through @p name that is used when no name is available through @c argv. A typical use of
  *  opt_init() is given at the commented-out example code in the source file.
  *
@@ -265,10 +266,10 @@ static void chckvalid(const opt_t *o)
  *  null pointer; opt_init() may fail only when allocating small-sized storage fails, in which case
  *  further execution of the program is very likely to fail due to the same problem.
  *
- *  opt_init() can be called again for multiple scans of options, but only after opt_free() has been
- *  invoked. Note that, in such a case, only the internal state and flag variables given with an
- *  option description table are initialized. Other objects probably used for processing options in
- *  a user code retain their values, thus should be initialized explicitly by a user code. A
+ *  opt_init() can be called again for multiple scans of options, but only after opt_free() has
+ *  been invoked. Note that, in such a case, only the internal state and flag variables given with
+ *  an option description table are initialized. Other objects probably used for processing options
+ *  in a user code retain their values, thus should be initialized explicitly by a user code. A
  *  convenient way to handle that initialization is to introduce a structure grouping all such
  *  objects. For example:
  *
@@ -384,8 +385,8 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
  * Since it is possible to give a short-named option whose code value does not correspond to a
  * visible character (for which isprint() returns non-zero), errsopt() constructs a string to
  * represent the option in question properly. The returned string can be used in user code to make
- * a diagnostic message. A subsequent call to errsopt() may overwrite the contents of the buffer for
- * the string.
+ * a diagnostic message. A subsequent call to errsopt() may overwrite the contents of the buffer
+ * for the string.
  *
  * @param[in]    sopt    short-named option with which a string constructed
  *
@@ -406,8 +407,8 @@ static const char *errsopt(int sopt)
  * errlopt() constrcuts a string to represent a long-named option. errlopt() simply adds the "--"
  * prefix when an option in @p lopt is from the option description table. On the other hand, for
  * those from the program arguments errlopt() also drops characters beyond an equal sign if any.
- * If the resulting string is too long to contain in an internal buffer, its part is omitted with an
- * ellipsis.
+ * If the resulting string is too long to contain in an internal buffer, its part is omitted with
+ * an ellipsis.
  *
  * @param[in]    lopt    long-named option with which a string constructed
  *
@@ -448,9 +449,9 @@ static const char *errlopt(const char *lopt)
  *  - 1: (only when the first long-named option is "-") an operand is given; the pointer given to
  *       opt_init() through @c pa points to the operand
  *
- *  This means that a valid short-named option cannot have the value of '?', '-', '+', '*', -1 or 1;
- *  0 is allowed to say no short-named option given when a flag variable is provided; see @c opt_t
- *  for details. In addition, '=' cannot also be used.
+ *  This means that a valid short-named option cannot have the value of '?', '-', '+', '*', -1 or
+ *  1; 0 is allowed to say no short-named option given when a flag variable is provided; see
+ *  @c opt_t for details. In addition, '=' cannot also be used.
  *
  *  If an option takes an option-argument, the pointer whose address passed to opt_init() through
  *  @c pa is set to point to the argument. A subsequent call to opt_parse() may overwrite it unless
@@ -464,8 +465,8 @@ static const char *errlopt(const char *lopt)
  *
  *  opt_parse() changes neither the original contents of @c argv nor strings pointed to by the
  *  elements of @c argv, thus by granting copies of @c argc and @c argv to opt_init() as in the
- *  following example, a user code can access to program arguments unchanged if necessary even after
- *  options have been parsed by opt_parse().
+ *  following example, a user code can access to program arguments unchanged if necessary even
+ *  after options have been parsed by opt_parse().
  *
  *  @code
  *      int main(int argc, char *argv[])
@@ -660,9 +661,9 @@ int (opt_parse)(void)
  *
  *  opt_abort() aborts parsing options immediately handling the remaining arguments as operands.
  *  Having invoked opt_abort(), opt_parse() need not be called to access to operands; @c argc and
- *  @ argv are properly adjusted as if opt_parse() has returned -1 except that the remaining options
- *  (if any) are treated as operands. If opt_parse() invoked after aborting the parsing, opt_parse()
- *  does nothing and returns -1.
+ *  @ argv are properly adjusted as if opt_parse() has returned -1 except that the remaining
+ *  options (if any) are treated as operands. If opt_parse() invoked after aborting the parsing,
+ *  opt_parse() does nothing and returns -1.
  *
  *  @return    nothing
  */
@@ -691,9 +692,9 @@ void (opt_abort)(void)
 
 /*! @brief    returns a diagnostic format string for an error code.
  *
- *  Given an error code that is one of '?', '-', '+' and '*', opt_errmsg() returns a string that can
- *  be used as a format string for the printf() family. A typical way to handle exceptional cases
- *  opt_parse() may return is as follows:
+ *  Given an error code that is one of '?', '-', '+' and '*', opt_errmsg() returns a string that
+ *  can be used as a format string for the printf() family. A typical way to handle exceptional
+ *  cases opt_parse() may return is as follows:
  *
  *  @code
  *      switch(c) {
@@ -810,9 +811,9 @@ const char *opt_errmsg(int c)
  *  when scanning options multiple times.
  *
  *  @warning    opt_free(), if invoked, should be invoked after all arguments including operands
- *              have been processed. Since opt_init() makes copies of pointers in @c argv of main(),
- *              and opt_free() releases storages for them, any access to them gets invalidated by
- *              opt_free().
+ *              have been processed. Since opt_init() makes copies of pointers in @c argv of
+ *              main(), and opt_free() releases storages for them, any access to them gets
+ *              invalidated by opt_free().
  *
  *  Possible exceptions: none
  *

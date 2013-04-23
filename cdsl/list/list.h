@@ -77,7 +77,7 @@ list_t *list_reverse(list_t *);
  *  @endcode
  *
  *  The braces enclosing the call to @c MEM_FREE are optional in this case as you may omit them in
- *  the ordinary iterative statements. After the loop @c list is untouched and @c t becomes
+ *  ordinary iterative statements. After the loop, @c list is untouched and @c t becomes
  *  indeterminate (if the loop finishes without jumping out of it, it should be a null pointer).
  *  There are cases where LIST_FOREACH() is more convenient than list_map() but the latter is
  *  recommended.
@@ -87,7 +87,7 @@ list_t *list_reverse(list_t *);
  *              pushing a new node with @c t may invalidate the internal state of the list, popping
  *              a node with @c list may invalidate @c t thus subsequent tasks depending on which
  *              node @c t points to and so on. It is possible to provide a safer version of
- *              LIST_FOREACH() as done by Linux kernel's list implementation, but not by this
+ *              LIST_FOREACH() as done by Linux kernel's list implementation, but not done by this
  *              implementation for such an operation is not regarded as appropriate to the list.
  */
 #define LIST_FOREACH(pos, list) for ((pos) = (list); (pos); (pos)=(pos)->next)

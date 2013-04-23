@@ -7,7 +7,7 @@
  *  @mainpage    C Basic Library: Exception Handling Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -91,10 +91,10 @@
  *  @endcode
  *
  *  The statements following @c EXCEPT_FINALLY are executed regardless of occurrence of an
- *  exception, so if a kind of clean-up like closing open files or freeing allocated storages is
- *  necessary to be performed unconditionally, @c S1 is its right place. If the exception caught by
- *  a TRY-FINALLY statement needs to be also handled by a TRY-EXCEPT statement @c EXCEPT_RERAISE
- *  raises it again to give the previous handler (if any) a chance to handle it.
+ *  exception, so if a kind of clean-up like closing open files or freeing allocated storage is
+ *  necessary to be performed unconditionally, @c S1 is the right place to put. If the exception
+ *  caught by a TRY-FINALLY statement needs to be also handled by a TRY-EXCEPT statement
+ *  @c EXCEPT_RERAISE raises it again to give the previous handler (if any) a chance to handle it.
  *
  *  Note that each group of the statements, say, @c S, @c S1 and so on, constitutes an independent
  *  block; opening or closing braces are hidden in @c EXCEPT_TRY, @c EXCEPT_EXCEPT,
@@ -115,14 +115,14 @@
  *  @endcode
  *
  *  Looking into the implementation by combining those macros explains how it works. Finding when
- *  it is useful is up to its users.
+ *  it is useful is up to users.
  *
  *  @subsection subsec_caveats Some Caveats
  *
- *  Exception handling mechanism given here is implemented using a non-local jump provided by
- *  <setjmp.h>. Thus every restriction applied to <setjmp.h> also applies to this library. For
- *  example, there is no guarantee that an updated auto variable preserves its last stored value if
- *  the update done between setjmp() and longjmp(). For example,
+ *  The exception handling mechanism given here is implemented using a non-local jump provided by
+ *  <setjmp.h>. Every restriction applied to <setjmp.h> also applies to this library. For example,
+ *  there is no guarantee that an updated auto variable preserves its last stored value if the
+ *  update done between setjmp() and longjmp(). For example,
  *
  *  @code
  *      {
@@ -146,14 +146,14 @@
  *  function containing @c EXCEPT_TRY (which has setjmp() in it), and only when they are modified
  *  between setjmp() (@c EXCEPT_TRY) and corresponding longjmp() (except_raise()).
  *
- *  One more thing to remember is that the ordinary @c return statement does not work in the
- *  statements @c S above because it does not know anything about maintaining the exception stack.
- *  Inside @c S, the exception frame has already been pushed to the exception stack. Returning from
- *  it without adjusting the stack by popping the current frame spoils the exception handling
- *  mechanism, which results in undefined behavior. @c EXCEPT_RETURN is provided for this purpose.
- *  It does the same thing as the ordinary @c return statement except that it adjusts the exception
- *  stack properly. Also note that @c EXCEPT_RETURN is not necessary in a EXCEPT, ELSE or FINALLY
- *  clause since entering those cluases entails popping the current frame from the stack.
+ *  One more thing to remember is that the ordinary @c return does not work in the statements @c S
+ *  above because it knows nothing about maintaining the exception stack. Inside @c S, the
+ *  exception frame has already been pushed to the exception stack. Returning from it without
+ *  adjusting the stack by popping the current frame spoils the exception handling mechanism, which
+ *  results in undefined behavior. @c EXCEPT_RETURN is provided for this purpose. It does the same
+ *  thing as the ordinary @c return except that it adjusts the exception stack properly. Also note
+ *  that @c EXCEPT_RETURN is not necessary in a EXCEPT, ELSE or FINALLY clause since entering those
+ *  cluases entails popping the current frame from the stack.
  *
  *  In general, it is said that recovery from an erroneous situation gets easier if you have a way
  *  to handle it with an exception and its handler. In practice, with the implementation using a
@@ -237,14 +237,14 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the latest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the latest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -265,7 +265,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is an exception handling facility implementation by Jun Woong. The implementation
  *  was written so as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

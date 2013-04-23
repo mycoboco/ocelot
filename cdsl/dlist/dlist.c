@@ -15,8 +15,8 @@
 /* @struct    dlist_t    dlist.c
  * @brief    implements a doubly-linked list (a.k.a. a ring)
  *
- * Note that a negative position is allowed when adding a node to a list, the length of a list is
- * represented as @c long rather than @c size_t.
+ * Note that because a negative position is allowed when adding a node to a list, the length of a
+ * list is represented as @c long rather than @c size_t.
  */
 struct dlist_t {
     /* @struct    node    dlist.c
@@ -62,7 +62,7 @@ dlist_t *(dlist_new)(void)
  *
  *  dlist_list() constructs a doubly-linked list whose nodes contain a sequence of data given as
  *  arguments; the first argument is stored in the head (first) node, the second argument in the
- *  second node, and so on. There should be a way to mark the end of the argument list, which the
+ *  second node and so on. There should be a way to mark the end of the argument list, which a
  *  null pointer is for. Any argument following a null pointer argument is not invalid, but ignored.
  *
  *  Possible exceptions: mem_exceptfail
@@ -95,7 +95,7 @@ dlist_t *(dlist_list)(void *data, ...)
 /*! @brief    destroys a list.
  *
  *  dlist_free() destroys a list by deallocating storages for each node and for the list itself.
- *  After the call the list does not exist (do not confuse this with an empty list). If @p pdlist
+ *  After the call, the list does not exist (do not confuse this with an empty list). If @p pdlist
  *  points to a null pointer, an assertion in dlist_free() fails; it's a checked error.
  *
  *  Possible exceptions: assert_exceptfail
@@ -162,7 +162,8 @@ long (dlist_length)(const dlist_t *dlist)
  *
  *  The Doubly-Linked List Library remembers the last-accessed node in a list. If that node, or one
  *  of its immediately adjacent nodes is requested, dlist_get() returns the result without scanning
- *  the list from the head or the tail, which is dramatically faster.
+ *  the list from the head or the tail, which is dramatically faster than when not using the
+ *  remembered node.
  */
 void *(dlist_get)(dlist_t *dlist, long i)
 {
@@ -320,8 +321,8 @@ void *(dlist_addhead)(dlist_t *dlist, void *data)
 
 /*! @brief    adds a new node to a specified position in a list.
  *
- *  dlist_add() inserts a new node to a position specified by @p pos. The position is interpreted as
- *  follows: (5 nodes assumed)
+ *  dlist_add() inserts a new node to a position specified by @p pos. The position is interpreted
+ *  as follows: (5 nodes assumed to be in a list)
  *
  *  @code
  *       1   2    3    4    5    6    positive position values
@@ -331,10 +332,10 @@ void *(dlist_addhead)(dlist_t *dlist, void *data)
  *      -5   -4   -3   -2   -1   0    non-positive position values
  *  @endcode
  *
- *  Non-positive positions are useful when to locate without knowing the length of a list. If a list
- *  is empty both 0 and 1 are the valid values for a new node. Note that for positive @p pos
- *  @p pos - (dlist_length()+1) gives a non-negative value for the same position, and for negative
- *  @p pos @p pos + (dlist_length()+1) gives a positive value for the same position.
+ *  Non-positive positions are useful when to locate without knowing the length of a list. If a
+ *  list is empty both 0 and 1 are the valid values for a new node. Note that @p pos -
+ *  (dlist_length()+1) gives a non-negative value for a positive @p pos, and @p pos +
+ *  (dlist_length()+1) gives a positive value for a negative @p pos.
  *
  *  Possible exceptions: mem_exceptfail, assert_exceptfail
  *
@@ -552,7 +553,7 @@ void *(dlist_remhead)(dlist_t *dlist)
  *  The absolute value of the shift distance specified by @p n should be equal to or less than the
  *  length of a list. For exmple, dlist_shift(..., 7) or dlist_shift(..., -7) is not allowed when
  *  there are only 6 nodes in a list. In such a case, dlist_shift(..., 6) or dlist_shift(..., -6)
- *  does not have any effect as dlist_shift(..., 0) does not.
+ *  has no effect as dlist_shift(..., 0) has none.
  *
  *  Possible exceptions: assert_exceptfail
  *

@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: List Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -30,11 +30,11 @@
  *
  *  @section sec_usage How to Use The Library
  *
- *  The List Library is a typical implementation of a list in which nodes have one pointer to their
- *  next nodes; a list with two pointers to its next and previous nodes is implemented in the
- *  Doubly-Linked List Library. The storage used to maintain a list itself is managed by the
- *  library, but any storage allocated for data stored in nodes should be managed by a user program;
- *  the library provides functions to help it.
+ *  The List Library is a typical implementation of a list in which nodes have one pointer to
+ *  their next nodes; a list with two pointers to its next and previous nodes is implemented in
+ *  the Doubly-Linked List Library. The storage used to maintain a list itself is managed by the
+ *  library, but any storage allocated for data stored in nodes should be managed by a user
+ *  program; the library provides functions to help it.
  *
  *  Similarly for other data structure libraries, use of the List Library follows this sequence:
  *  create, use and destroy. Except for functions to inspect lists, all other functions do one of
@@ -45,7 +45,7 @@
  *  LIST_FOREACH(). These facilities help a user to convert a list to an array, call a user-defined
  *  function for each node in a list and traverse a list.
  *
- *  As always, if functions that should allocate storage to finish their job fail memory allocation,
+ *  As always, if functions that should allocate storage to finish their job fail the allocation,
  *  an exception @c mem_exceptfail is raised rather than returning an error indicator like a null
  *  pointer.
  *
@@ -69,28 +69,28 @@
  *  the given data. This includes list_list(), list_append(), list_push() and list_copy().
  *
  *  It is considered good to hide implementation details behind an abstract type with only
- *  interfaces exposed when designing and implementing a data structure. Exposing its implementation
- *  to users often brings nothing beneficial but unnecessary dependency on it. In this
- *  implementation, however, the author decided to expose its implementation since its merits trumph
- *  demerits; see the book for more discussion on this issue.
+ *  interfaces exposed when designing and implementing a data structure. Exposing its
+ *  implementation to users often brings nothing beneficial but unnecessary dependency on it. In
+ *  this implementation, however, the author decided to expose its implementation since its merits
+ *  trumph demerits; see the book for more discussion on this issue.
  *
  *
  *  @section sec_boilerplate Boilerplate Code
  *
  *  Using a list starts with creating it. If you need just an empty list, declaring a variable of
- *  the list_t * type and then making it a null pointer is enough to make one. list_list(),
- *  list_append(), list_push and list_copy() also create a list by providing a null-terminated
- *  sequence of data for each node, combining two lists, pushing a node with a given data to a list
- *  and duplicating a list. As noted, you can use a null pointer as arguments for those functions.
+ *  the list_t * type and making it a null pointer is enough. list_list(), list_append(), list_push
+ *  and list_copy() also create a list by providing a null-terminated sequence of data for each
+ *  node, combining two lists, pushing a node with a given data to a list and duplicating a list.
+ *  As noted, you can use a null pointer as arguments for those functions.
  *
  *  Once a list has been created, a new node can be pushed (list_push()) and inspected
  *  (list_pop()). list_pop() pops a node (that is, gets rid of a node with returning the data in
  *  it). If you need to handle a list as if it were an array, list_toarray() converts a list to a
  *  dynamically-allocated array. You can find the length of the resulting array by calling
  *  list_length() or specifying a value used as a terminator (a null pointer in most cases). A
- *  function, list_map() and a macro, LIST_FOREACH() also provide a way to access nodes in sequence.
- *  list_reverse() reverses a list, which is useful when it is necessary to repeatedly access a
- *  list in the reverse order.
+ *  function, list_map() and a macro, LIST_FOREACH() also provide a way to access nodes in
+ *  sequence. list_reverse() reverses a list, which is useful when it is necessary to repeatedly
+ *  access a list in the reverse order.
  *
  *  list_free() destroys a list that is no longer necessary, but note that any storage that is
  *  allocated by a user program does not get freed with it; list_free() only returns back the
@@ -100,8 +100,8 @@
  *  until @c EOF encountered. After read, it prints the characters twice by traversing the list and
  *  converting it to an array. Since the last input character resides in the head node, the list
  *  behaves like a stack, which is the reason list_push() and list_pop() are named so. The list is
- *  then reversed and again prints the stored characters by popping nodes; since it is reversed, the
- *  order in which character are printed out differs from the former two cases.
+ *  then reversed and again prints the stored characters by popping nodes; since it is reversed,
+ *  the order in which character are printed out differs from the former two cases.
  *
  *  @code
  *      int c;
@@ -171,14 +171,14 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the lastest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the lastest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -199,7 +199,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is a singly-linked list implementation by Jun Woong. The implementation was written
  *  so as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

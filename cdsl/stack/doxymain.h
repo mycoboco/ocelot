@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Stack Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -45,14 +45,14 @@
  *
  *  @section sec_boilerplate Boilerplate Code
  *
- *  Using a list starts with creating it. There is only one function provided to create a new stack,
- *  stack_new(). Calling it returns a new and empty stack.
+ *  Using a list starts with creating it. There is only one function provided to create a new
+ *  stack, stack_new(). Calling it returns a new and empty stack.
  *
- *  Once a stack has benn created, you can push data into or pop it from a stack using stack_push()
- *  and stack_pop(), respectively. stack_peek() also can be used to see what is stored at the top of
- *  a stack without popping it out. Because popping an empty stack triggers an exception
- *  @c assert_exceptfail, calling stack_empty() is recommended to inspect if a stack is empty before
- *  applying stack_pop() to it.
+ *  Once a stack has been created, you can push data into or pop it from a stack using stack_push()
+ *  and stack_pop(), respectively. stack_peek() also can be used to see what is stored at the top
+ *  of a stack without popping it out. Because popping an empty stack triggers an exception
+ *  @c assert_exceptfail, calling stack_empty() is recommended to inspect if a stack is empty
+ *  before applying stack_pop() to it.
  *
  *  stack_free() destroys a stack that is no longer necessary, but note that any storage that is
  *  allocated by a user program does not get freed with it; stack_free() only returns back the
@@ -99,14 +99,14 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the lastest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the lastest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -127,7 +127,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is a stack implementation by Jun Woong. The implementation was written so as to
  *  conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

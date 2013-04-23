@@ -83,10 +83,11 @@ void except_raise(const except_t *, const char *, int);
 /*! @brief    returns to the caller function within a TRY-EXCEPT statement.
  *
  *  In order to maintain the stack handling nested exceptions, the ordinary return statement should
- *  be avoided in statements (referred to as @c S below; see the explanation for @c EXCEPT_TRY)
- *  following @c EXCEPT_TRY. Because return has no idea about the exception frame, retruning
- *  without using @c EXCEPT_RETURN from @c S spoils the exception stack. @c EXCEPT_RETURN adjusts
- *  the stack properly by popping the current exception frame before returning to the caller.
+ *  be avoided in statements following @c EXCEPT_TRY (referred to as @c S below; see the
+ *  explanation for @c EXCEPT_TRY). Because @c return has no idea about the exception frame,
+ *  retruning without using @c EXCEPT_RETURN from @c S spoils the exception stack. @c EXCEPT_RETURN
+ *  adjusts the stack properly by popping the current exception frame before returning to the
+ *  caller.
  *
  *  @warning    Note that the current exception frame is popped when an exception occurs during
  *              execution of @c S and before the control moves to one of EXCEPT, ELSE and FINALLY
@@ -101,7 +102,7 @@ void except_raise(const except_t *, const char *, int);
  *  FINALLY clause follow.
  *
  *  @warning    Do not forget using @c EXCEPT_RETURN when returning from @c S. See
- *              @c EXCEPT_RETURN for more details. Besides, The TRY-EXCEPT/FINALLY statement uses
+ *              @c EXCEPT_RETURN for more details. Besides, the TRY-EXCEPT/FINALLY statement uses
  *              the non-local jump mechanism provided by <setjmp.h>, which means any restriction
  *              applied to <setjmp.h> also applies to the TRY-EXCEPT/FINALLY statement. For
  *              example, the standard does not guarantee that an automatic non-volatile variable
@@ -115,9 +116,9 @@ void except_raise(const except_t *, const char *, int);
  *  Note that @c EXCEPT_ENTERED is 0, which is defined as the return value of the initial call to
  *  setjmp().
  *
- *  Differntly from the original implementation, the do-while(0) trick making a macro invocation
- *  look like a real statement or function call is eliminated. This is to allow the continue or
- *  break statement to appear in code within a TRY-EXCEPT statement when the TRY-EXCEPT statement is
+ *  Differntly from the original implementation, the do-while(0) trick to make a macro invocation
+ *  look like a real statement or function call has been eliminated. This is to allow @c continue
+ *  or @c break to appear in code within a TRY-EXCEPT statement when the TRY-EXCEPT statement is
  *  in a loop. This change has a side effect to make a TRY-EXCEPT statement without a trailing
  *  semicolon valid or, in order words, to make a trailing semicolon of a TRY-EXCEPT statement
  *  redundant, but considering normal use of the statement it should not be a big deal.
@@ -143,8 +144,8 @@ void except_raise(const except_t *, const char *, int);
  *
  *  @internal
  *
- *  The indented if statement plays its role only when an EXCEPT clause follows statements @c S;
- *  it handles the case where no exception raised during execution of @c S.
+ *  The indented @c if plays its role only when an EXCEPT clause follows statements @c S; it
+ *  handles the case where no exception raised during execution of @c S.
  */
 #define EXCEPT_EXCEPT(e)                                        \
                     if (except_flag == EXCEPT_ENTERED)          \
@@ -159,7 +160,7 @@ void except_raise(const except_t *, const char *, int);
  *
  *  @internal
  *
- *  The same explanation given above goes for the indented if statement below.
+ *  The same explanation given above goes for the indented @c if below.
  */
 #define EXCEPT_ELSE                                           \
                     if (except_flag == EXCEPT_ENTERED)        \
@@ -176,13 +177,13 @@ void except_raise(const except_t *, const char *, int);
  *
  *  @warning    Remember that, since raising an exception pops up the execption stack, re-raising
  *              an exception in a FINALLY clause has the effect to move the control to the outer
- *              (previous) handler. Also note that, even if not explicitly specified, a TRY-EXCEPT-
- *              FINALLY statement (there are both EXCEPT and FINALLY clauses) is possible and works
- *              as expected.
+ *              (previous) handler. Also note that, even if not explicitly specified, a
+ *              TRY-EXCEPT-FINALLY statement (there are both EXCEPT and FINALLY clauses) is
+ *              possible and works as expected.
  *
  *  @internal
  *
- *  The same explanation given above goes for the indented if statement with @c except_flag @c ==
+ *  The same explanation given above goes for the indented @c if with @c except_flag @c ==
  *  @c EXCEPT_ENTERED below.
  */
 #define EXCEPT_FINALLY                                        \

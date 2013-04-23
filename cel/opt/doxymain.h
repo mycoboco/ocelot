@@ -7,7 +7,7 @@
  *  @mainpage    C Environment Library: Option Parsing Library
  *  @version     0.2.0
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -46,19 +46,19 @@
  *  standard input stream. These are sometimes referred to as "non-option arguments."
  *
  *  "Options" refer to arguments starting with a hyphen character but excluding "-". "Short-named
- *  options" are options that start with a single hyphen and have a single character following as in
- *  "-x"; several short-named options can be grouped after a hyphen as in "-xyz" which is equivalent
- *  to "-x -y -z". "Long-named options" are options that start with two hyphens and have a non-empty
- *  character sequence following; for example, "--long-option".
+ *  options" are options that start with a single hyphen and have a single character following as
+ *  in "-x"; several short-named options can be grouped after a hyphen as in "-xyz" which is
+ *  equivalent to "-x -y -z". "Long-named options" are options that start with two hyphens and
+ *  have a non-empty character sequence following; for example, "--long-option".
  *
  *  If an option takes an additional argument which may immediately follow (possibly with an
  *  intervening equal sign) or appear as a separate argument, the argument is called an
  *  "option-argument." For long-named options, option-arguments must follow an equal sign unless
  *  they appear as separate ones. (See IEEE Std 1003.1, 2004 Edition, 12. Utility Conventions.)
  *
- *  @warning    Note that, if an option takes an option-argument that is negative thus starts with a
- *              minus sign, the argument cannot be a separate one, since the separate argument is to
- *              be recognized as another option.
+ *  @warning    Note that, if an option takes an option-argument that is negative thus starts with
+ *              a minus sign, the argument cannot be a separate one, since the separate argument is
+ *              to be recognized as another option.
  *
  *  An "option description table" is an array that has a sequence of options to recognize and their
  *  properties.
@@ -94,17 +94,17 @@
  *  it might be wanted to interpret this as giving "-a" to "util" but "-b" to "util2" which cannot
  *  be achieved with argument permutation. For such a case, this library provdes two modes to keep
  *  the order in which options and operands are given: the POSIX-compliant mode and the
- *  "return-in-order" mode which are denoted by @c REQUIRE_ORDER and @c RETURN_IN_ORDER in a typical
- *  implementation of getopt().
+ *  "return-in-order" mode which are denoted by @c REQUIRE_ORDER and @c RETURN_IN_ORDER in a
+ *  typical implementation of getopt().
  *
  *  In the POSIX-compliant mode, parsing options stops immediately whenever an operand is
  *  encountered. This behavior is what POSIX requires, as its name implies.
  *
- *  In the "return-in-order" mode, encountering operands makes the character valued 1 returned as if
- *  the operand is an option-argument for the option whose short name has the value 1.
+ *  In the "return-in-order" mode, encountering operands makes the character valued 1 returned as
+ *  if the operand is an option-argument for the option whose short name has the value 1.
  *
- *  This ordering mode can be controlled by marking a desired ordering mode in an option description
- *  table or setting an environment variable (see @c opt_t).
+ *  This ordering mode can be controlled by marking a desired ordering mode in an option
+ *  description table or setting an environment variable (see @c opt_t).
  *
  *  @subsection subsec_odt Option Description Tables
  *
@@ -135,8 +135,8 @@
  *  should be invoked in order to avoid memory leakage after handling operands has finished.
  *
  *  opt_abort() is a function that stops recognization of options being performed by conf_parse().
- *  All remaining options are regarded as operands. It is useful when a program introduces an option
- *  stopper like "--" for its own purposes.
+ *  All remaining options are regarded as operands. It is useful when a program introduces an
+ *  option stopper like "--" for its own purposes.
  *
  *  opt.c contains an example designed to use as many facilities of the library as possible in a
  *  disabled part and a bolierplate code that is a simplified version of the example is given here:
@@ -233,8 +233,8 @@
  *  Because the failure of opt_init() means that memory allocation failed, you do not have to call
  *  opt_free() before terminating the program.
  *
- *  The case labes above one handling 0 are for options given in @c tab. Those labels below them are
- *  for exceptional cases and opt_errmsg() helps to construct appropriate messages for them. In
+ *  The case labes above one handling 0 are for options given in @c tab. Those labels below them
+ *  are for exceptional cases and opt_errmsg() helps to construct appropriate messages for them. In
  *  addtion, there are other ways to handle those cases; see opt_errmsg() for details. Remember
  *  that, if invoked, opt_free() should be invoked after all program arguments including non-option
  *  arguments have been processed. Since opt_init() makes copies of pointers in @c argv and
@@ -248,19 +248,19 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the lastest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the lastest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is an option parser implementation by Jun Woong. The implementation was written so
  *  as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

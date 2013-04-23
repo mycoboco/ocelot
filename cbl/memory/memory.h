@@ -26,10 +26,10 @@
  *    number where a problem occurred are provided through @c ifile, @c ifunc and @c iline,
  *    respectively.
  *  - the information about the memory block for which an invalid memory operation is invoked. For
- *    example, the "free-free" case where trying to deallocate already deallocated storage means
- *    that the pointer value delivered to mem_free() was allocated before. @c afile, @c afunc,
- *    @c aline and @c asize provide where it was allocated and what its size was. This information
- *    is useful in tracking how such an invalid operation is invoked.
+ *    example, the "free-free" case (a.k.a., "double free") means that the pointer value delivered
+ *    to mem_free() has been deallocated before. @c afile, @c afunc, @c aline and @c asize provide
+ *    where it was allocated and what its size was. This information is useful in tracking how such
+ *    an invalid operation was made.
  *
  *  If any of them is not available, they are set to a null pointer (for @c ifile, @c ifunc,
  *  @c afile and @c afunc) or 0 (for @c size, @c iline, @c aline and @c asize).

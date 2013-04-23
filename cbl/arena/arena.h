@@ -73,7 +73,7 @@ void arena_dispose(arena_t **);
 #define ARENA_CALLOC(a, c, n) (arena_calloc((a), (c), (n), __FILE__, __LINE__))
 #endif    /* __STDC_VERSION__ */
 
-/*! @brief    deallocates the strorage belonging to an arena @p a.
+/*! @brief    deallocates strorages belonging to an arena @p a.
  */
 #define ARENA_FREE(a) (arena_free(a))
 

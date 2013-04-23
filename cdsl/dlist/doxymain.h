@@ -7,7 +7,7 @@
  *  @mainpage    C Data Structure Library: Doubly-Linked List Library
  *  @version     0.2.1
  *  @author      Jun Woong (woong.jun at gmail.com)
- *  @date        last modified on 2011-01-24
+ *  @date        last modified on 2013-04-23
  *
  *
  *  @section sec_intro Introduction
@@ -47,8 +47,8 @@
  *  frequently in many programs and can make a program making heavy use of lists run almost 3 times
  *  faster. Therefore, for good performance of your program, it is highly recommended that lists are
  *  traversed sequentially whenever possible. Do not forget that the current implementation requires
- *  for other types of accesses (that is, any access to a node that is not immediately next or
- *  previous to a remembered node) the library to locate the desired node from the head or the tail.
+ *  the library to locate the desired node from the head or the tail for other types of accesses
+ *  (that is, any access to a node that is not immediately next or previous to a remembered node).
  *
  *
  *  @section sec_boilerplate Boilerplate Code
@@ -56,16 +56,16 @@
  *  Using a list starts with creating one. The simplest way to do it is to call dlist_new().
  *  dlist_new() returns an empty list, and if it fails to allocate storage for the list, an
  *  exception @c mem_exceptfail is raised rather than returning a null pointer. All functions that
- *  allocate storage signals a shortage of memory via the exception; no null pointer returned.
- *  There is another function to create a list: dlist_list() that accepts a sequence of data and
- *  creates a list containing them in each node.
+ *  allocate storage signal a shortage of memory via the exception; no null pointer returned. There
+ *  is another function to create a list: dlist_list() that accepts a sequence of data and creates
+ *  a list containing them in each node.
  *
  *  Once a list has been created, a new node can be inserted in various ways (dlist_add(),
  *  dlist_addhead() and dlist_addtail()) and an existing node can be removed from a list also in
  *  various ways (dlist_remove(), dlist_remhead() and dlist_remtail()). You can inspect the data of
  *  a node (dlist_get()) or replace it with new one (dlist_put()). In addition, you can find the
  *  number of nodes in a list (dlist_length()) or can rotate (or shift) a list (dlist_shift()). For
- *  an indexing sheme used when referring to an existing node, see dlist_get(). For that used when
+ *  an indexing sheme used when referring to existing nodes, see dlist_get(). For that used when
  *  referring to a position into which a new node inserted, see dlist_add().
  *
  *  dlist_free() destroys a list that is no longer necessary, but note that any storage that is
@@ -118,14 +118,14 @@
  *
  *  @section sec_contact Contact Me
  *
- *  Visit http://project.woong.org to get the lastest version of this library. Only a small portion
- *  of my homepage (http://www.woong.org) is maintained in English, thus one who is not good at
- *  Korean would have difficulty when navigating most of other pages served in Korean. If you think
- *  the information you are looking for is on pages written in Korean you cannot read, do not
- *  hesitate to send me an email asking for help.
+ *  Visit http://code.woong.org to get the lastest version of this library. Only a small portion of
+ *  my homepage (http://www.woong.org) is maintained in English, thus one who is not good at Korean
+ *  would have difficulty when navigating most of other pages served in Korean. If you think the
+ *  information you are looking for is on pages written in Korean, do not hesitate to send me an
+ *  email to ask for help.
  *
  *  Any comments about the library are welcomed. If you have a proposal or question on the library
- *  just email me, and then I will reply as soon as possible.
+ *  just email me, and I will reply as soon as possible.
  *
  *
  *  @section sec_license Copyright
@@ -146,7 +146,7 @@
  *
  *  For the parts I added or modified, the following applies:
  *
- *  Copyright (C) 2009-2012 by Jun Woong.
+ *  Copyright (C) 2009-2013 by Jun Woong.
  *
  *  This package is a doubly-linked list implementation by Jun Woong. The implementation was written
  *  so as to conform with the Standard C published by ISO 9899:1990 and ISO 9899:1999.

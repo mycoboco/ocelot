@@ -19,12 +19,12 @@
 /* @brief    checks if a text can be attached to another text in the text space.
  *
  * The Text Library hires a separate allocator to maintain its text space where storages for texts
- * resides; see alloc(). If a text is generated in the text space recently and thus it occupies the
- * last byte in the storage, an operation like concatenating another text to it gets easier by
- * simply putting that text immediately after it in the space. ISATEND() called "is at end" checks
- * if such a simple operation is possible for text_dup() and text_cat(). It sees both if the next
- * byte of that ending a given text starts the available area in the text space and if there is
- * enough space to contain a text to be attached.
+ * resides; see alloc(). When a text generated recently occupies the last byte in the storage, an
+ * operation like concatenating another text to it gets easier by simply putting that added text
+ * immediately after the original one in the storage. ISATEND() called "is at end" checks if such a
+ * simple operation is possible for text_dup() and text_cat(). It sees both if the next of the last
+ * byte of a given text starts the available area in the text space and if there is enough space to
+ * contain a text to be attached.
  *
  * Not all texts reside in the text space. For example, text_box() provides a way to "box" a string
  * literal to construct its text representation. Even in that case, ISATEND() does not invoke
@@ -138,7 +138,7 @@ const text_t text_null = { 0, "" };
  * value to store into @c current, the literal reading of the standard says undefined behavior
  * about it. Thus, it seems clever to avoid it.
  *
- * @param[in]    len    size of storage to allocate
+ * @param[in]    len    size of storage to allocate in bytes
  *
  * @return    pointer to storage allocated
  */
@@ -383,7 +383,7 @@ text_t (text_gen)(const char str[], int size)
  *  tries to write the conversion result to it. If its specified size is not enough to contain the
  *  result, it raises an exception due to assertion failure. If @p str is a null pointer, @c size
  *  is ignored and text_get() allocates a proper buffer to contain the reulsting string. The Text
- *  Library never deallocates the buffer allocated by text_ger(), thus a user has to set it free
+ *  Library never deallocates the buffer allocated by text_get(), thus a user has to set it free
  *  when it is no longer necessary.
  *
  *  Possible exceptions: assert_exceptfail, memory_exceptfail
@@ -392,7 +392,7 @@ text_t (text_gen)(const char str[], int size)
  *                    @p size
  *
  *  @param[out]    str     buffer into which converted string to be written
- *  @param[in]     size    size of given buffer
+ *  @param[in]     size    size of given buffer in bytes
  *  @param[in]     s       text to convert to C string
  *
  *  @return    pointer to buffer containing C string
@@ -492,7 +492,7 @@ text_t (text_dup)(text_t s, int n)
  *
  *  @internal
  *
- *  As in text_dup(), there are several cases where some optimization is possible:
+ *  As in text_dup(), there are several cases where some optimizations are possible:
  *  - either of two texts is empty, text_cat() can simply return the other,
  *  - if two texts already exist adjacently in the text space, no need to concatenate them, and
  *  - if a text resides at the end of the text space, copying the other there can construct the
@@ -558,8 +558,8 @@ text_t (text_cat)(text_t s1, text_t s2)
  *  @internal
  *
  *  Two obvious cases where some optimization is possible are that a given text has no or only one
- *  character. Considering characters that signed char cannot represent on an implementation where
- *  "plain" char is signed, casts to unsigned char * are added.
+ *  character. Considering characters that @c signed @c char cannot represent on implementations
+ *  with signed "plain" @c char, casts to @c unsigned @c char @c * are added.
  */
 text_t (text_reverse)(text_t s)
 {
@@ -587,18 +587,18 @@ text_t (text_reverse)(text_t s)
 /*! @brief    constructs a text by converting a text based on a specified mapping.
  *
  *  text_map() converts a text based on a mapping that is described by two pointers to texts. Both
- *  pointers to describe a mapping should be a null pointers or non-null pointers; it is not
- *  allowed for only one of them to be a null pointer.
+ *  pointers to describe a mapping should be null pointers or non-null pointers; it is not allowed
+ *  for only one of them to be a null pointer.
  *
  *  When they are non-null, they should point to texts whose lengths equal. text_map() takes a text
- *  and copies it converting any occurrence of characters in a text pointed by @p from to
- *  corresponding characters in a text pointed by @p to, where the corresponding characters are
+ *  and copies it converting any occurrence of characters in a text pointed to by @p from to
+ *  corresponding characters in a text pointed to by @p to, where the corresponding characters are
  *  determined by their positions in a text. Ohter characters are copied unchagned.
  *
  *  Once a mapping is set by calling text_map() with non-null text pointers, text_map() can be
- *  called with a null pointers for @p from and @p to, in which case the latest mapping is used
- *  for conversion. Calling with a null pointers is highly recommended whenever possible, since
- *  constructing a mapping table from two texts costs time.
+ *  called with a null pointers for @p from and @p to, in which case the latest mapping is reused
+ *  for conversion. Calling with null pointers is highly recommended whenever possible, since
+ *  constructing a mapping table from two texts costs.
  *
  *  For example, after the following call:
  *
@@ -621,8 +621,8 @@ text_t (text_reverse)(text_t s)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, casts to unsigned char * are added.
+ *  Considering characters that @c signed @c char cannot represent and implementations where
+ *  "plain" @c char is signed, casts to @c unsigned @c char @c * are added.
  */
 text_t (text_map)(text_t s, const text_t *from, const text_t *to)
 {
@@ -665,7 +665,7 @@ text_t (text_map)(text_t s, const text_t *from, const text_t *to)
 /*! @brief    compares two texts.
  *
  *  text_cmp() compares two texts as strcmp() does strings except that a null character is not
- *  treated specially by the former.
+ *  treated specially.
  *
  *  Possible exceptions: assert_exceptfail
  *
@@ -717,8 +717,8 @@ int (text_cmp)(text_t s1, text_t s2)
  *  storages for texts can be seen as a stack and storages allocated by text_*() (except that
  *  allocated by text_get()) can be seen as piled up in the stack, thus any storage being used by
  *  the Text Library after a call to text_save() can be set free by calling text_restore() with the
- *  saved state. After text_restore(), any text constructed after the text_save() call is
- *  invalidated and should not be used. In addition, other saved states, if any, get also
+ *  saved state. After text_restore(), any text constructed after the call to text_save() is
+ *  invalidated and should never be used. In addition, other saved states, if any, get also
  *  invalidated if the text space gets back to a previous state by a state saved before they are
  *  generated. For example, after the following code:
  *
@@ -730,8 +730,8 @@ int (text_cmp)(text_t s1, text_t s2)
  *      text_restore(h);
  *  @endcode
  *
- *  calling text_restore() with @c g makes the program behave in an unpredicatble way since the last
- *  call to text_restore() with @c h invalidates @c g.
+ *  calling text_restore() with @c g makes the program behave in an unpredicatble way since the
+ *  last call to text_restore() with @c h invalidates @c g.
  *
  *  Possible exceptions: memory_exceptfail
  *
@@ -740,7 +740,7 @@ int (text_cmp)(text_t s1, text_t s2)
  *  @return    saved state of text space
  *
  *  @todo    Some improvements are possible and planned:
- *           - text_save() and text_restore() can be improved to detect an erroneous call shown in
+ *           - text_save() and text_restore() can be improved to detect erroneous calls as shown in
  *             the above example;
  *           - the stack-like storage management by text_save() and text_restore() unnecessarily
  *             keeps the Text Library from being used in ohter libraries. For example,
@@ -750,8 +750,8 @@ int (text_cmp)(text_t s1, text_t s2)
  *
  *  @internal
  *
- *  The original code calls alloc() to keep a text from straddling the end of the text space that is
- *  returned by text_save(). This seems unnecessary in this implementation, so commented out.
+ *  The original code calls alloc() to keep a text from straddling the end of the text space that
+ *  is returned by text_save(). This seems unnecessary in this implementation, so commented out.
  */
 text_save_t *(text_save)(void)
 {
@@ -769,8 +769,8 @@ text_save_t *(text_save)(void)
 /*! @brief    restores a saved state of the text space.
  *
  *  text_restore() gets the text space to a state returned by text_save(). As explained in
- *  text_save(), any text and state generated after saving the state to be reverted are invalidated,
- *  thus they should not be used. See text_save() for more details.
+ *  text_save(), any text and state generated after saving the state to be reverted are
+ *  invalidated, thus they should never be used. See text_save() for more details.
  *
  *  Possible exceptions: assert_exceptfail
  *
@@ -802,9 +802,9 @@ void (text_restore)(text_save_t **save)
 
 /*! @brief    finds the first occurrence of a character in a text.
  *
- *  text_chr() finds the first occurrence of a character @p c in the specified range of a text @p s.
- *  The range is specified by @p i and @p j. If found, text_chr() returns the left position of the
- *  found character. It returns 0 otherwise. For example, given the following text:
+ *  text_chr() finds the first occurrence of a character @p c in the specified range of a text
+ *  @p s. The range is specified by @p i and @p j. If found, text_chr() returns the left position
+ *  of the found character. It returns 0 otherwise. For example, given the following text:
  *
  *  @code
  *      1  2  3  4  5  6  7    (positive positions)
@@ -827,8 +827,8 @@ void (text_restore)(text_save_t **save)
  *
  *  @internal
  *
- *  Considering characters that sigend char cannot represent and an implementation where "plain"
- *  char is signed, a cast to unsigned char * is added.
+ *  Considering characters that @c sigend @c char cannot represent and implementations where
+ *  "plain" @c char is signed, a cast to @c unsigned @c char * is added.
  */
 int (text_chr)(text_t s, int i, int j, int c)
 {
@@ -852,9 +852,9 @@ int (text_chr)(text_t s, int i, int j, int c)
 
 /*! @brief    finds the last occurrence of a character in a text.
  *
- *  text_rchr() finds the last occurrence of a character @p c in the specified range of a text @p s.
- *  The range is specified by @p i and @p j. If found, text_rchr() returns the left position of the
- *  found character. It returns 0 otherwise. For example, given the following text:
+ *  text_rchr() finds the last occurrence of a character @p c in the specified range of a text
+ *  @p s. The range is specified by @p i and @p j. If found, text_rchr() returns the left position
+ *  of the found character. It returns 0 otherwise. For example, given the following text:
  *
  *  @code
  *      1  2  3  4  5  6  7    (positive positions)
@@ -878,8 +878,8 @@ int (text_chr)(text_t s, int i, int j, int c)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, a cast to unsigned char * is added.
+ *  Considering characters that @c signed @c char cannot represent and implementations where
+ *  "plain" @c char is signed, a cast to @c unsigned @c char @c * is added.
  */
 int (text_rchr)(text_t s, int i, int j, int c)
 {
@@ -903,9 +903,10 @@ int (text_rchr)(text_t s, int i, int j, int c)
 
 /*! @brief    finds the first occurrence of any character from a set in a text.
  *
- *  text_upto() finds the first occurrence of any character from a set @p set in the specified range
- *  of a text @p s. The range is specified by @p i and @p j. If found, text_upto() returns the left
- *  position of the found character. It returns 0 otherwise. For example, given the following text:
+ *  text_upto() finds the first occurrence of any character from a set @p set in the specified
+ *  range of a text @p s. The range is specified by @p i and @p j. If found, text_upto() returns
+ *  the left position of the found character. It returns 0 otherwise. For example, given the
+ *  following text:
  *
  *  @code
  *      1  2  3  4  5  6  7    (positive positions)
@@ -950,9 +951,10 @@ int (text_upto)(text_t s, int i, int j, text_t set)
 
 /*! @brief    finds the last occurrence of any character from a set in a text.
  *
- *  text_rupto() finds the last occurrence of any character from a set @p set in the specified range
- *  of a text @p s. The range is specified by @p i and @p j. If found, text_rupto() returns the left
- *  position of the found character. It returns 0 otherwise. For example, given the following text:
+ *  text_rupto() finds the last occurrence of any character from a set @p set in the specified
+ *  range of a text @p s. The range is specified by @p i and @p j. If found, text_rupto() returns
+ *  the left position of the found character. It returns 0 otherwise. For example, given the
+ *  following text:
  *
  *  @code
  *      1  2  3  4  5  6  7    (positive positions)
@@ -960,8 +962,8 @@ int (text_upto)(text_t s, int i, int j, text_t set)
  *      -6 -5 -4 -3 -2 -1 0    (non-positive positions)
  *  @endcode
  *
- *  text_rupto(t, -6, 5, text_box("escape", 6)) gives 3. If the set containing characters to find is
- *  empty, text_rupto() always fails and returns 0.
+ *  text_rupto(t, -6, 5, text_box("escape", 6)) gives 3. If the set containing characters to find
+ *  is empty, text_rupto() always fails and returns 0.
  *
  *  The "r" in its name stands for "right" since what it does can be seen as scanning a given text
  *  from the right end.
@@ -1027,8 +1029,8 @@ int (text_rupto)(text_t s, int i, int j, text_t set)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, casts to unsigned char * are added.
+ *  Considering characters that @c signed @c char cannot represent and implementations where
+ *  "plain" @c char is signed, casts to @c unsigned @c char @c * are added.
  */
 int (text_find)(text_t s, int i, int j, text_t str)
 {
@@ -1061,8 +1063,8 @@ int (text_find)(text_t s, int i, int j, text_t str)
 /*! @brief    finds the last occurrence of a text in a text.
  *
  *  text_rfind() finds the last occurrence of a text @p str in the specified range of a text @p s.
- *  The range is specified by @p i and @p j. If found, text_rfind() returns the left position of the
- *  character starting the found text. It returns 0 otherwise. For example, given the following
+ *  The range is specified by @p i and @p j. If found, text_rfind() returns the left position of
+ *  the character starting the found text. It returns 0 otherwise. For example, given the following
  *  text:
  *
  *  @code
@@ -1090,8 +1092,8 @@ int (text_find)(text_t s, int i, int j, text_t str)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, casts to unsigned char * are added.
+ *  Considering characters that @c signed @c char cannot represent and implementations where
+ *  "plain" @c char is signed, casts to @c unsigned @c char @c * are added.
  */
 int (text_rfind)(text_t s, int i, int j, text_t str)
 {
@@ -1134,8 +1136,8 @@ int (text_rfind)(text_t s, int i, int j, text_t str)
  *      -6 -5 -4 -3 -2 -1 0    (non-positive positions)
  *  @endcode
  *
- *  text_any(t, 2, text_box("ca", 2)) gives 3 because @c a matches. If the set containing characters
- *  to find is empty, text_any() always fails and returns 0.
+ *  text_any(t, 2, text_box("ca", 2)) gives 3 because @c a matches. If the set containing
+ *  characters to find is empty, text_any() always fails and returns 0.
  *
  *  Note that giving to @p i the last position (7 or 0 in the example text) makes text_any() fail
  *  and return 0; that does not cause the assertion to fail since it is a valid position.
@@ -1291,8 +1293,8 @@ int (text_rmany)(text_t s, int i, int j, text_t set)
  *      -6 -5 -4 -3 -2 -1 0    (non-positive positions)
  *  @endcode
  *
- *  text_match(t, 3, 7, text_box("ca", 2)) gives 5. If @p str is empty, text_match() always succeeds
- *  and returns the left positive position of the specified range.
+ *  text_match(t, 3, 7, text_box("ca", 2)) gives 5. If @p str is empty, text_match() always
+ *  succeeds and returns the left positive position of the specified range.
  *
  *  Possible exceptions: assert_exceptfail
  *
@@ -1307,8 +1309,8 @@ int (text_rmany)(text_t s, int i, int j, text_t set)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, casts to unsigned char * are used.
+ *  Considering characters that @c signed @c char cannot represent and implementations where
+ *  "plain" @c char is signed, casts to @c unsigned @c char @c * are used.
  */
 int (text_match)(text_t s, int i, int j, text_t str)
 {
@@ -1339,8 +1341,8 @@ int (text_match)(text_t s, int i, int j, text_t str)
 /*! @brief    checks if a text ends with another text.
  *
  *  If the specified range of a text @p s ends with a text @p str, text_rmatch() returns the left
- *  positive position starting the matched text. The range is specified by @p i and @p j. It returns
- *  0 otherwise. For example, given the following text:
+ *  positive position starting the matched text. The range is specified by @p i and @p j. It
+ *  returns 0 otherwise. For example, given the following text:
  *
  *  @code
  *      1  2  3  4  5  6  7    (positive positions)
@@ -1367,8 +1369,8 @@ int (text_match)(text_t s, int i, int j, text_t str)
  *
  *  @internal
  *
- *  Considering characters that signed char cannot represent and an implementation where "plain"
- *  char is signed, casts to unsigned char * are added.
+ *  Considering characters that @c signed @c char cannot represent and an implementation where
+ *  "plain" @c char is signed, casts to @c unsigned @c char @c * are added.
  */
 int (text_rmatch)(text_t s, int i, int j, text_t str)
 {
