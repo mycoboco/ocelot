@@ -39,8 +39,10 @@ explicit value should be given by setting the `CFLAGS` variable as in:
 After the libraries built, you can install them by placing the library files
 into a library directory for your system (e.g., `/usr/local/lib`), the headers
 into an include directory (e.g., `/usr/local/include`) and the `man`-pages into
-a `man`-page directory (e.g., `/usr/local/man/man3`). For example, on my
-machine, the following instructions install the libraries with their headers:
+a `man`-page directory (e.g., `/usr/local/share/man/man3`; the environmental
+variable `$MANPATH` contains a list of paths for `man` pages). For example, on
+my machine, the following instructions install the libraries with their
+headers:
 
     cp -R build/include/* /usr/local/include/
     cp build/lib/* /usr/local/lib/
@@ -49,9 +51,9 @@ machine, the following instructions install the libraries with their headers:
 where it is assumed that ld.so.conf has `/usr/local/lib` in it, and the
 following ones install `man` pages for them:
 
-    cp doc/man3/cbl/* /usr/local/man/man3/
-    cp doc/man3/cdsl/* /usr/local/man/man3/
-    cp doc/man3/cel/* /usr/local/man/man3/
+    cp doc/man3/cbl/* /usr/local/share/man/man3/
+    cp doc/man3/cdsl/* /usr/local/share/man/man3/
+    cp doc/man3/cel/* /usr/local/share/man/man3/
 
 Installed successfully, you can use the libraries by including necessary
 headers in your code as in:
