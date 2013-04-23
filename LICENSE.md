@@ -33,6 +33,7 @@ This applies to:
 - the Exception Handling Library (`cbl/except`),
 - the Memory Management Library (`cbl/memory`),
 - the Text Library (`cbl/text`),
+- the Bit-vector Library (`cdsl/bitv`),
 - the Doubly-Linked List Library (`cdsl/dlist`),
 - the Hash Library (`cdsl/hash`),
 - the List Library (`cdsl/list`),
@@ -46,7 +47,7 @@ To parts I added or modified and the libraries I wrote from the scratch (the
 Configuration File Library, `cel/conf` and the Option Parsing Library,
 `cel/opt`) the following copyright applies:
 
-Copyright (C) 2009-2012 by Jun Woong.
+Copyright (C) 2009-2013 by Jun Woong.
 
 The package was written so as to conform with the Standard C published by ISO
 9899:1990 and ISO 9899:1999.

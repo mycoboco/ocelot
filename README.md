@@ -23,6 +23,7 @@ libraries of each category:
     - `memory`: The Memory Management Library
     - `text`: The Text Library (high-level string manipulation)
 - `cdsl`: C Data Structure Library
+    - `bitv`: The Bit-vector Library
     - `dlist`: The Doubly-linked List Library
     - `hash`: The Hash Library
     - `list`: The List Library (singly-linked list)
