@@ -839,7 +839,8 @@ void (opt_free)(void)
 #include <stdlib.h>    /* EXIT_FAILURE */
 #include <limits.h>    /* UCHAR_MAX */
 
-#include "opt.h"       /* opt_t, opt_init, opt_parse, opt_errmsg, opt_free, OPT_ARG_*, OPT_TYPE_* */
+#include <cel\opt.h>    /* opt_t, opt_init, opt_parse, opt_errmsg, opt_free, OPT_ARG_*,
+                           OPT_TYPE_* */
 
 #define PRGNAME "opt-test"
 

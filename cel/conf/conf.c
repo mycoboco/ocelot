@@ -1363,8 +1363,8 @@ const char *(conf_errstr)(int code)
 #include <stdio.h>     /* FILE, fopen, fclose, printf, fprintf, stderr, puts, rewind, EOF */
 #include <stdlib.h>    /* EXIT_FAILURE */
 
-#include "conf.h"    /* conf_t, CONF_TYPE_*, CONF_ERR_*, conf_preset, conf_init, conf_get,
-                        conf_errset, conf_errcode, conf_section, conf_set, conf_free */
+#include <cel/conf.h>    /* conf_t, CONF_TYPE_*, CONF_ERR_*, conf_preset, conf_init, conf_get,
+                            conf_errset, conf_errcode, conf_section, conf_set, conf_free */
 
 static const char *cfname = "test.conf";
 
