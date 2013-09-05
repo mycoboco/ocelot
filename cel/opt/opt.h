@@ -157,7 +157,36 @@ typedef struct opt_t {
     int arg;             /*!< value for flag variable or type of additional argument */
 } opt_t;
 
-/*! @brief    defines enum contants for types of argument conversion.
+/*! @struct    opt_val_t    opt.h
+ *  @brief    provides string-integer pairs for opt_val().
+ *
+ *  @c opt_val_t is used to provide for opt_val() information that is consisted of string-integer
+ *  pairs. With the information, opt_val() performs a cumbersome job to compare an option-argument
+ *  of the @c OPT_TYPE_STR type with a set of strings to set a variable to an integer value.
+ *
+ *  @code
+ *      opt_val_t t[] = {
+ *          "ulong",  0, "unsigned long", 0,
+ *          "uint",   1, "unsigned",      1, "unsigned int", 1,
+ *          NULL,    -1
+ *      };
+ *  @endcode
+ *
+ *  By calling opt_val() with @c t above and an option-argument (referred to as @c argptr in
+ *  examples here) of the @c OPT_TYPE_STR type, opt_val() returns 0 if the argument specifies
+ *  @c "ulong" or @c "unsigned long", and 1 if @c "uint", @c "unsigned" or @c "unsigned int". The
+ *  array @c t should end with a null pointer and a value to indicate that none of strings in the
+ *  array has been matched.
+ *
+ *  opt_val() takes an extra argument @c flag that changes how to compare strings in it; see
+ *  opt_val() for details.
+ */
+typedef struct opt_val_t {
+    const char *str;    /* !< string to match */
+    int val;            /* !< corresponding integral value */
+} opt_val_t;
+
+/*! @brief    defines enum constants for types of argument conversion.
  */
 enum {
     OPT_TYPE_NO,      /*!< cannot have type */
@@ -166,6 +195,13 @@ enum {
     OPT_TYPE_UINT,    /*!< has unsigned integer (unsigned long) type */
     OPT_TYPE_REAL,    /*!< has floating-point (double) type */
     OPT_TYPE_STR      /*!< has string (char *) type */
+};
+
+/*! @brief    defines enum constants to control behavior of opt_val().
+ */
+enum {
+    OPT_CMP_NORMSPC = 1,                       /*!< considers '_' and '-' equivalent to a space */
+    OPT_CMP_CASEIN  = OPT_CMP_NORMSPC << 1     /*!< performs case-insensitive comparison */
 };
 
 
@@ -178,6 +214,7 @@ extern int opt_arg_req, opt_arg_no, opt_arg_opt;
 /*@{*/
 const char *opt_init(const opt_t *, int *, char **[], const void **, const char *, int);
 int opt_parse(void);
+int opt_val(opt_val_t *, const char *, int);
 void opt_abort(void);
 const char *opt_errmsg(int);
 void opt_free(void);

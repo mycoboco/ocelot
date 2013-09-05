@@ -24,6 +24,13 @@
  */
 #define UC(x) ((unsigned char *)(x))
 
+/* @brief    normalizes characters for space.
+ *
+ * normal() allows considering non-space charaters to be spaces by normalizing them. See opt_val()
+ * for why this is necessary.
+ */
+#define normal(c) (((c) == ' ' || (c) == '_')? '-': (c))
+
 
 /* @brief    defines enum constants for the kind of options.
  */
@@ -657,6 +664,97 @@ int (opt_parse)(void)
 }
 
 
+/* @brief    compares strings for argument comparison in opt_val().
+ *
+ * striscmp() compares two strings as strcmp() does except that:
+ * - it returns a non-zero if two strigns compare unequal (that is, its sign is meaningless);
+ * - the case will be ignored if @c OPT_CMP_CASEIN is set in @p flag; and
+ * - hyphens(-) and underscores(_) will be considered equivalent to spaces if @c OPT_CMP_NORMSPC is
+ *   set in @p flag.
+ *
+ * @param[in]    s       string to compare
+ * @param[in]    t       string to compare
+ * @param[in]    flag    flag to control behavior
+ *
+ * @return    integer to indicate whether or not two strings compare equal
+ * @retval    0           two strings compare equal
+ * @retval    non-zero    two strings compare unequal
+ */
+static int striscmp(const char *s, const char *t, int flag)
+{
+    unsigned char c, d;
+
+    assert(s);
+    assert(t);
+
+    do {
+        c = *(unsigned char *)s++;
+        d = *(unsigned char *)t++;
+        if (flag & OPT_CMP_NORMSPC)
+            c = normal(c), d = normal(d);
+        if (flag & OPT_CMP_CASEIN)
+            c = tolower(c), d = tolower(d);
+    } while(c == d && c != '\0');
+
+    return (c != '\0' || d != '\0');
+}
+
+
+/*! @brief    compares a string argument to a set of strings.
+ *
+ *  opt_val() helps comparison of a string argument (referred to as @c argptr of the
+ *  @c OPT_TYPE_STR type in examples here) with a set of strings. opt_val() compares a string @p s
+ *  to strings from an @c opt_val_t array as if done with strcmp() except that the case will be
+ *  ignored if @c OPT_CMP_CASEIN is set in @p flag and that hyphens(-) and underscores(_) will be
+ *  regarded as equivalent to spaces if @c OPT_CMP_NORMSPC set. The later flag is useful when
+ *  letting users readily pass to a program an argument with spaces. For example, when a program
+ *  accepts @c "unsigned int" as a string option-argument, specifying @c unsigned-int or
+ *  @c unsigned_int should be easier than quoting @c "unsigned int" to preserve the intervening
+ *  space. That means setting @c OPT_CMP_NORMSPC effectively changes
+ *
+ *  @code
+ *      opt_val_t t[] = {
+ *          "unsigned int", 0,
+ *          NULL, -1
+ *      };
+ *  @endcode
+ *
+ *  to
+ *
+ *  @code
+ *      opt_val_t t[] = {
+ *          "unsigned int", 0, "unsigned-int", 0, "unsigned_int", 0,
+ *          NULL, -1
+ *      };
+ *  @endcode
+ *
+ *  If there is a matched string in @c tab, opt_val() returns an integer that is paired with the
+ *  string, or an integer that is paired with a null pointer otherwise.
+ *
+ *  Possible exceptions: none
+ *
+ *  Unchecked errors: invalid @p tab given, an option-argument that is not of the @c OPT_TYPE_STR
+ *                    type given
+ *
+ *  @param[in]    tab     array containing string-integer pairs
+ *  @param[in]    s       string argument to compare with @p tab
+ *  @param[in]    flag    flag to control behavior
+ *
+ *  @return    integer corresponding to a matched string
+ */
+int (opt_val)(opt_val_t *tab, const char *s, int flag)
+{
+    assert(tab);
+    assert(s);
+
+    for (; tab->str; tab++)
+        if (striscmp(tab->str, s, flag) == 0)
+            break;
+
+    return tab->val;
+}
+
+
 /*! @brief    aborts parsing options.
  *
  *  opt_abort() aborts parsing options immediately handling the remaining arguments as operands.
@@ -863,14 +961,16 @@ int main(int argc, char *argv[])
         "integer",  'i',         OPT_ARG_OPT,       OPT_TYPE_INT,
         "number",   'n',         OPT_ARG_OPT,       OPT_TYPE_REAL,
         "",         'o',         OPT_ARG_NO,        OPT_TYPE_NO,
-        "html",     UCHAR_MAX+1, OPT_ARG_NO,        OPT_TYPE_NO,
-        "help",     UCHAR_MAX+2, OPT_ARG_NO,        OPT_TYPE_NO,
-        "helpmore", UCHAR_MAX+3, OPT_ARG_NO,        OPT_TYPE_NO,
-        "bool",     UCHAR_MAX+4, OPT_ARG_REQ,       OPT_TYPE_BOOL,
+        "connect",  UCHAR_MAX+1, OPT_ARG_REQ,       OPT_TYPE_STR,
+        "html",     UCHAR_MAX+2, OPT_ARG_NO,        OPT_TYPE_NO,
+        "help",     UCHAR_MAX+3, OPT_ARG_NO,        OPT_TYPE_NO,
+        "helpmore", UCHAR_MAX+4, OPT_ARG_NO,        OPT_TYPE_NO,
+        "bool",     UCHAR_MAX+5, OPT_ARG_REQ,       OPT_TYPE_BOOL,
         NULL,    /* must end with NULL */
     };
     int i;
     int c;
+    int connect = 0;
     const void *argptr;
 
     option.prgname = opt_init(tab, &argc, &argv, &argptr, PRGNAME, '/');
@@ -914,17 +1014,34 @@ int main(int argc, char *argv[])
                 printf("%s: option -o given\n", option.prgname);
                 break;
             case UCHAR_MAX+1:
-                printf("%s: option --html given\n", option.prgname);
+                {
+                    opt_val_t t[] = {
+                        "stdin",   0, "standard input",  0,
+                        "stdout",  1, "standard output", 1,
+                        "stderr",  2, "standard error",  2,
+                        NULL,     -1
+                    };
+                    connect = opt_val(t, argptr, OPT_CMP_CASEIN | OPT_CMP_NORMSPC);
+                    if (connect == -1) {
+                        printf("%s: `stdin', `stdout' or `stderr' must be given for --connect\n",
+                               option.prgname);
+                        opt_free();
+                        return EXIT_FAILURE;
+                    }
+                }
                 break;
             case UCHAR_MAX+2:
+                printf("%s: option --html given\n", option.prgname);
+                break;
+            case UCHAR_MAX+3:
                 printf("%s: help requested\n", option.prgname);
                 opt_free();
                 return 0;
-            case UCHAR_MAX+3:
+            case UCHAR_MAX+4:
                 printf("%s: more help requested\n", option.prgname);
                 opt_free();
                 return 0;
-            case UCHAR_MAX+4:
+            case UCHAR_MAX+5:
                 printf("%s: option --boolean given with %s\n", option.prgname,
                        (*(const int *)argptr)? "true": "false");
                 break;
@@ -948,6 +1065,7 @@ int main(int argc, char *argv[])
 
     if (option.verbose)
         puts("verbose flag is set");
+    printf("connect option is set to %d\n", connect);
 
     if (argc > 1) {
         printf("non-option ARGV-arguments:");

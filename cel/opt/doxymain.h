@@ -127,6 +127,10 @@
  *  specified by the option description table for it. In most cases, this process is made up of a
  *  loop containing jumps based on the return value of opt_parse().
  *
+ *  When it is necessary to compare a string argument (that is resulted from an argument of the @c
+ *  OPT_TYPE_STR type) with a set of strings to set a variable to an integral value depending on
+ *  the string, opt_val() would help in most cases; see an example in opt.c.
+ *
  *  As opt_prase() reports that all options have been inspected, a program is granted an access to
  *  remaining non-option arguments. These operands are inspected as if they were only arguments to
  *  the program.
@@ -145,6 +149,7 @@
  *      static struct {
  *          const char *prgname;
  *          int verbose;
+ *          int connect;
  *          ...
  *      } option;
  *
@@ -155,7 +160,8 @@
  *              "add",     'a',         OPT_ARG_NO,        OPT_TYPE_NO,
  *              "create",  'c',         OPT_ARG_REQ,       OPT_TYPE_STR,
  *              "number",  'n',         OPT_ARG_OPT,       OPT_TYPE_REAL,
- *              "help",    UCHAR_MAX+1, OPT_ARG_NO,        OPT_TYPE_NO,
+ *              "connect", UCHAR_MAX+1, OPT_ARG_REQ,       OPT_TYPE_STR,
+ *              "help",    UCHAR_MAX+2, OPT_ARG_NO,        OPT_TYPE_NO,
  *              NULL,
  *          }
  *
@@ -174,6 +180,24 @@
  *                      printf("%s: option -c given with value '%s'\n, option.prgname,
  *                             (const char *)argptr);
  *                      break;
+ *                  case UCHAR_MAX+1:
+ *                      {
+ *                          opt_val_t t[] = {
+ *                              "stdin",   0, "standard input",  0,
+ *                              "stdout",  1, "standard output", 1,
+ *                              "stderr",  2, "standard error",  2,
+ *                              NULL,     -1
+ *                          };
+ *                          option.connect =
+ *                              opt_val(t, argptr, OPT_CMP_CASEIN | OPT_CMP_NORMSPC);
+ *                          if (option.connect == -1) {
+ *                              printf("%s: `stdin', `stdout' or `stderr' must be given for "
+ *                                     "--connect\n", option.prgname);
+ *                              opt_free();
+ *                              return EXIT_FAILURE;
+ *                          }
+ *                      }
+ *                      break;
  *                  case 'n':
  *                      printf("%s: option -n given", option.prgname);
  *                      if (argptr)
@@ -181,7 +205,7 @@
  *                      else
  *                          putchar('\n');
  *                      break;
- *                  case UCHAR_MAX+1:
+ *                  case UCHAR_MAX+2:
  *                      printf("%s: option --help given\n", option.prgname);
  *                      opt_free();
  *                      return 0;
@@ -204,6 +228,7 @@
  *
  *          if (option.verbose)
  *              puts("verbose flag is set");
+ *          printf("connect option is set to %d\n", option.connect);
  *
  *          if (argc > 1) {
  *              printf("non-option ARGV-arguments:");
