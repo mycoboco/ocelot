@@ -27,7 +27,7 @@
  *  - supports abbreviated names for long-named options.
  *
  *  (Suppose that a program supports three long-named options "--html", "--html-false" and
- *  "--html-true". For various incomple options given, the library behaves as intuitively as
+ *  "--html-true". For various incomplete options given, the library behaves as intuitively as
  *  possible, for example, "--html-f" is considered "--html-false", "--html" is recognized as it is
  *  and "--html-" results in a warning for its ambiguity. This feature is called "abbreviated names
  *  for long-named options.")

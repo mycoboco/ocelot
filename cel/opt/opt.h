@@ -14,23 +14,24 @@
  *  to specify options and their properties. A option description table is an array of @c opt_t,
  *  each element of which is consisted of four members, two of which have overloaded meanings:
  *  - @c lopt: long-named option that can be invoked by two precedeeing hypens; optional if a
- *             short-named option given; however, encouraged to always provide a long-named option
+ *             short-named option is given, but it is encouraged to always provide a long-named
+ *             option
  *  - @c sopt: short-named option that can be invoked by a precedeeing hypens; optional if both a
- *             long-named option and a flag variable provided
+ *             long-named option and a flag variable are provided
  *  - @c flag: if an option does not take an additional argument, @c flag can point to an object
  *             (called "flag variable") that is set to the value of @c arg when @c lopt or @c sopt
- *             option encountered; if an option can take an additional argument, @c flag specifies
- *             whether the option-argument is mandatory (with @c OPT_ARG_REQ) or optional (with
- *             @c OPT_ARG_OPT)
+ *             option is encountered; if an option can take an additional argument, @c flag
+ *             specifies whether the option-argument is mandatory (with @c OPT_ARG_REQ) or optional
+ *             (with @c OPT_ARG_OPT)
  *  - @c arg: if an option does not take an additional argument, @c arg has the value to be stored
- *            into a flag variable when @c lopt or @c sopt option encountered; if an option can
+ *            into a flag variable when @c lopt or @c sopt option is encountered; if an option can
  *            take an additional argument, @c arg specifies the type of the option-argument using
  *            @c OPT_TYPE_BOOL (option-arguments starting with 't', 'T', 'y', 'Y' and '1' means
  *            true and others false, int), @c OPT_TYPE_INT (signed integer, long), @c OPT_TYPE_UINT
  *            (unsigned integer, unsigned long), @c OPT_TYPE_REAL (floating-point number, double)
  *            and @c OPT_TYPE_STR (string, char *)
  *
- *  To mark an end of the table, the @c lopt member of the last element has to be set to a null
+ *  To mark the end of the table, the @c lopt member of the last element has to be set to a null
  *  pointer. If the @c flag member points to a flag variable, the pointed integer object is
  *  initalized to be 0 by opt_init().
  *
@@ -80,8 +81,8 @@
  *
  *  When only long-named options need to be provided without introducing flag variables, values
  *  from @c UCHAR_MAX+1 to @c INT_MAX (inclusive) can be used for the @c sopt member; both are
- *  defined in <limits.h>. (Even if the C standard does not require @c UCHAR_MAX less than
- *  @c INT_MAX, many parts of C, especially, of the standard library cannot work correctly without
+ *  defined in <limits.h>. (Even if the C standard does not require @c UCHAR_MAX be less than
+ *  @c INT_MAX, many parts of C, especially, its standard library cannot work correctly without
  *  such a relationship on a hosted implementation.)
  *
  *  @code
@@ -93,7 +94,7 @@
  *
  *  On the other hand, providing an empty string for the @c lopt member as in this example can
  *  specify that an option is only short-named. Note that, however, this is discouraged; long-named
- *  options are much more user-friendly especially for novices.
+ *  options are much more user-friendly.
  *
  *  @code
  *      opt_t options[] = {
@@ -146,14 +147,14 @@
  *  @endcode
  *
  *  In addition, setting the first long-named option to "-" makes opt_parse() returns the character
- *  valued 1 when encounters an operand as if the operand is an option-argument for the option
+ *  value 1 when encounters an operand as if the operand is an option-argument for the option
  *  whose short name has the value 1.
  */
 typedef struct opt_t {
-    char *lopt;    /*!< long-named option (optional for some cases) */
-    int sopt;      /*!< short-named option (optional for some cases) */
-    int *flag;     /*!< pointer to flag varible or information about additional argument */
-    int arg;       /*!< value for flag variable or type of additional argument */
+    const char *lopt;    /*!< long-named option (optional for some cases) */
+    int sopt;            /*!< short-named option (optional for some cases) */
+    int *flag;           /*!< pointer to flag varible or information about additional argument */
+    int arg;             /*!< value for flag variable or type of additional argument */
 } opt_t;
 
 /*! @brief    defines enum contants for types of argument conversion.

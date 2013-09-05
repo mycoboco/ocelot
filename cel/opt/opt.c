@@ -166,7 +166,7 @@ static int argcheck(const char *arg)
  *
  * @return    pointer to storage that contains result or null pointer
  * @retval    non-null    pointer to conversion result
- * @retval    NULL        conversion failure
+ * @retval    null        conversion failure
  */
 static const void *argconv(const char *arg, int type)
 {
@@ -782,7 +782,7 @@ void (opt_abort)(void)
  *
  *  @return    format string for diagnostic message
  */
-const char *opt_errmsg(int c)
+const char *(opt_errmsg)(int c)
 {
     const char *p, *tab = "?-+*";
     const char *msg[] = {
