@@ -432,7 +432,7 @@ static const char *errlopt(const char *lopt)
     for (p = lopt; *UC(p) != '\0' && *p != '=' && p-lopt < sizeof(msg)-3; p++)
         continue;
 
-    sprintf(msg, "--%.*s%s", p-lopt, lopt, (*UC(p) != '\0' && *p != '=')? "...": "");
+    sprintf(msg, "--%.*s%s", (int)(p-lopt), lopt, (*UC(p) != '\0' && *p != '=')? "...": "");
 
     return msg;
 }
