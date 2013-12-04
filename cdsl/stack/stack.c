@@ -138,9 +138,6 @@ void *(stack_pop)(stack_t *stk)
  */
 void *(stack_peek)(const stack_t *stk)
 {
-    void *data;
-    struct node *t;
-
     assert(stk);
     assert(stk->head);
 
