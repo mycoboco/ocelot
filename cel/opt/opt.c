@@ -325,7 +325,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
                        int sep)
 {
     char **argv;
-    const char *p;
+    const char *p = NULL;
 
     assert(o);
     assert(pc);
@@ -530,6 +530,8 @@ int (opt_parse)(void)
 
     argc = *pargc;
     argv = *pargv;
+    retval = 0;
+    arg = NULL;
 
     if (argc < 0 || (nopt == (void *)&oargc) || argv[argc+1] == NULL) {    /* done */
         argv[oargc] = NULL;
@@ -538,9 +540,6 @@ int (opt_parse)(void)
         nopt = (void *)&oargc;    /* prevents opt_parse() from running further */
         goto retcode;
     }
-
-    retval = 0;
-    arg = NULL;
 
     do {
         switch(kind = argcheck(argv[++argc])) {

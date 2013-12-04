@@ -192,7 +192,7 @@ size_t (bitv_count)(const bitv_t *set)
 {
     static char count[] = { 0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4 };
 
-    size_t i, c;
+    size_t i, c = 0;
 
     assert(set);
 
