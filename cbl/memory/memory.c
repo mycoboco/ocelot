@@ -10,6 +10,8 @@
 #include "cbl/except.h"    /* EXCEPT_RAISE, except_raise */
 #include "memory.h"
 
+#define UNUSED(id) ((void)(id))
+
 
 /*! @brief    exception for memory allocation failure.
  */
@@ -151,6 +153,12 @@ void (mem_free)(void *p, const char *file, const char *func, int line)
 void (mem_free)(void *p, const char *file, int line)
 #endif    /* __STDC_VERSION__ */
 {
+    UNUSED(file);
+#if __STDC_VERSION__ >= 199901L    /* C99 version */
+    UNUSED(func);
+#endif    /* __STDC_VERSION__ */
+    UNUSED(line);
+
     /* no need to test if p is null pointer */
     free(p);
 }
@@ -214,6 +222,10 @@ void *(mem_resize)(void *p, size_t n, const char *file, int line)
 void (mem_log)(FILE *fp, void freefunc(FILE *, const mem_loginfo_t *),
              void resizefunc(FILE *, const mem_loginfo_t *))
 {
+    UNUSED(fp);
+    UNUSED(freefunc);
+    UNUSED(resizefunc);
+
     /* do nothing in production version */
 }
 
@@ -229,6 +241,9 @@ void (mem_log)(FILE *fp, void freefunc(FILE *, const mem_loginfo_t *),
  */
 void (mem_leak)(void apply(const mem_loginfo_t *, void *), void *cl)
 {
+    UNUSED(apply);
+    UNUSED(cl);
+
     /* do nothing in production version */
 }
 

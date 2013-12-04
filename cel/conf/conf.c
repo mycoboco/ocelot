@@ -17,7 +17,8 @@
 #include "conf.h"
 
 
-#define BUFLEN 80    /* size of buffer to read lines */
+#define UNUSED(id) ((void)(id))
+#define BUFLEN     80              /* size of buffer to read lines */
 
 /* @brief    checks @c c is a valid character for a section or variable name.
  *
@@ -1219,6 +1220,8 @@ int (conf_section)(const char *sec)
  */
 static void tabfree(const void *key, void **value, void *cl)
 {
+    UNUSED(key);
+
     if (cl == section) {    /* for section table */
         table_t *t = *value;
         table_map(t, tabfree, *value);
