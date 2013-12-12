@@ -1,6 +1,7 @@
 What's New in ocelot?
 =====================
 
+2013-12-12  Moved the repository to git/github.
 2013-04-23  0.3.0 released with bit-vector.
 2011-07-24  stack_peek() added.
 2011-01-23  The project name changed to ocelot and some bugs fixed.
