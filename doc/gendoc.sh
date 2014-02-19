@@ -1,7 +1,18 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Generates documents from code for ocelot (for internal use only)
 #
+
+RM="rm -f"
+RMR="rm -rf"
+MKDIR="mkdir"
+DOXYGEN="doxygen"
+SED="sed"
+AWK="awk"
+MV="mv"
+GREP="grep"
+TAR="tar cvzf"
+BITBUCKET="/dev/null"
 
 # man-page number
 #
@@ -56,7 +67,7 @@ MANTRASH="\@*.3 ALIGNED.3 EQUAL.3 FREE_THRESHOLD.3 HASH.3 IDX.3 ISATEND.3 MULTIP
 
 
 fatal() {
-    echo "$0: $1"
+    printf "%s: %s\n" "$0" "$1"
     exit 1
 }
 
@@ -64,90 +75,106 @@ chdir() {
     cd $1 || fatal "failed to change pwd to $1"
 }
 
-echo "Deleting old documents if any..."
-    rm -rf ${DOCDIRS}
+printf "Deleting old documents if any...\n"
+    ${RMR} ${DOCDIRS}
     for dir in ${DOCDIRS}; do
-        if [ -d "${dir}" ]; then
+        if [ -d "${dir}" ]
+        then
             fatal "failed to delete ${dir}"
         fi
     done
     for src in ${SRCDIRS}; do
         for out in ${OUTDIRS}; do
-            rm -rf "../${src}/${out}"
-            if [ -d "../${src}/${out}" ]; then
+            ${RMR} "../${src}/${out}"
+            if [ -d "../${src}/${out}" ]
+            then
                 fatal "failed to delete ../${src}/${out}"
             fi
         done
     done
 
 
-echo "Creating sub-directories..."
+printf "Creating sub-directories...\n"
     for dir in ${DOCDIRS}; do
-        mkdir "${dir}" || fatal "failed to create ${dir}"
+        ${MKDIR} "${dir}" || fatal "failed to create ${dir}"
     done
 
 chdir ".."
 for dir in ${SRCDIRS}; do
     chdir "${dir}"
-    echo -e "\nGenerating documents for ${dir}..."
-        if [ ! -f "${DOXYFILE}" ]; then
+    printf "\nGenerating documents for %s...\n" "${dir}"
+        if [ ! -f "${DOXYFILE}" ]
+        then
             fatal "${dir}/${DOXYFILE} does not exist"
         fi
-        echo "    Executing doxygen..."
-            doxygen "${DOXYFILE}" > /dev/null || fatal "failed to execute doxygen"
+        printf "    Executing doxygen...\n"
+            ${DOXYGEN} "${DOXYFILE}" > ${BITBUCKET} || fatal "failed to execute doxygen"
             for subdir in ${OUTDIRS}; do
-                if [ ! -d "${subdir}" ]; then
+                if [ ! -d "${subdir}" ]
+                then
                     fatal "doxygen does not create ${subdir}"
                 fi
             done
 
-        echo "    Collecting necessary information..."
-            PREFIX=`echo "${dir}" | sed 's/\//\./'`
-            if [ "X${PREFIX}" = "X" ]; then
+        printf "    Collecting necessary information...\n"
+            PREFIX=`printf "%s" "${dir}" | ${SED} 's/\//\./'`
+            if [ "X${PREFIX}" = "X" ]
+            then
                 fatal "failed to construct the prefix"
             fi
 
-            MANDIR=`echo ${PREFIX} | sed 's/\./ /' | awk '{ print $1 }'`
-            if [ "X${MANDIR}" = "X" ]; then
+            MANDIR=`printf "%s" "${PREFIX}" | ${SED} 's/\./ /' | ${AWK} '{ print $1 }'`
+            if [ "X${MANDIR}" = "X" ]
+            then
                 fatal "failed to construct the man directory"
             fi
 
-            VERSION=`grep "@version" "${DOXYMAIN}" | awk '{ print $3 }'`
-            if [ "X${VERSION}" = "X" ]; then
+            VERSION=`${GREP} "@version" "${DOXYMAIN}" | ${AWK} '{ print $3 }'`
+            if [ "X${VERSION}" = "X" ]
+            then
                 fatal "failed to get the version number"
             fi
 
-        echo "    Processing generated html files..."
+        printf "    Processing generated html files...\n"
             HTMLDIR="${PREFIX}-${VERSION}.html"
-            mv "${OUTHTML}" "${HTMLDIR}" || fatal "failed to rename '${OUTHTML}' in ${dir}"
-            rm -f "${HTMLDIR}/installdox"
-            tar cvzf "${HTMLDIR}.tar.gz" "${HTMLDIR}" > /dev/null || \
+            ${MV} "${OUTHTML}" "${HTMLDIR}" || fatal "failed to rename '${OUTHTML}' in ${dir}"
+            ${RM} "${HTMLDIR}/installdox"
+            ${TAR} "${HTMLDIR}.tar.gz" "${HTMLDIR}" > ${BITBUCKET} || \
                 fatal "failed to compress '${OUTHTML}' in ${dir}"
-            rm -rf "${HTMLDIR}"
-            if [ -d "${HTMLDIR}" ]; then fatal "failed to delete ${HTMLDIR}"; fi
-            mv "${HTMLDIR}.tar.gz" "../../doc/${DOCHTML}/" || fatal "failed to move html file in ${dir}"
+            ${RMR} "${HTMLDIR}"
+            if [ -d "${HTMLDIR}" ]
+            then
+                fatal "failed to delete ${HTMLDIR}"
+            fi
+            ${MV} "${HTMLDIR}.tar.gz" "../../doc/${DOCHTML}/" || fatal "failed to move html file in ${dir}"
 
-        echo "    Processing generated latex files..."
+        printf "    Processing generated latex files...\n"
             PDFFILE="${PREFIX}-${VERSION}.pdf"
             chdir "${OUTLATEX}"
-            make pdf > /dev/null 2>&1 || fatal "failed to create pdf file in ${dir}"
-            mv "${OUTPDFF}" "${PDFFILE}" || fatal "failed to rename pdf file in ${dir}"
-            mv "${PDFFILE}" ../../../doc/${DOCPDF}/ || fatal "failed to move pdf file in ${dir}"
+            make pdf > ${BITBUCKET} 2>&1 || fatal "failed to create pdf file in ${dir}"
+            ${MV} "${OUTPDFF}" "${PDFFILE}" || fatal "failed to rename pdf file in ${dir}"
+            ${MV} "${PDFFILE}" ../../../doc/${DOCPDF}/ || fatal "failed to move pdf file in ${dir}"
             chdir ".."
-            rm -rf "${OUTLATEX}"
-            if [ -d "${OUTLATEX}" ]; then fatal "failed to delete '${OUTLATEX}' in ${dir}"; fi
+            ${RMR} "${OUTLATEX}"
+            if [ -d "${OUTLATEX}" ]
+            then
+                fatal "failed to delete '${OUTLATEX}' in ${dir}"
+            fi
 
-        echo "    Processing generated man pages..."
+        printf "    Processing generated man pages...\n"
             chdir "${OUTMANPAGE}"
-            rm -f ${MANTRASH}
-            mv * "../../../../doc/${DOCMAN}/${MANDIR}" || fatal "failed to move man-pages in ${dir}"
+            ${RM} ${MANTRASH}
+            ${MV} * "../../../../doc/${DOCMAN}/${MANDIR}" || fatal "failed to move man-pages in ${dir}"
             chdir "../.."
-            rm -rf "${OUTMAN}"
-            if [ -d "${OUTMAN}" ]; then fatal "failed to delete 'man' in ${dir}"; fi
+            ${RMR} "${OUTMAN}"
+            if [ -d "${OUTMAN}" ]
+            then
+                fatal "failed to delete 'man' in ${dir}"
+            fi
 
         chdir "../.."
 done
 
-echo -e "\nAll documents generated"
+printf "\nAll documents generated\n"
 
 # end of gendoc.sh
