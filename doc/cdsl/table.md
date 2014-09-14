@@ -189,7 +189,7 @@ follows:
 A new table created.
 
 
-#### `void table_free(table_t **);
+#### `void table_free(table_t **ptable)`
 
 `table_free()` destroys a table by deallocating the storage for it and set a
 given pointer to the null pointer. As always, `table_free()` does not
@@ -309,7 +309,7 @@ _If the stored value is a null pointer, an ambiguous situation may occur._
 
 ### 2.4. Handling tables
 
-#### `void table_map(table_t *, void (const void *, void **, void *), void *)`
+#### `void table_map(table_t *table, void apply(const void *, void **, void *), void *cl)`
 
 For each key-value pair in a table, `table_map()` calls a user-provided
 callback function; it is useful when doing some common task for each key-value

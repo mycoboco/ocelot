@@ -475,7 +475,7 @@ These `enum` constants controls the behavior of `opt_val()`:
 
 | Name            | Meaning                                    |
 |:---------------:|:-------------------------------------------|
-| OPT_CMP_NORMSPC | consider '_' and '-' equivalent to a space |
+| OPT_CMP_NORMSPC | consider `_` and `-` equivalent to a space |
 | OPT_CMP_CASEIN  | perform case-insensitive comparison        |
 
 
@@ -563,7 +563,7 @@ Nothing.
 The program name or a null pointer.
 
 
-#### `int opt_parse(void);
+#### `int opt_parse(void)`
 
 `opt_parse()` parses program options.
 
@@ -715,7 +715,7 @@ Nothing.
 Nothing.
 
 
-#### `const char *opt_errmsg(int)`
+#### `const char *opt_errmsg(int c)`
 
 Given an error code that is one of `'?'`, `'-'`, `'+'` and `'*'`,
 `opt_errmsg()` returns a string that can be used as a format string for the
@@ -790,8 +790,9 @@ or more compatly:
     }
 
 The difference of the last two is that the latter turns the assertion in the
-former (that possibly gets dropped from the delivery code) into a defensive
-check (that does not). Note that the returned format string contains a newline.
+former (that possibly gets _dropped_ from the delivery code) into a defensive
+check (that does _not_). Note that the returned format string contains a
+newline.
 
 If a user needs flexibility on the format of diagnostics or actions done in
 those cases, resort to the cumbersome method shown first.
@@ -811,7 +812,7 @@ Nothing.
 A format string for diagnostic message.
 
 
-#### `void opt_free(void);
+#### `void opt_free(void)`
 
 `opt_free()` cleans up any storage allocated by `opt_init()`. It also
 initializes the internal state, which allows for multiple scans; see

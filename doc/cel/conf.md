@@ -330,7 +330,7 @@ two forms:
 
 where whitespaces are allowed before and/or after a section and variable name.
 The first form refers to a variable in the global section; there is no concept
-of the "current" section yet because `conf_section()` cannot be invoked before
+of the _current_ section yet because `conf_section()` cannot be invoked before
 `conf_preset()` or `conf_init()`. To mark the end of a table, set `var` to a
 null pointer.
 
@@ -388,7 +388,7 @@ These `enum` constants represent error codes:
 | CONF_ERR_VAR    | variable not found             |
 | CONF_ERR_TYPE   | data type mismatch             |
 
-See return values for API functions.
+See return values from API functions.
 
 
 #### Masks for control options
@@ -775,7 +775,7 @@ memory library).
 A string or null pointer.
 
 
-#### `int conf_set(const char *, const char *)`
+#### `int conf_set(const char *secvar, const char *value)`
 
 `conf_set()` inserts or replaces a value associated with a variable.
 
@@ -813,7 +813,7 @@ A success/failure indicator.
 | others        | failure |
 
 
-#### `int conf_section(const char *)`
+#### `int conf_section(const char *sec)`
 
 `conf_section()` sets the current section to a given section.
 
@@ -882,7 +882,7 @@ Nothing.
 The current error code.
 
 
-#### `const char *conf_errstr(int)`
+#### `const char *conf_errstr(int code)`
 
 `conf_errstr()` returns an error message for a given error code.
 
