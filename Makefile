@@ -24,6 +24,8 @@ ALL_CFLAGS = -I$I -Wall -W -fPIC $(CFLAGS)
 	$(CC) -o $@ -c $(CPPFLAGS) $(ALL_CFLAGS) $<
 
 
+SRCDIR = src
+S = $(SRCDIR)
 BLDDIR = build
 B = $(BLDDIR)
 INCDIR = $B/include
@@ -32,13 +34,11 @@ LIBDIR = $B/lib
 L = $(LIBDIR)
 DOCDIR = doc
 
-CBLOBJS = cbl/arena/arena.o cbl/assert/assert.o cbl/except/except.o cbl/memory/memory.o \
-	cbl/text/text.o
-CBLDOBJS = cbl/arena/arena.o cbl/assert/assert.o cbl/except/except.o cbl/memory/memoryd.o \
-	cbl/text/text.o
-CDSLOBJS = cdsl/bitv/bitv.o cdsl/dlist/dlist.o cdsl/hash/hash.o cdsl/list/list.o cdsl/set/set.o \
-	cdsl/stack/stack.o cdsl/table/table.o
-CELOBJS = cel/conf/conf.o cel/opt/opt.o
+CBLOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memory.o $S/cbl/text.o
+CBLDOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memoryd.o $S/cbl/text.o
+CDSLOBJS = $S/cdsl/bitv.o $S/cdsl/dlist.o $S/cdsl/hash.o $S/cdsl/list.o $S/cdsl/set.o \
+	$S/cdsl/stack.o $S/cdsl/table.o
+CELOBJS = $S/cel/conf.o $S/cel/opt.o
 
 CBLHORIG = $(CBLOBJS:.o=.h)
 CDSLHORIG = $(CDSLOBJS:.o=.h)
@@ -66,10 +66,6 @@ all: cbl cdsl cel
 
 clean:
 	$(RM) $(CBLOBJS) $(CBLDOBJS) $(CDSLOBJS) $(CELOBJS)
-	$(RM) $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY)
-	-$(RMDIR) $I/cbl $I/cdsl $I/cel
-	$(RM) $L/libcbl.a $L/libcbld.a $L/libcdsl.a $L/libcel.a
-	$(RM) $L/libcbl.so.$M.$N $L/libcbld.so.$M.$N $L/libcdsl.so.$M.$N $L/libcel.so.$M.$N
 
 
 $L/libcbl.a: $(CBLOBJS)
@@ -85,16 +81,16 @@ $L/libcel.a: $(CELOBJS)
 	$(AR) $@ $(CELOBJS); $(RANLIB) $@ || true
 
 $L/libcbl.so.$M.$N: $(CBLOBJS)
-	$(LD) $(SHAREDOPT) -soname=libcbl.so.$M -o $@ $(CBLOBJS)
+	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcbl.so.$M -o $@ $(CBLOBJS)
 
 $L/libcbld.so.$M.$N: $(CBLDOBJS)
-	$(LD) $(SHAREDOPT) -soname=libcbld.so.$M -o $@ $(CBLDOBJS)
+	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcbld.so.$M -o $@ $(CBLDOBJS)
 
 $L/libcdsl.so.$M.$N: $(CDSLOBJS)
-	$(LD) $(SHAREDOPT) -soname=libcdsl.so.$M -o $@ $(CDSLOBJS)
+	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcdsl.so.$M -o $@ $(CDSLOBJS)
 
 $L/libcel.so.$M.$N: $(CELOBJS)
-	$(LD) $(SHAREDOPT) -soname=libcel.so.$M -o $@ $(CELOBJS)
+	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcel.so.$M -o $@ $(CELOBJS)
 
 $(CBLHCOPY): $I/cbl $(CBLHORIG)
 	$(CP) $(CBLHORIG) $I/cbl/
@@ -115,23 +111,23 @@ $I/cel:
 	$(MKDIR) $I/cel
 
 
-cbl/arena/arena.o:    cbl/arena/arena.c    cbl/arena/arena.h   cbl/assert/assert.h cbl/except/except.h
-cbl/assert/assert.o:  cbl/assert/assert.c  cbl/assert/assert.h cbl/except/except.h
-cbl/except/except.o:  cbl/except/except.c  cbl/except/except.h cbl/assert/assert.h
-cbl/memory/memory.o:  cbl/memory/memory.c  cbl/memory/memory.h cbl/assert/assert.h cbl/except/except.h
-cbl/memory/memoryd.o: cbl/memory/memoryd.c cbl/memory/memory.h cbl/assert/assert.h cbl/except/except.h
-cbl/text/text.o:      cbl/text/text.c      cbl/text/text.h     cbl/assert/assert.h cbl/memory/memory.h
+$S/cbl/arena.o:   $S/cbl/arena.c   $S/cbl/arena.h  $S/cbl/assert.h $S/cbl/except.h
+$S/cbl/assert.o:  $S/cbl/assert.c  $S/cbl/assert.h $S/cbl/except.h
+$S/cbl/except.o:  $S/cbl/except.c  $S/cbl/except.h $S/cbl/assert.h
+$S/cbl/memory.o:  $S/cbl/memory.c  $S/cbl/memory.h $S/cbl/assert.h $S/cbl/except.h
+$S/cbl/memoryd.o: $S/cbl/memoryd.c $S/cbl/memory.h $S/cbl/assert.h $S/cbl/except.h
+$S/cbl/text.o:    $S/cbl/text.c    $S/cbl/text.h   $S/cbl/assert.h $S/cbl/memory.h
 
-cdsl/bitv/bitv.o:   cdsl/bitv/bitv.c   cdsl/bitv/bitv.h   cbl/assert/assert.h cbl/memory/memory.h
-cdsl/dlist/dlist.o: cdsl/dlist/dlist.c cdsl/dlist/dlist.h cbl/assert/assert.h cbl/memory/memory.h
-cdsl/hash/hash.o:   cdsl/hash/hash.c   cdsl/hash/hash.h   cbl/assert/assert.h cbl/memory/memory.h
-cdsl/list/list.o:   cdsl/list/list.c   cdsl/list/list.h	  cbl/assert/assert.h cbl/memory/memory.h
-cdsl/set/set.o:     cdsl/set/set.c     cdsl/set/set.h     cbl/assert/assert.h cbl/memory/memory.h
-cdsl/stack/stack.o: cdsl/stack/stack.c cdsl/stack/stack.h cbl/assert/assert.h cbl/memory/memory.h
-cdsl/table/table.o: cdsl/table/table.c cdsl/table/table.h cbl/assert/assert.h cbl/memory/memory.h
+$S/cdsl/bitv.o:  $S/cdsl/bitv.c  $S/cdsl/bitv.h  $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/dlist.o: $S/cdsl/dlist.c $S/cdsl/dlist.h $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/hash.o:  $S/cdsl/hash.c  $S/cdsl/hash.h  $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/list.o:  $S/cdsl/list.c  $S/cdsl/list.h	 $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/set.o:   $S/cdsl/set.c   $S/cdsl/set.h   $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/stack.o: $S/cdsl/stack.c $S/cdsl/stack.h $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/table.o: $S/cdsl/table.c $S/cdsl/table.h $S/cbl/assert.h $S/cbl/memory.h
 
-cel/conf/conf.o: cel/conf/conf.c cel/conf/conf.h cbl/assert/assert.h cbl/memory/memory.h \
-	cdsl/hash/hash.h cdsl/table/table.h
-cel/opt/opt.o:   cel/opt/opt.c   cel/opt/opt.h
+$S/cel/conf.o: $S/cel/conf.c $S/cel/conf.h $S/cbl/assert.h $S/cbl/memory.h $S/cdsl/hash.h \
+	$S/cdsl/table.h
+$S/cel/opt.o:  $S/cel/opt.c  $S/cel/opt.h
 
 # end of Makefile

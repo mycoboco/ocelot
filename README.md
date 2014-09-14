@@ -1,41 +1,43 @@
-ocelot: A Language Extension Library
+ocelot: a language extension library
 ====================================
 
 `ocelot` is a collection of libraries to provide features that the C language
 lacks, various data structures that most programs use in common, and facilities
 for interaction between a program and its environment.
 
-This package collects libraries into three categories called `CBL`, `CDSL` and
-`CEL`. Libraries belonging to `CBL`(C Basic Library) provide features that the
-C language lacks and include alternative memory allocators and an exception
-handling facility. Those to `CDSL`(C Data Structure Library) implement various
-data structures frequently used by most programs. Those to `CEL`(C Environment
-Library) aid interaction between programs and the execution environment. Each
-library has its own version number and modification logs.
+This package collects libraries into three categories called `cbl`, `cdsl` and
+`cel`. Libraries belonging to `cbl`(C basic library) provide features that the
+the language lacks and include alternative memory allocators and an exception
+handling facility. Those to `cdsl`(C data structure library) implement various
+data structures frequently used by most programs. Those to `cel`(C environment
+library) aid interaction with the execution environment.
 
-The `cbl`, `cdsl` and `cel` directories contain sub-directories for the
+The `src` directory contains sub-directories `cbl`, `cdsl` and `cel` for the
 libraries of each category:
 
-- `cbl`: C Basic Library
-    - `arena`: The Arena Library (lifetime-based memory allocator)
-    - `assert`: The Assertion Library
-    - `except`: The Exception Handling Library
-    - `memory`: The Memory Management Library
-    - `text`: The Text Library (high-level string manipulation)
-- `cdsl`: C Data Structure Library
-    - `bitv`: The Bit-vector Library
-    - `dlist`: The Doubly-linked List Library
-    - `hash`: The Hash Library
-    - `list`: The List Library (singly-linked list)
-    - `set`: The Set Library
-    - `stack`: The Stack Library
-    - `table`: The Table Library
-- `cel`: C Environment Library
-    - `conf`: The Configuration File Library (configuration file parser)
-    - `opt`: The Option Parsing Library (option parser)
+- `cbl`: C basic library
+    - `arena.h/c`: arena library (lifetime-based memory allocator)
+    - `assert.h/c`: assertion library
+    - `except.h/c`: exception library
+    - `memory.h/c`: memory library (for production)
+    - `memory.h/memoryd.c`: memory library (for debugging)
+    - `text.h/c`: text library (high-level string manipulation)
+- `cdsl`: C data structure library
+    - `bitv.h/c`: bit-vector library
+    - `dlist.h/c`: doubly-linked list library
+    - `hash.h/c`: hash library
+    - `list.h/c`: list library (singly-linked list)
+    - `set.h/c`: set library
+    - `stack.h/c`: stack library
+    - `table.h/c`: table library
+- `cel`: C environment library
+    - `conf.h/c`: configuration library (configuration file parser)
+    - `opt.h/c`: option library (option parser)
 
-Libraries are documented by [`Doxygen`](http://www.doxygen.org). The `doc`
-directory contains HTML, PDF and `man`-page versions of the documents.
+Libraries are documented using
+[`markdown`](http://daringfireball.net/projects/markdown/). The `doc` directory
+contains [documentation](https://github.com/mycoboco/ocelot/tree/master/doc)
+for libraries.
 
 `INSTALL.md` explains how to build and install the libraries. For the copyright
 issues, see the accompanying `LICENSE.md` file.

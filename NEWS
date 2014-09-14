@@ -1,6 +1,7 @@
-What's New in ocelot?
+What's new in ocelot?
 =====================
 
+2014-09-14  Documentation refined.
 2013-12-12  Moved the repository to git/github.
 2013-04-23  0.3.0 released with bit-vector.
 2011-07-24  stack_peek() added.

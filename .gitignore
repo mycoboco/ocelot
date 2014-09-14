@@ -2,3 +2,5 @@ doc/html
 doc/man3
 doc/pdf
 pkg/
+build/include
+build/lib

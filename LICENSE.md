@@ -1,11 +1,11 @@
-ocelot: A Language Extension Library
+ocelot: a language extension library
 ====================================
 
 `ocelot` contains several libraries for which slightly different copyright
 notices apply. Instead of providing several `LICENSE.md` files, the names of
 all libraries are listed here with their copyright notices merged. They are
 copied with a few changes for
-[Markdown](http://daringfireball.net/projects/markdown/) from the `doxymain.h`
+[markdown](http://daringfireball.net/projects/markdown/) from the `doxymain.h`
 files in the libraries.
 
 -------------------------------------------------------------------------------
@@ -28,26 +28,26 @@ copies or substantial portions of the Software.
 
 This applies to:
 
-- the Arena Library (`cbl/arena`),
-- the Assertion Library (`cbl/assert`),
-- the Exception Handling Library (`cbl/except`),
-- the Memory Management Library (`cbl/memory`),
-- the Text Library (`cbl/text`),
-- the Bit-vector Library (`cdsl/bitv`),
-- the Doubly-Linked List Library (`cdsl/dlist`),
-- the Hash Library (`cdsl/hash`),
-- the List Library (`cdsl/list`),
-- the Set Library (`cdsl/set`),
-- the Stack Library (`cdsl/stack`) and
-- the Table Library (`cdsl/table`).
+- arena (`cbl/arena`),
+- assertion (`cbl/assert`),
+- exception handling (`cbl/except`),
+- memory management (`cbl/memory`),
+- text (`cbl/text`),
+- bit-vector (`cdsl/bitv`),
+- doubly-linked list (`cdsl/dlist`),
+- hash (`cdsl/hash`),
+- list (`cdsl/list`),
+- set (`cdsl/set`),
+- stack (`cdsl/stack`) and
+- table (`cdsl/table`).
 
 -------------------------------------------------------------------------------
 
-To parts I added or modified and the libraries I wrote from the scratch (the
-Configuration File Library, `cel/conf` and the Option Parsing Library,
-`cel/opt`) the following copyright applies:
+To parts I added or modified and the libraries I wrote from the scratch
+(configuration file library, `cel/conf` and option parsing library, `cel/opt`)
+the following copyright applies:
 
-Copyright (C) 2009-2013 by Jun Woong.
+Copyright (C) 2009-2014 by Jun Woong.
 
 The package was written so as to conform with the Standard C published by ISO
 9899:1990 and ISO 9899:1999.
