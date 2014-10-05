@@ -34,10 +34,10 @@ libraries of each category:
     - `conf.h/c`: configuration library (configuration file parser)
     - `opt.h/c`: option library (option parser)
 
-Libraries are documented using
-[`markdown`](http://daringfireball.net/projects/markdown/). The `doc` directory
-contains [documentation](https://github.com/mycoboco/ocelot/tree/master/doc)
-for libraries.
+Libraries had been documented with [doxygen](http://www.doxygen.org), and
+changed to use [markdown](http://daringfireball.net/projects/markdown/) for
+easier maintenance and access. The `doc` directory contains
+[documentation](https://github.com/mycoboco/ocelot/tree/master/doc) for them.
 
 `INSTALL.md` explains how to build and install the libraries. For the copyright
 issues, see the accompanying `LICENSE.md` file.

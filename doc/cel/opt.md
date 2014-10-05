@@ -556,7 +556,7 @@ Nothing.
 | pv   | in     | pointer to `argv`                                         |
 | pa   | in     | pointer to object to contain argument or erroneous option |
 | name | in     | default program name                                      |
-| sep  | in     | directory separator (e.g., `/` on UNIX-like systems)      |
+| sep  | in     | directory separator (e.g., `/` on Unix-like systems)      |
 
 ##### Returns
 
