@@ -49,6 +49,9 @@ You can also build them as 64-bit binaries without `-m` flags. _Note that,
 however, even if the build is successful, `ocelot` does not take full advantage
 of 64-bit environments yet._
 
+_If the build fails with an error saying "undefined reference to
+`__stack_chk_fail_local`", add `-fno-stack-protector` to `CFLAGS` above._
+
 After the libraries built, you can use them by linking and delivering with
 your product, or install them on your system. For system-wide installation, you
 need to identify proper places to put the libraries (e.g., `/usr/local/lib` in
