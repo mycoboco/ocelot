@@ -179,7 +179,7 @@ int (bitv_put)(bitv_t *set, size_t n, int bit)
     int prev;
 
     assert(set);
-    assert(bit & 1 == bit);
+    assert((bit & 1) == bit);
     assert(n < set->length);
 
     prev = BIT(set, n);
