@@ -6,7 +6,7 @@
 #define DLIST_H
 
 
-/* represents a doubly-linked list */
+/* doubly-linked list */
 typedef struct dlist_t dlist_t;
 
 

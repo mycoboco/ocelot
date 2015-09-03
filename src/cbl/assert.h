@@ -14,7 +14,7 @@
 #include "cbl/except.h"    /* EXCEPT_RAISE */
 
 
-/* replaces standard assert() with version supporting exception */
+/* replaces standard assert() */
 #define assert(e) ((void)((e) || (EXCEPT_RAISE(assert_exceptfail), 0)))
 
 
@@ -22,7 +22,7 @@
 extern const except_t assert_exceptfail;
 
 
-#endif    /* ASSERT_STDC_VER */
+#endif    /* NDEBUG || ASSERT_STDC_VER */
 
 #endif    /* ASSERT_H */
 

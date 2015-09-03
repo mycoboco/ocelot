@@ -12,11 +12,11 @@
 #include "text.h"
 
 
-/* array index converted from text position */
+/* array index from text position */
 #define IDX(i, len) (((i) <= 0)? (i) + (len): (i) - 1)
 
 /*
- *  checks if text can be attached to another text in text space
+ *  checks if text can be attached to another text
  *
  *  This library hires a separate allocator to maintain its text space where storages for texts
  *  resides; see alloc(). When a text generated recently occupies the last byte in the storage, an
@@ -59,8 +59,8 @@
  *  but avail is mutable so should be remembered.
  */
 struct text_save_t {
-    struct chunk *current;    /* points to chunk to restore later */
-    char *avail;              /* points to start of free area of saved chunk */
+    struct chunk *current;    /* chunk to restore later */
+    char *avail;              /* start of free area of saved chunk */
 };
 
 /*
@@ -82,19 +82,19 @@ struct text_save_t {
  *  the size of the free space in a chunk.
  */
 struct chunk {
-    struct chunk *link;    /* points to next chunk */
-    char *avail;           /* points to start of free area in chunk */
-    char *limit;           /* points to past end of chunk */
+    struct chunk *link;    /* next chunk */
+    char *avail;           /* start of free area in chunk */
+    char *limit;           /* past end of chunk */
 };
 
 
-/* list of memory chunks for the text space; see alloc() */
+/* memory chunk list for text space; see alloc() */
 static struct chunk head = { NULL, NULL, NULL };
 
-/* last chunk in list for the text space; see alloc() */
+/* last chunk for text space; see alloc() */
 static struct chunk *current = &head;
 
-/* various sets of characters; see text_map() */
+/* character sets; see text_map() */
 const text_t text_ucase = { 26, "ABCDEFGHIJKLMNOPQRSTUVWXYZ" };
 const text_t text_lcase = { 26, "abcdefghijklmnopqrstuvwxyz" };
 const text_t text_digits = { 10, "0123456789" };

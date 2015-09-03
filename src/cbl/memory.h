@@ -11,7 +11,7 @@
 #include "cbl/except.h"    /* except_t */
 
 
-/* information about invalid memory operation */
+/* info for invalid memory operation */
 typedef struct mem_loginfo_t {
     const void *p;        /* pointer value in invalid operation */
     size_t size;          /* requested size; meaningful with mem_resize() */

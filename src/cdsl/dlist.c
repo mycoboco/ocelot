@@ -12,7 +12,7 @@
 
 
 /*
- *  implements a doubly-linked list (a.k.a. a ring)
+ *  doubly-linked list (a.k.a. ring)
  */
 struct dlist_t {
     struct node {
@@ -54,7 +54,7 @@ dlist_t *(dlist_list)(void *data, ...)
     va_start(ap, data);
     /* if data is null, following loop skipped and just dlist_new() returned */
     for (; data; data = va_arg(ap, void *))
-        dlist_addtail(dlist, data);    /* dlist_addhi() does dirty job */
+        dlist_addtail(dlist, data);    /* dlist_addtail() does dirty job */
     va_end(ap);
 
     return dlist;
@@ -177,7 +177,7 @@ void *(dlist_put)(dlist_t *dlist, long i, void *data)
  */
 void *(dlist_addtail)(dlist_t *dlist, void *data)
 {
-    struct node *p,    /* points to new node */
+    struct node *p,    /* new node */
                 *head;
 
     assert(dlist);
@@ -233,8 +233,8 @@ void *(dlist_add)(dlist_t *dlist, long pos, void *data)
         return dlist_addhead(dlist, data);
     else {    /* inserting node to middle of list */
         long i;
-        struct node *p,    /* points to new node */
-                    *q;    /* points to node to be next to new node */
+        struct node *p,    /* new node */
+                    *q;    /* node to be next to new node */
 
         /* find index of node that will become next of new node;
            if pos < 0, pos+(length+1) == positive value for same position */
@@ -286,7 +286,7 @@ void *(dlist_remove)(dlist_t *dlist, long i)
 {
     long n;
     void *data;
-    struct node *q;    /* points to node to be removed */
+    struct node *q;    /* node to be removed */
 
     assert(dlist);
     assert(dlist->length > 0);
@@ -388,7 +388,7 @@ void *(dlist_remhead)(dlist_t *dlist)
 void (dlist_shift)(dlist_t *dlist, long n)
 {
     long i;
-    struct node *q;    /* points to new head node after shift */
+    struct node *q;    /* new head node after shift */
 
     assert(dlist);
     assert(n >= -dlist->length);

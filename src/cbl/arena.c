@@ -14,13 +14,13 @@
 #include "arena.h"
 
 
-/* smallest multiple of y that is greater than or equal to x */
+/* smallest multiple of y greater than or equal to x */
 #define MULTIPLE(x, y) ((((x)+(y)-1)/(y)) * (y))
 
-/* checks if pointer is aligned properly */
+/* checks if pointer aligned properly */
 #define ALIGNED(p) ((uintptr_t)(p) % sizeof(union align) == 0)
 
-/* max number of memory chunks in maintain in freelist */
+/* max number of memory chunks in freelist */
 #define FREE_THRESHOLD 10
 
 
@@ -73,9 +73,9 @@ typedef unsigned long uintptr_t;
  *  This can be thought as pushing a new memory chunk through the head node.
  */
 struct arena_t {
-    struct arena_t *prev;    /* points to previously allocated chunk */
-    char *avail;             /* points to start of available area in previous chunk */
-    char *limit;             /* points to end of previous chunk */
+    struct arena_t *prev;    /* previously allocated chunk */
+    char *avail;             /* start of available area in previous chunk */
+    char *limit;             /* end of previous chunk */
 };
 
 /*

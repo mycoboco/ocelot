@@ -21,7 +21,7 @@
 #define normal(c) (((c) == ' ' || (c) == '_')? '-': (c))
 
 
-/* kind of options */
+/* option kinds */
 enum {
     INVALID,     /* invalid */
     DMINUS,      /* -- */
@@ -38,14 +38,14 @@ enum {
 } order;
 
 
-/* unique storage for OPT_ARG_ macros */
+/* unique storages for OPT_ARG_ macros */
 int opt_arg_req, opt_arg_no, opt_arg_opt;
 
 
-static const opt_t *opt;     /* option description table provided by a user */
-static int *pargc;           /* argc provided by a user */
+static const opt_t *opt;     /* option description table from user */
+static int *pargc;           /* argc from user */
 static char ***pargv;        /* copy of argv */
-static const void **parg;    /* object through which an option-argument passed */
+static const void **parg;    /* object through which option-argument passed */
 static const char *nopt;     /* short-named option to see next in grouped one */
 static int oprdflag;         /* set if all remaining arguments are recognized as operands */
 static int oargc;            /* location to copy next operand */

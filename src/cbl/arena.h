@@ -10,7 +10,7 @@
 #include "cbl/except.h"    /* except_t */
 
 
-/* represents an arena */
+/* arena */
 typedef struct arena_t arena_t;
 
 

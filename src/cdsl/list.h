@@ -8,7 +8,7 @@
 #include <stddef.h>    /* size_t */
 
 
-/* represents a node in a list */
+/* list node */
 typedef struct list_t {
     void *data;             /* data */
     struct list_t *next;    /* next node */
@@ -27,7 +27,7 @@ void list_map(list_t *, void (void **, void *), void *);
 list_t *list_reverse(list_t *);
 
 
-/* iterates for each node of list */
+/* iterates for each node in list */
 #define LIST_FOREACH(pos, list) for ((pos) = (list); (pos); (pos)=(pos)->next)
 
 

@@ -11,7 +11,7 @@
 #include "except.h"
 
 
-/* stack to handle nested exception */
+/* stack for nested exceptions */
 except_frame_t *except_stack = NULL;
 
 

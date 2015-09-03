@@ -6,14 +6,14 @@
 #define CONF_H
 
 
-/* represents an element of a configuration description table */
+/* configuration description table element */
 typedef struct conf_t {
     char *var;       /* section name and variable name */
     int type;        /* type of variable */
     char *defval;    /* default value */
 } conf_t;
 
-/* defines enum constants for types of values */
+/* value types */
 enum {
     CONF_TYPE_NO,      /* cannot have type (not used in this library) */
     CONF_TYPE_BOOL,    /* has boolean (int) type */
@@ -23,7 +23,7 @@ enum {
     CONF_TYPE_STR      /* has string (char *) type */
 };
 
-/* defines enum constants for error codes */
+/* error codes */
 enum {
     CONF_ERR_OK,        /* everything is okay */
     CONF_ERR_FILE,      /* file not found */
@@ -38,10 +38,10 @@ enum {
     CONF_ERR_MAX        /* number of error codes */
 };
 
-/* defines masks for control options */
+/* control option masks */
 enum {
-    CONF_OPT_CASE = 0x01,                 /* case-sensitive variable/section name */
-    CONF_OPT_ESC  = CONF_OPT_CASE << 1    /* supports escape sequence in quoted value */
+    CONF_OPT_CASE = 0x01,                 /* case-sensitive variable/section names */
+    CONF_OPT_ESC  = CONF_OPT_CASE << 1    /* supports escape sequence in quoted values */
 };
 
 

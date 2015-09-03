@@ -22,20 +22,20 @@
 
 #define NELEMENT(array) (sizeof(array) / sizeof(*(array)))    /* number of elements in array */
 
-#define HASH(p, t) (((uintptr_t)(p)>>3) % NELEMENT(t))    /* hashing given pointer */
+#define HASH(p, t) (((uintptr_t)(p)>>3) % NELEMENT(t))    /* hash from pointer */
 
 #define NDESCRIPTORS 512    /* number of block descriptors; see descalloc() */
 
-/* smallest multiple of y that is greater than or equal to x */
+/* smallest multiple of y greater than or equal to x */
 #define MULTIPLE(x, y) ((((x)+(y)-1)/(y)) * (y))
 
 /* extra bytes allocated with new memory block; see mem_alloc() */
 #define NALLOC MULTIPLE(4096, sizeof(union align))
 
-/* checks if pointer is aligned properly */
+/* checks if pointer aligned properly */
 #define ALIGNED(p) ((uintptr_t)(p) % sizeof(union align) == 0)
 
-/* raises exception if pointer is invalid */
+/* raises exception for invalid pointers */
 #if __STDC_VERSION__ >= 199901L    /* C99 version */
 #define RAISE_EXCEPT_IF_INVALID(p, n, type)                                             \
             do {                                                                        \
@@ -82,7 +82,7 @@ union align {
 #endif    /* MEM_MAXALIGN */
 };
 
-/* descriptor for maintaining memory block */
+/* memory block descriptor */
 struct descriptor {
     struct descriptor *free;    /* next descriptor for free block; non-null iff freed */
     struct descriptor *link;    /* next descriptor in same hash entry */
@@ -110,7 +110,7 @@ static void (*logfuncFreefree)(FILE *, const mem_loginfo_t *);
 static void (*logfuncResizefree)(FILE *, const mem_loginfo_t *);
 
 /*
- *  hash table for memory block descriptor
+ *  hash table for memory block descriptors
  *
  *  htab's elements point to lists for block descriptors. htab contains every memory block
  *  descriptor whether it describes a freed or used block. For example, suppose there are 3 entries
@@ -144,7 +144,7 @@ static void (*logfuncResizefree)(FILE *, const mem_loginfo_t *);
 static struct descriptor *htab[2048];
 
 /*
- *  threads descriptors for freed memory block
+ *  threads descriptors for freed memory blocks
  *
  *  freelist is a tail dummy node of the list for free blocks. Its free member points to the head
  *  node of the list; it points to itself initially as shown below. As explained above, the hash

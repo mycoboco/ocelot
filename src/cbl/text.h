@@ -6,13 +6,13 @@
 #define TEXT_H
 
 
-/* represents text */
+/* text */
 typedef struct text_t {
-    int len;            /* length of string */
+    int len;            /* length */
     const char *str;    /* string */
 } text_t;
 
-/* information on the top of the stack-like text space */
+/* top of stack-like text space */
 typedef struct text_save_t text_save_t;
 
 
@@ -49,7 +49,7 @@ text_save_t *text_save(void);
 void text_restore(text_save_t **);
 
 
-/* accesses character in text with position */
+/* accesses character with position */
 #define TEXT_ACCESS(t, i) ((t).str[((i) <= 0)? (i)+(t).len: (i)-1])
 
 

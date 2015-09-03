@@ -17,7 +17,7 @@
 
 #define BIT(set, n) (((set)->byte[(n)/8] >> ((n)%8)) & 1)    /* extracts bit from bit-vector */
 
-/* body for functions that work on the range */
+/* body for work on range */
 #define range(op, fcmp, cmp)                                   \
     do {                                                       \
         assert(set);                                           \
@@ -35,7 +35,7 @@
             set->byte[l/8] op##= cmp (msb[l%8] & lsb[h%8]);    \
     } while(0)
 
-/* function body for set operations */
+/* body for set operations */
 #define setop(eq, sn, tn, op)                               \
     do {                                                    \
         assert(s || t);                                     \
@@ -71,7 +71,7 @@ static unsigned pad[] = {
 
 
 /*
- *  implements a bit-vector
+ *  bit-vector
  *
  *  struct bitv_t contains a sequence of words to implement a bit-vector whose length in bits is
  *  held in length. For table-driven approaches, byte provides access to an individual byte in
@@ -179,7 +179,7 @@ int (bitv_put)(bitv_t *set, size_t n, int bit)
     int prev;
 
     assert(set);
-    assert(bit == 0 || bit == 1);
+    assert(bit & 1 == bit);
     assert(n < set->length);
 
     prev = BIT(set, n);

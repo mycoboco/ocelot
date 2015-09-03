@@ -8,7 +8,7 @@
 #include <stddef.h>    /* size_t */
 
 
-/* represents a set */
+/* set */
 typedef struct set_t set_t;
 
 

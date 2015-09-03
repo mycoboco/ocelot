@@ -19,12 +19,12 @@
 #define UNUSED(id) ((void)(id))
 #define BUFLEN     80              /* size of buffer to read lines */
 
-/* checks c is valid for section or variable names */
+/* checks if c is valid for section or variable names */
 #define VALID_CHR(c) (isalpha(c) || isdigit(c) || (c) == '_')
 
 
 /*
- *  node in a table for variable-value pairs
+ *  table node for variable-value pairs
  *
  *  A table for containing variables and their values actually has a pointer to struct valnode_t as
  *  the value. To aid memory management in the library implementation, freep points to any storage
@@ -32,7 +32,7 @@
  *  val points to.
  */
 struct valnode_t {
-    void *freep;    /* pointer used for clean-up */
+    void *freep;    /* for clean-up */
     int type;       /* type of value */
     char *val;      /* value */
 };
@@ -41,7 +41,7 @@ struct valnode_t {
 static table_t *section;    /* table for containing sections */
 static table_t *current;    /* current table; see conf_section() */
 static int preset;          /* set if supported sections and variables are prescribed */
-static int errcode;         /* set if an error has been occurred */
+static int errcode;         /* set if error has been occurred */
 static int control;         /* controls some aspects of the library */
 
 

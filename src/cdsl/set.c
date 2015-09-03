@@ -15,7 +15,7 @@
 
 
 /*
- *  implements a set with a hash table
+ *  set implemented by hash table
  *
  *  struct set_t contains some information on a set and a hash table to contain set members. A set
  *  looks like the following:

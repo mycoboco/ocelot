@@ -8,7 +8,7 @@
 #include <stddef.h>    /* size_t */
 
 
-/* represents a table */
+/* table */
 typedef struct table_t table_t;
 
 

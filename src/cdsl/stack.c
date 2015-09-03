@@ -9,7 +9,7 @@
 #include "stack.h"
 
 
-/* implements a stack with a linked list */
+/* stack implemented by linked list */
 struct stack_t {
     struct node {
         void *data;           /* data contained in node */

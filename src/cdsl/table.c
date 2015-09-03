@@ -11,7 +11,7 @@
 
 
 /*
- *  implements a table with a hash table
+ *  table implemented by hash table
  *
  *  struct table_t contains information on a table and a hash table to contain key-value pairs. A
  *  table looks like the following:

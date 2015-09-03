@@ -6,7 +6,7 @@
 #define STACK_H
 
 
-/* represents a stack */
+/* stack */
 typedef struct stack_t stack_t;
 
 

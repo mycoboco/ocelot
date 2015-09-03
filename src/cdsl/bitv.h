@@ -8,7 +8,7 @@
 #include <stddef.h>    /* size_t */
 
 
-/* represents a bit-vector */
+/* bit-vector */
 typedef struct bitv_t bitv_t;
 
 
