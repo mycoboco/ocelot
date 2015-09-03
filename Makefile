@@ -16,6 +16,8 @@ RMR = rm -rf
 MKDIR = mkdir
 RMDIR = rmdir
 TAR = tar
+CD = cd
+LN = ln -sf
 
 SHAREDOPT = -shared
 ALL_CFLAGS = -I$I -Wall -W -fPIC $(CFLAGS)
@@ -56,11 +58,12 @@ N = 1
 what:
 	-@echo make all cbl cdsl cel clean
 
-cbl: $(CBLHCOPY) $L/libcbl.a $L/libcbl.so.$M.$N $L/libcbld.a $L/libcbld.so.$M.$N
+cbl: $(CBLHCOPY) $L/libcbl.a $L/libcbl.so.$M.$N $L/libcbl.so $L/libcbld.a $L/libcbld.so.$M.$N \
+	$L/libcbld.so
 
-cdsl: $(CBLHCOPY) $(CDSLHCOPY) $L/libcdsl.a $L/libcdsl.so.$M.$N
+cdsl: $(CBLHCOPY) $(CDSLHCOPY) $L/libcdsl.a $L/libcdsl.so.$M.$N $L/libcdsl.so
 
-cel: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcel.a $L/libcel.so.$M.$N
+cel: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcel.a $L/libcel.so.$M.$N $L/libcel.so
 
 all: cbl cdsl cel
 
@@ -91,6 +94,18 @@ $L/libcdsl.so.$M.$N: $(CDSLOBJS)
 
 $L/libcel.so.$M.$N: $(CELOBJS)
 	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcel.so.$M -o $@ $(CELOBJS)
+
+$L/libcbl.so: $L/libcbl.so.$M.$N
+	$(CD) $L; $(LN) libcbl.so.$M libcbl.so
+
+$L/libcbld.so: $L/libcbld.so.$M.$N
+	$(CD) $L; $(LN) libcbld.so.$M libcbld.so
+
+$L/libcdsl.so: $L/libcdsl.so.$M.$N
+	$(CD) $L; $(LN) libcdsl.so.$M libcdsl.so
+
+$L/libcel.so: $L/libcel.so.$M.$N
+	$(CD) $L; $(LN) libcel.so.$M libcel.so
 
 $(CBLHCOPY): $I/cbl $(CBLHORIG)
 	$(CP) $(CBLHORIG) $I/cbl/
