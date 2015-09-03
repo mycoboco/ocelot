@@ -4,3 +4,4 @@ doc/pdf
 pkg/
 build/include
 build/lib
+*.o
