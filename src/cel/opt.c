@@ -42,13 +42,18 @@ enum {
 int opt_arg_req, opt_arg_no, opt_arg_opt;
 
 
-static const opt_t *opt;     /* option description table from user */
+static struct optl {
+    const opt_t *tab;                 /* option description table from user */
+    void (*cb)(int, const void *);    /* function to handle added options */
+    struct optl *next;                /* next table */
+} head, *opt = &head;
 static int *pargc;           /* argc from user */
 static char ***pargv;        /* copy of argv */
 static const void **parg;    /* object through which option-argument passed */
 static const char *nopt;     /* short-named option to see next in grouped one */
 static int oprdflag;         /* set if all remaining arguments are recognized as operands */
 static int oargc;            /* location to copy next operand */
+static const char *name;     /* program name */
 
 
 /*
@@ -135,7 +140,7 @@ static const void *argconv(const char *arg, int type)
  *  - the lopt member is not allowed to contain '='; and
  *  - if an option takes an option-argument, its type has to be specified.
  *
- *  chckvalid() is called by opt_init() if NDEBUG is not defined.
+ *  chckvalid() is called by opt_init() and opt_extend() if NDEBUG is not defined.
  */
 static void chckvalid(const opt_t *o)
 {
@@ -163,7 +168,7 @@ static void chckvalid(const opt_t *o)
 /*
  *  prepares to start parsing program arguments
  */
-const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, const char *name,
+const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, const char *n,
                        int sep)
 {
     char **argv;
@@ -173,10 +178,10 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     assert(pc);
     assert(pv);
     assert(pa);
-    assert(name);
+    assert(n);
     assert(sep != '\0');
 
-    assert(!opt);
+    assert(!opt->tab);
     assert(!pargc);
     assert(!pargv);
     assert(!parg);
@@ -192,7 +197,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     *pv = argv;
 
     order = PERMUTE;
-    opt = o;
+    opt->tab = o;
     pargc = pc;
     pargv = pv;    /* pargv has copy of argv */
     parg = pa;
@@ -212,20 +217,44 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
             else
                 p = (*pargv)[0];
         } else
-            p = name;    /* defaults to user-given name */
+            p = n;    /* defaults to user-given name */
         *pargc = 0;    /* increases as opt_parse() parses options */
     } else
         *pargc = -1;    /* no program name and options available */
 
-    if (getenv("POSIXLY_CORRECT") || opt->lopt[0] == '+') {
+    if (getenv("POSIXLY_CORRECT") || opt->tab->lopt[0] == '+') {
         order = REQUIRE_ORDER;
-        opt++;
-    } else if (opt->lopt[0] == '-') {
+        opt->tab++;
+    } else if (opt->tab->lopt[0] == '-') {
         order = RETURN_IN_ORDER;
-        opt++;
+        opt->tab++;
     }    /* else order = PERMUTE; */
 
-    return p;
+    return (name = p);
+}
+
+
+/*
+ *  extends an option description table
+ */
+const char *(opt_extend)(const opt_t *o, void (*cb)(int, const void *))
+{
+    struct optl *p;
+
+    assert(o);
+    assert(opt->tab);    /* opt_init() must be called before opt_extend() */
+
+#if !defined(NDEBUG)
+    chckvalid(o);
+#endif    /* !NDEBUG */
+
+    p = calloc(1, sizeof(*p));
+    p->tab = o;
+    p->cb = cb;
+    p->next = opt->next;
+    opt->next = p;
+
+    return name;
 }
 
 
@@ -277,11 +306,12 @@ int (opt_parse)(void)
     int kind;
     int retval;
     const opt_t *p;
+    struct optl *o;
     int argc;
     char **argv;
     const void *arg;
 
-    assert(opt);    /* opt_init() must be called before opt_parse() */
+    assert(opt->tab);    /* opt_init() must be called before opt_parse() */
     assert(pargc);
     assert(pargv);
     assert(parg);
@@ -312,79 +342,84 @@ int (opt_parse)(void)
                     int match;
             case LONGOPT:     /* --f... */
                     match = 0;    /* cannot be merged into initialization above */
-                    for (p = opt; p->lopt; p++) {
-                        if (kind == SHORTOPT && UC(argv[argc])[i] == (unsigned char)p->sopt)
-                            match = 1;
-                        else if (kind == LONGOPT && UC(p->lopt)[0] == UC(argv[argc])[2]) {
-                            char *s;
-                            const opt_t *q;
-                            if ((s = strchr(argv[argc]+3, '=')) != NULL)    /* --f...=... */
-                                 i = s - (argv[argc]+3);
-                            else
-                                 i = strlen(argv[argc]+3);
-                            q = p;
-                            do {    /* checks ambiguity */
-                                if (UC(q->lopt)[0] == UC(argv[argc])[2] &&
-                                    strncmp(q->lopt+1, argv[argc]+3, i) == 0) {
-                                    /* prefix matched */
-                                    if (UC(q->lopt)[1+i] == '\0') {    /* exact match */
+                    for (o = opt; o; o = o->next) {
+                        for (p = o->tab; p->lopt; p++) {
+                            if (kind == SHORTOPT && UC(argv[argc])[i] == (unsigned char)p->sopt)
+                                match = 1;
+                            else if (kind == LONGOPT && UC(p->lopt)[0] == UC(argv[argc])[2]) {
+                                char *s;
+                                const opt_t *q;
+                                if ((s = strchr(argv[argc]+3, '=')) != NULL)    /* --f...=... */
+                                    i = s - (argv[argc]+3);
+                                else
+                                    i = strlen(argv[argc]+3);
+                                q = p;
+                                do {    /* checks ambiguity */
+                                    if (UC(q->lopt)[0] == UC(argv[argc])[2] &&
+                                        strncmp(q->lopt+1, argv[argc]+3, i) == 0) {
+                                        /* prefix matched */
+                                        if (UC(q->lopt)[1+i] == '\0') {    /* exact match */
+                                            p = q;
+                                            match = 1;
+                                            break;
+                                        }
                                         p = q;
-                                        match = 1;
-                                        break;
+                                        match++;
                                     }
-                                    p = q;
-                                    match++;
+                                } while((++q)->lopt);
+                                if (!match)
+                                    break;    /* assigning q to p is equivalent */
+                                else if (match > 1) {    /* ambiguous prefix */
+                                    retval = '*';
+                                    arg = errlopt(argv[argc]+2);
+                                    goto retcode;
                                 }
-                            } while((++q)->lopt);
-                            if (!match)
-                                break;    /* assigning q to p is equivalent */
-                            else if (match > 1) {    /* ambiguous prefix */
-                                retval = '*';
-                                arg = errlopt(argv[argc]+2);
+                                i += 2;    /* adjusts i for use below */
+                                assert(UC(argv[argc])[i+1] == '\0' || argv[argc][i+1] == '=');
+                            }
+                            if (match) {
+                                retval = p->sopt;
+                                if (p->flag == OPT_ARG_REQ || p->flag == OPT_ARG_OPT) {
+                                    if (UC(argv[argc])[i+1] != '\0')
+                                        /* -f..., -f=..., --f...=... */
+                                        arg = argconv(&argv[argc][i+1+(argv[argc][i+1]=='=')],
+                                                      p->arg);
+                                    else if (argcheck(argv[argc+1]) == OPERAND) {
+                                        arg = argconv(argv[argc+1], p->arg);
+                                        if (arg || p->flag == OPT_ARG_REQ)
+                                            argc++;    /* extra arg consumed */
+                                    } else if (p->flag == OPT_ARG_OPT)
+                                        arg = p->lopt;    /* arg should not be null here */
+                                    if (!arg) {
+                                        if (p->flag == OPT_ARG_OPT && argv[argc][i+1] != '=') {
+                                            /* argv[argc][i+1] != '\0' implies kind == SHORTOPT */
+                                            if (UC(argv[argc])[i+1] != '\0') {
+                                                nopt = &argv[argc][i+1];
+                                                argc--;
+                                            }
+                                        } else {    /* no or invalid arg for OPT_ARG_REQ */
+                                            retval = '-';
+                                            arg = (kind == LONGOPT)? errlopt(p->lopt):
+                                                                     errsopt(p->sopt);
+                                        }
+                                    } else if (arg == p->lopt)
+                                        arg = NULL;    /* set back it to null */
+                                } else if (argv[argc][i+1] == '=') {
+                                    retval = '+';
+                                    arg = (kind == LONGOPT)? errlopt(p->lopt): errsopt(p->sopt);
+                                } else if (p->flag != OPT_ARG_NO && p->flag) {    /* flag var */
+                                    *(p->flag) = p->arg;
+                                    retval = 0;
+                                    break;
+                                } else {    /* no flag variable, so returns option */
+                                    assert(kind == SHORTOPT || retval != 0);
+                                    if (kind == SHORTOPT && UC(argv[argc])[i+1] != '\0') {
+                                        nopt = &argv[argc][i+1];
+                                        argc--;
+                                    }
+                                }
                                 goto retcode;
                             }
-                            i += 2;    /* adjusts i for use below */
-                            assert(UC(argv[argc])[i+1] == '\0' || argv[argc][i+1] == '=');
-                        }
-                        if (match) {
-                            retval = p->sopt;
-                            if (p->flag == OPT_ARG_REQ || p->flag == OPT_ARG_OPT) {
-                                if (UC(argv[argc])[i+1] != '\0')    /* -f..., -f=..., --f...=... */
-                                    arg = argconv(&argv[argc][i+1+(argv[argc][i+1]=='=')], p->arg);
-                                else if (argcheck(argv[argc+1]) == OPERAND) {
-                                    arg = argconv(argv[argc+1], p->arg);
-                                    if (arg || p->flag == OPT_ARG_REQ)    /* extra arg consumed */
-                                        argc++;
-                                } else if (p->flag == OPT_ARG_OPT)
-                                    arg = p->lopt;    /* arg should not be null in this case */
-                                if (!arg) {
-                                    if (p->flag == OPT_ARG_OPT && argv[argc][i+1] != '=') {
-                                        /* argv[argc][i+1] != '\0' implies kind == SHORTOPT */
-                                        if (UC(argv[argc])[i+1] != '\0') {
-                                            nopt = &argv[argc][i+1];
-                                            argc--;
-                                        }
-                                    } else {    /* no or invalid arg for OPT_ARG_REQ */
-                                        retval = '-';
-                                        arg = (kind == LONGOPT)? errlopt(p->lopt): errsopt(p->sopt);
-                                    }
-                                } else if (arg == p->lopt)
-                                    arg = NULL;    /* set back it to null */
-                            } else if (argv[argc][i+1] == '=') {
-                                retval = '+';
-                                arg = (kind == LONGOPT)? errlopt(p->lopt): errsopt(p->sopt);
-                            } else if (p->flag != OPT_ARG_NO && p->flag) {    /* flag variable */
-                                *(p->flag) = p->arg;
-                                retval = 0;
-                                break;
-                            } else {    /* no flag variable, so returns option */
-                                assert(kind == SHORTOPT || retval != 0);
-                                if (kind == SHORTOPT && UC(argv[argc])[i+1] != '\0') {
-                                    nopt = &argv[argc][i+1];
-                                    argc--;
-                                }
-                            }
-                            goto retcode;
                         }
                     }
                     if (!match) {
@@ -417,6 +452,21 @@ int (opt_parse)(void)
     retcode:
         *parg = arg;
         *pargc = argc;
+        if (o->cb)
+            switch(retval) {
+                case '?':
+                case '-':
+                case '+':
+                case '*':
+                case 0:
+                case -1:
+                case 1:
+                    break;
+                default:
+                    o->cb(retval, arg);
+                    retval = 0;
+                    break;
+            }
         return retval;
 }
 
@@ -468,7 +518,7 @@ void (opt_abort)(void)
     int argc;
     char **argv;
 
-    assert(opt);    /* opt_init() must be called before opt_abort() */
+    assert(opt->tab);    /* opt_init() must be called before opt_abort() */
     assert(pargc);
     assert(pargv);
     assert(parg);
@@ -516,9 +566,16 @@ const char *(opt_errmsg)(int c)
  */
 void (opt_free)(void)
 {
+    struct optl *p, *n;
+
     free(*pargv);
 
-    opt = NULL;
+    for (p = opt->next; p; p = n) {
+        n = p->next;
+        free(p);
+    }
+    opt->tab = NULL;
+    opt->next = NULL;
     pargc = NULL;
     pargv = NULL;
     parg = NULL;
@@ -532,19 +589,56 @@ void (opt_free)(void)
 #include <stdlib.h>    /* EXIT_FAILURE */
 #include <limits.h>    /* UCHAR_MAX */
 
-#include <cel\opt.h>    /* opt_t, opt_init, opt_parse, opt_errmsg, opt_free, OPT_ARG_*,
+#include <cel/opt.h>    /* opt_t, opt_init, opt_parse, opt_errmsg, opt_free, OPT_ARG_*,
                            OPT_TYPE_* */
 
 #define PRGNAME "opt-test"
 
-struct option {
+struct {
     const char *prgname;    /* program name */
     int verbose;            /* set by "--verbose" and unset by "--brief" */
 } option;
 
+struct {
+    const char *prgname;    /* program name */
+    int extopt;             /* set by "--extend" */
+} eoption;
+
+static void cb(int c, const void *argptr)
+{
+    switch(c) {
+        case 'x':
+            printf("%s: option -x given with value '%s'\n", eoption.prgname,
+                   (const char *)argptr);
+            break;
+        case 'X':
+            printf("%s: option -X given", eoption.prgname);
+            if (argptr)
+                printf(" with value '%f'\n", *(const double *)argptr);
+            else    /* optional */
+                putchar('\n');
+            break;
+        default:
+            assert(!"not all options covered -- should never reach here");
+            break;
+    }
+}
+
+static void extend(void)
+{
+    static opt_t etab[] = {
+        "xarg",   'x',           OPT_ARG_REQ,       OPT_TYPE_STR,
+        "xnum",   'X',           OPT_ARG_OPT,       OPT_TYPE_REAL,
+        "extend", UCHAR_MAX+100, &(eoption.extopt), 1,
+        NULL,    /* must end with NULL */
+    };
+
+    eoption.prgname = opt_extend(etab, cb);
+}
+
 int main(int argc, char *argv[])
 {
-    opt_t tab[] = {
+    static opt_t tab[] = {
         "verbose",  0,           &(option.verbose), 1,
         "brief",    0,           &(option.verbose), 0,
         "add",      'a',         OPT_ARG_NO,        OPT_TYPE_NO,
@@ -573,6 +667,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "%s: failed to parse options\n", PRGNAME);
         return EXIT_FAILURE;
     }
+    extend();
     printf("Program name: %s\n", option.prgname);
     while ((c = opt_parse()) != -1) {
         switch(c) {
