@@ -563,6 +563,114 @@ Nothing.
 The program name or a null pointer.
 
 
+#### `const char *opt_extend(opt_t *o, void (*cb)(int, const void *))`
+
+It is sometimes convenient to let other modules set their own options in their
+code. For example, a compiler like (`beluga`)[http://code.woong.org/beluga/]
+has multiple back-end implementations and recognizes common options in the
+front-end while allowing each back-end to have its own set of options about
+which the front-end does not have to know. `opt_extend()` adds options to
+recognize by extending the option description table set by `opt_init()` and
+optionally registers a callback to handle those added options.
+
+`opt_extend()` must be invoked after a successful call to `opt_init()` and
+before `opt_parse()` starts to parse any option.
+
+The following examples show how to use `opt_extend()` in a separate module.
+
+```
+    /* separate module */
+
+    static struct {
+        int extra;
+        int another;
+        /* ... */
+    } option;
+
+    void module_init(void)
+    {
+        static opt_t tab[] = {
+            "extra",   'x',           &(option.extra),   1,
+            "another", UCHAR_MAX+100, &(option.another), 1,
+            NULL,
+        };
+
+        opt_extend(tab, NULL);
+        /* ... */
+    }
+```
+
+In this case, all added options have flag variables, thus unnecessary to
+provide a handler function, which is why `opt_extend()`'s last argument is
+`NULL`.
+
+If an option takes an option-argument or needs a special handling, a pointer to
+a handler function should be given:
+
+```
+    /* separate module */
+
+    static struct {
+        const char *prgname;
+        int extra;
+        int another;
+        /* ... */
+    } option;
+
+    void cb(int c, const void *argptr)
+    {
+        switch(c) {
+            case 'x':
+                printf("%s: option -x given with value '%f'\n, option.prgname,
+                       *(const double *)argptr);
+                break;
+            case UCHAR_MAX+100:
+                puts("another extra argument given");
+                break;
+            default:
+                assert(!"not all options covered -- should never reach here");
+                break;
+        }
+    }
+
+    void module_init(void)
+    {
+        static opt_t tab[] = {
+            "extra",   'x',           OPT_ARG_REQ, OPT_TYPE_REAL,
+            "another", UCHAR_MAX+100, OPT_ARG_NO,  OPT_TYPE_NO,
+            NULL,
+        };
+
+        option.prgname = opt_extend(tab, cb);
+        /* ... */
+    }
+```
+
+The first parameter to `cb()`, `c` has the same meaning as the return value of
+`opt_parse()`, and an option-argument (interpreted according to argument
+conversion types, `OPT_TYPE_*`), if any, is passed through the second
+parameter, `argptr`.
+
+No exceptional cases like `0`, `'?'` and so on need to be dealt with in the
+handler because those values never get passed.
+
+##### May raise
+
+Nothing.
+
+##### Takes
+
+| Name | In/out | Meaning                                                   |
+|:----:|:------:|:----------------------------------------------------------|
+| o    | in     | option description table to add                           |
+| cb   | in     | function to handle added options                          |
+
+##### Returns
+
+The program name. `opt_extend()` is invoked after `opt_init()` and never
+returns `NULL`.
+
+
 #### `int opt_parse(void)`
 
 `opt_parse()` parses program options.
