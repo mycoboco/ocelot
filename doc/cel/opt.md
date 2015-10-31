@@ -163,7 +163,7 @@ is given here:
 
     int main(int argc, char *argv[])
     {
-        opt_t tab[] = {
+        static opt_t tab[] = {
             "verbose", 0,           &(option.verbose), 1,
             "add",     'a',         OPT_ARG_NO,        OPT_TYPE_NO,
             "create",  'c',         OPT_ARG_REQ,       OPT_TYPE_STR,
@@ -327,7 +327,7 @@ treated as octal, and those with `0x` or `0X` as hexadecimal.
 
 Some examples follow:
 
-    opt_t options[] = {
+    static opt_t options[] = {
         { "verbose", 'v', &option_verbose, 1 },
         { "brief",   'b', &option_verbose, 0 },
         { NULL, }
@@ -337,7 +337,7 @@ This example says that two options (`--verbose` or `-v`, and `--brief` or
 `-b`) are recognized and `option_verbose` is set to `1` when `--verbose` or
 `-v` given, and set to `0` when `--brief` or `-b` given.
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "version",  'v',         OPT_ARG_NO, OPT_TYPE_NO,
         "help",     UCHAR_MAX+1, OPT_ARG_NO, OPT_TYPE_NO,
         "morehelp", UCHAR_MAX+2, OPT_ARG_NO, OPT_TYPE_NO,
@@ -349,7 +349,7 @@ This example shows options that do not take any additional arguments. Setting
 the value of `arg` ignored. Thus, the above example can be written as follows
 without any change on the behavior:
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "version",  'v',         NULL, 0,
         "help",     UCHAR_MAX+1, NULL, 0,
         "morehelp", UCHAR_MAX+2, NULL, 0,
@@ -364,7 +364,7 @@ When only long-named options need to be provided without introducing flag
 variables, values from `UCHAR_MAX+1` to `INT_MAX` (inclusive) can be used for
 `sopt`; both are from `<limits.h>`.
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "",   'x', OPT_ARG_NO, OPT_TYPE_NO,
         NULL,
     };
@@ -373,7 +373,7 @@ On the other hand, providing an empty string for `lopt` as in this example can
 specify that an option is only short-named. Note that, however, this is
 discouraged; long-named options are much more user-friendly.
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "input", 'i', OPT_ARG_REQ, OPT_TYPE_STR,
         "port",  'p', OPT_ARG_REQ, OPT_TYPE_UINT,
         "start", 's', OPT_ARG_REQ, OPT_TYPE_REAL,
@@ -387,7 +387,7 @@ is given in `arg`. For `OPT_TYPE_INT`, `OPT_TYPE_UINT` and `OPT_TYPE_REAL`,
 `strtol()`, `strtoul()` and `strtod()` are respectively used to convert
 option-arguments.
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "negative", 'n', OPT_ARG_OPT, OPT_TYPE_REAL,
         NULL,
     };
@@ -401,7 +401,7 @@ if `OPT_ARG_OPT` and `OPT_TYPE_REAL` are replaced by `OPT_ARG_NO` and
 
 The following examples show how to control the ordering mode.
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "+", 0, OPT_ARG_NO, OPT_TYPE_NO,
         /* ... */
         NULL,
@@ -412,7 +412,7 @@ variable named `POSIXLY_CORRECT` says option processing performed by
 `opt_parse()` immediately stops whenever an operand encountered (which POSIX
 requires).
 
-    opt_t options[] = {
+    static opt_t options[] = {
         "-", 0, OPT_ARG_NO, OPT_TYPE_NO,
         /* ... */
         NULL,
