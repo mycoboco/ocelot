@@ -37,36 +37,42 @@ explicit value should be given by setting the `CFLAGS` variable as in:
     CFLAGS="-DMEM_MAXALIGN=8" make all
 
 If you are on a 64-bit environment with support for 32-bit emulations and want
-32-bit builds of the libraries, add `-m32` to `CFLAGS` and `-m elf_i386` to
-`LDFLAGS` as in:
+32-bit builds of the libraries, add `-m32` to `CFLAGS` as in:
 
-    CFLAGS="-m32 -DMEM_MAXALIGN=8" LDFLAGS="-m elf_i386" make all
-
-(You can see what emulations your `ld` supports by running it with `-V` or
-`--verbose`.)
+    CFLAGS="-m32 -DMEM_MAXALIGN=8" make all
 
 You can also build them as 64-bit binaries without `-m` flags. _Note that,
 however, even if the build is successful, `ocelot` does not take full advantage
 of 64-bit environments yet._
 
-_If the build fails with an error saying "undefined reference to
-`__stack_chk_fail_local`", add `-fno-stack-protector` to `CFLAGS` above._
-
 After the libraries built, you can use them by linking and delivering with
-your product, or install them on your system. For system-wide installation, you
-need to identify proper places to put the libraries (e.g., `/usr/local/lib` in
-most cases, `/usr/local/lib32` for 32-bit builds on a 64-bit machine and
+your product, or install them on your system.
+
+
+### System-wide installation
+
+You need to identify proper places to put the libraries (e.g., `/usr/local/lib`
+in most cases, `/usr/local/lib32` for 32-bit builds on a 64-bit machine and
 `/usr/local/lib64` for 64-bit builds) and headers (e.g., `/usr/local/include`),
 and have permissions to place files there.
 
-For example, on my 64-bit [gentoo](http://www.gentoo.org) machine, the
-following instructions install the 32-bit builds with their headers:
+If you have installed a previous version of `ocelot`, you probably want to get
+rid of that. For example, on my 64-bit [gentoo](http://www.gentoo.org) machine,
+the following instructions run as _root_ uninstall any previous installation of
+32-bit builds of `ocelot`.
+
+    rm -rf /usr/local/include/cbl /usr/local/include/cdsl /usr/local/include/cel
+    rm /usr/local/lib32/libcbl* /usr/local/lib32/libcdsl* /usr/local/lib32/libcel*
+
+To install a new 32-bit builds with their headers, run these:
 
     cp -R build/include/* /usr/local/include/
-    cp build/lib/* /usr/local/lib32/
+    cp -d build/lib/* /usr/local/lib32/
     ldconfig
 
-where it is assumed that ld.so.conf has `/usr/local/lib32` in it.
+where it is assumed that ld.so.conf has `/usr/local/lib32` in it. `ocelot`'s
+`Makefile` is configured to kindly create necessary soft-links to shared
+objects, and the `-d` option to `cp` above preserves them.
 
 Installed successfully, you can use the libraries by including necessary
 headers in your code as in:
@@ -80,6 +86,20 @@ example:
 
     cc -m32 myprg.c -lcdsl -lcbl
 
-Note that the order in which libraries are given to the compiler is
-significant; all of `cdsl` depend on `cbl`, which is the reason `-lcbl` follows
-`-lcdsl` in the arguments for the compiler.
+Note that we are assuming 32-bit builds on a 64-bit machine, thus the `-m32`
+option. The order in which libraries are given to the compiler is significant;
+all of `cdsl` depend on `cbl`, which is the reason `-lcbl` follows `-lcdsl` in
+the arguments for the compiler.
+
+
+### Local installation
+
+You can copy or move built libraries and headers to whatever place you want,
+and simply link them with your code as in:
+
+    cc -I/path/to/headers -m32 myprg.c /path/to/libraries/libcel.a
+
+This links a static library (thus, `.a`), which includes the library into the
+resulting executable. Linking a shared library instead is also possible, but
+not recommended because it requires the location of the linked library when
+running the executable.
