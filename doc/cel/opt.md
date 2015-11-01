@@ -566,15 +566,15 @@ The program name or a null pointer.
 #### `const char *opt_extend(opt_t *o, void (*cb)(int, const void *))`
 
 It is sometimes convenient to let other modules set their own options in their
-code. For example, a compiler like [`beluga`](http://code.woong.org/beluga/)
-has multiple back-end implementations and recognizes common options in the
+code. For example, [`beluga`](http://code.woong.org/beluga/), a compiler has
+multiple back-end implementations and recognizes common options in the
 front-end while allowing each back-end to have its own set of options about
-which the front-end does not have to know. `opt_extend()` adds options to
-recognize by extending the option description table set by `opt_init()` and
-optionally registers a callback to handle those added options.
+which the front-end does not know. `opt_extend()` adds options to recognize by
+extending the option description table already set by `opt_init()`, and
+optionally registers a callback function to handle those added options.
 
 `opt_extend()` must be invoked after a successful call to `opt_init()` and
-before `opt_parse()` starts to parse any option.
+before `opt_parse()` starts to parse any options.
 
 The following examples show how to use `opt_extend()` in a separate module.
 
@@ -600,12 +600,11 @@ void module_init(void)
 }
 ```
 
-In this case, all added options have flag variables, thus unnecessary to
-provide a handler function, which is why `opt_extend()`'s last argument is
-`NULL`.
+All added options have flag variables in this case, thus unnecessary to provide
+a handler function, which is why the last argument to `opt_extend()` is `NULL`.
 
 If an option takes an option-argument or needs a special handling, a pointer to
-a handler function should be given:
+a handler function should be given instead:
 
 ```
 /* separate module */
@@ -651,8 +650,8 @@ The first parameter to `cb()`, `c` has the same meaning as the return value of
 conversion types, `OPT_TYPE_*`), if any, is passed through the second
 parameter, `argptr`.
 
-No exceptional cases like `0`, `'?'` and so on need to be dealt with in the
-handler because those values never get passed.
+No exceptional cases like `0`, `'?'` and so on are dealt with in the handler
+because those values never get passed.
 
 ##### May raise
 
@@ -884,7 +883,7 @@ as follows:
             break;
     }
 
-or more compatly:
+or more compactly:
 
     switch(c) {
         /* ... cases for valid options ... */
