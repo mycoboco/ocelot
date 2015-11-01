@@ -75,7 +75,7 @@ The storage used to maintain a program configuration itself is managed by the
 library.
 
 
-#### 1.3. Configuration description tables
+### 1.3. Configuration description tables
 
 If ever invoked, `conf_preset()` has to be invoked before `conf_init()`. If a
 program need not read a configuration file and uses only predefined settings
@@ -86,7 +86,7 @@ including how to designate a section and variable in the table and what each
 field of the table means, see `conf_t`.
 
 
-#### 1.4. Configuration files
+### 1.4. Configuration files
 
 A configuration file basically has the form of a so-called _ini_ file. The file
 is consisted of variable-value pairs belonged to a certain section as follows:
