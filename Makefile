@@ -97,16 +97,24 @@ $L/libcel.so.$M.$N: $(CELOBJS)
 	$(GCC) $(CFLAGS) $(SHAREDOPT) -Wl,-soname,libcel.so.$M -o $@ $(CELOBJS)
 
 $L/libcbl.so: $L/libcbl.so.$M.$N
-	$(CD) $L; $(LN) libcbl.so.$M libcbl.so
+	$(CD) $L && \
+	$(LN) libcbl.so.$M.$N libcbl.so.$M && \
+	$(LN) libcbl.so.$M libcbl.so
 
 $L/libcbld.so: $L/libcbld.so.$M.$N
-	$(CD) $L; $(LN) libcbld.so.$M libcbld.so
+	$(CD) $L && \
+	$(LN) libcbld.so.$M.$N libcbld.so.$M && \
+	$(LN) libcbld.so.$M libcbld.so
 
 $L/libcdsl.so: $L/libcdsl.so.$M.$N
-	$(CD) $L; $(LN) libcdsl.so.$M libcdsl.so
+	$(CD) $L && \
+	$(LN) libcdsl.so.$M.$N libcdsl.so.$M && \
+	$(LN) libcdsl.so.$M libcdsl.so
 
 $L/libcel.so: $L/libcel.so.$M.$N
-	$(CD) $L; $(LN) libcel.so.$M libcel.so
+	$(CD) $L && \
+	$(LN) libcel.so.$M.$N libcel.so.$M && \
+	$(LN) libcel.so.$M libcel.so
 
 $(CBLHCOPY): $I/cbl $(CBLHORIG)
 	$(CP) $(CBLHORIG) $I/cbl/
