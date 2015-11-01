@@ -249,6 +249,8 @@ const char *(opt_extend)(const opt_t *o, void (*cb)(int, const void *))
 #endif    /* !NDEBUG */
 
     p = calloc(1, sizeof(*p));
+    if (!p)
+        return NULL;
     p->tab = o;
     p->cb = cb;
     p->next = opt->next;
@@ -568,12 +570,13 @@ void (opt_free)(void)
 {
     struct optl *p, *n;
 
-    free(*pargv);
-
+    if (pargv)
+        free(*pargv);
     for (p = opt->next; p; p = n) {
         n = p->next;
         free(p);
     }
+
     opt->tab = NULL;
     opt->next = NULL;
     pargc = NULL;
@@ -624,7 +627,7 @@ static void cb(int c, const void *argptr)
     }
 }
 
-static void extend(void)
+static const char *extend(void)
 {
     static opt_t etab[] = {
         "xarg",   'x',           OPT_ARG_REQ,       OPT_TYPE_STR,
@@ -633,7 +636,7 @@ static void extend(void)
         NULL,    /* must end with NULL */
     };
 
-    eoption.prgname = opt_extend(etab, cb);
+    return (eoption.prgname = opt_extend(etab, cb));
 }
 
 int main(int argc, char *argv[])
@@ -663,11 +666,11 @@ int main(int argc, char *argv[])
     const void *argptr;
 
     option.prgname = opt_init(tab, &argc, &argv, &argptr, PRGNAME, '/');
-    if (!option.prgname) {
+    if (!option.prgname || !extend()) {
+        opt_free();
         fprintf(stderr, "%s: failed to parse options\n", PRGNAME);
         return EXIT_FAILURE;
     }
-    extend();
     printf("Program name: %s\n", option.prgname);
     while ((c = opt_parse()) != -1) {
         switch(c) {
