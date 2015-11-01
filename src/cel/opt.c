@@ -31,7 +31,7 @@ enum {
 };
 
 /* ordering mode in which opt_parse() works */
-enum {
+static enum {
     PERMUTE,           /* argument permutation performed, default */
     REQUIRE_ORDER,     /* POSIX-compliant mode */
     RETURN_IN_ORDER    /* operands act as if be option-arguments for '\001' option */
@@ -452,7 +452,7 @@ int (opt_parse)(void)
     retcode:
         *parg = arg;
         *pargc = argc;
-        if (o->cb)
+        if (o && o->cb)
             switch(retval) {
                 case '?':
                 case '-':
