@@ -41,8 +41,8 @@ enum {
 };
 
 
-/* unique addresses for OPT_ARG_ macros */
-extern int opt_arg_req, opt_arg_no, opt_arg_opt;
+extern const char *opt_ambm[5];                     /* ambiguous matches */
+extern int opt_arg_req, opt_arg_no, opt_arg_opt;    /* unique addresses for OPT_ARG_ macros */
 
 
 const char *opt_init(const opt_t *, int *, char **[], const void **, const char *, int);
@@ -50,6 +50,7 @@ const char *opt_extend(const opt_t *, void (*)(int, const void *));
 int opt_parse(void);
 int opt_val(opt_val_t *, const char *, int);
 void opt_abort(void);
+const char *opt_ambmstr(void);
 const char *opt_errmsg(int);
 void opt_free(void);
 

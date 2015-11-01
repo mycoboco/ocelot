@@ -66,7 +66,7 @@ An _option description table_ is an array that has a sequence of options to
 recognize and their properties.
 
 
-## 1.2. How to use the library
+### 1.2. How to use the library
 
 Most programs parse program options in very similar ways. A typical way to
 handle options is given in the boilerplate code below. You can simply copy it
@@ -75,7 +75,7 @@ and modify to add options to the option description table and `case` labels.
 The storage used to parse program arguments is managed by the library.
 
 
-## 1.3. Ordering modes
+### 1.3. Ordering modes
 
 By default, the library processes options and operands as if they were
 permuted so that operands always follow options. That is, the following two
@@ -110,7 +110,7 @@ This ordering mode can be controlled by marking a desired ordering mode in an
 option description table or setting an environment variable (see `opt_t`).
 
 
-## 1.4. Option description tables
+### 1.4. Option description tables
 
 An option description table specifies what options should be recognized with
 their long and short names and what should be done when encountering them, for
@@ -120,7 +120,7 @@ ordering mode, all behaviors of the library can be controlled by the table. See
 `opt_t` for more detailed explanation.
 
 
-## 1.5. Boilerplate code
+### 1.5. Boilerplate code
 
 Using the library starts with invoking `opt_init()`. It takes an option
 description table, pointers to parameters of `main()`, a pointer to an object
@@ -226,7 +226,7 @@ is given here:
                 case '+':
                 case '*':
                     fprintf(stderr, "%s: ", option.prgname);
-                    fprintf(stderr, opt_errmsg(c), (const char *)argptr);
+                    fprintf(stderr, opt_errmsg(c), (const char *)argptr, opt_ambmstr());
                     opt_free();
                     return EXIT_FAILURE;
                 default:
@@ -455,9 +455,9 @@ a value to indicate that none of strings in the array has been matched.
 in it; see `opt_val()` for details.
 
 
-## 2.2. Constants
+### 2.2. Constants
 
-### Types of argument conversions
+#### Types of argument conversions
 
 These `enum` constants represent types of argument conversions:
 
@@ -471,7 +471,7 @@ These `enum` constants represent types of argument conversions:
 | OPT_TYPE_STR  | string (`char *`) type                  |
 
 
-### Controlling `opt_val()`
+#### Controlling `opt_val()`
 
 These `enum` constants controls the behavior of `opt_val()`:
 
@@ -481,7 +481,7 @@ These `enum` constants controls the behavior of `opt_val()`:
 | OPT_CMP_CASEIN  | perform case-insensitive comparison        |
 
 
-### Describing option-arguments
+#### Describing option-arguments
 
 These macro constants describes option-arguments:
 
@@ -494,7 +494,14 @@ These macro constants describes option-arguments:
 See `opt_t` for details.
 
 
-### 2.3. Processing options
+### 2.3. Objects
+
+#### `const char *opt_ambm[]`
+
+Refer to `opt_parse()` and `opt_ambmstr()` for explanation.
+
+
+### 2.4. Processing options
 
 #### `const char *opt_init(const opt_t *o, int *pc, char **pv[], const void **pa, const char *name, int sep)`
 
@@ -695,7 +702,10 @@ of `opt_parse()` that is one of:
   none. The pointer given through `pa` points to a string that represents the
   option;
 - `'*'`: ambiguous option. It is impossible to identify a unique option with
-  the given prefix of a long-named option;
+  the given prefix of a long-named option. Encountering ambiguous options has
+  an array of `const char *` named `opt_ambm[]` contain possible matches. This
+  information is useful to issue proper messages. A subsequent call to
+  `opt_parse()` overwrites `opt_ambm[]`. See also `opt_ambmstr()`;
 - `0`: valid option. A given flag variable is set properly, thus nothing for a
   user code to do;
 - `-1`: all options have been processed; and
@@ -832,6 +842,39 @@ Nothing.
 Nothing.
 
 
+#### `const char *opt_ambmstr(void)`
+
+When `opt_parse()` encounters an ambiguous option, it has a string array
+`opt_ambm[]` contain possible matches. `opt_ambm[]` has a fixed size (that is,
+not dynamically allocated) and it has up to 5 candidates. A diagnostic message
+can be constructed to show 4 candidates and to say "and more" or "..." if
+`opt_ambm[5]` is not null.
+
+`opt_ambmstr()` does that job, and returns a string that looks like
+
+    match1, match2, match3, match4, ...
+
+where `...` is literal.
+
+The string buffer used is also statically allocated, so the resulting string
+may contain less than 4 candidates if there is no room to contain more. `, ...`
+is not inserted when the buffer can hold all possible matches.
+
+A subsequence call to `opt_ambmstr()` overwrites the returned string.
+
+##### May raise
+
+Nothing.
+
+##### Takes
+
+Nothing.
+
+##### Returns
+
+A string to enumerate possible matches.
+
+
 #### `const char *opt_errmsg(int c)`
 
 Given an error code that is one of `'?'`, `'-'`, `'+'` and `'*'`,
@@ -858,8 +901,8 @@ may return is as follows:
             opt_free();
             return EXIT_FAILURE;
         case '*':
-            fprintf(stderr, "%s: ambiguous option '%s'\n", option.prgname,
-                    (const char *)argptr);
+            fprintf(stderr, "%s: ambiguous option '%s' (%s)\n", option.prgname,
+                    (const char *)argptr, opt_ambmstr());
             opt_free();
             return EXIT_FAILURE;
         default:
@@ -885,7 +928,7 @@ as follows:
         case '+':
         case '*':
             fprintf(stderr, "%s: ", option.prgname);
-            fprintf(stderr, opt_errmsg(c), (const char *)argptr);
+            fprintf(stderr, opt_errmsg(c), (const char *)argptr, opt_ambmstr());
             opt_free();
             return EXIT_FAILURE;
         default:
@@ -901,10 +944,14 @@ or more compactly:
             break;
         default:
             fprintf(stderr, "%s: ", option.prgname);
-            fprintf(stderr, opt_errmsg(c), (const char *)argptr);
+            fprintf(stderr, opt_errmsg(c), (const char *)argptr, opt_ambmstr());
             opt_free();
             return EXIT_FAILURE;
     }
+
+A string returned by `opt_errmsg()` has two `%s`'s only when `c` is `*` (to
+indicate an ambiguous option), and it is not an error to give extra arguments
+to `printf()`.
 
 The difference of the last two is that the latter turns the assertion in the
 former (that possibly gets _dropped_ from the delivery code) into a defensive

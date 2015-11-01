@@ -20,6 +20,8 @@
 /* normalizes characters for space */
 #define normal(c) (((c) == ' ' || (c) == '_')? '-': (c))
 
+#define NELEM(a) (sizeof(a)/sizeof(*(a)))    /* # of elements in array */
+
 
 /* option kinds */
 enum {
@@ -30,18 +32,17 @@ enum {
     OPERAND      /* operand */
 };
 
+
+const char *opt_ambm[];                      /* ambiguous matches */
+int opt_arg_req, opt_arg_no, opt_arg_opt;    /* unique storages for OPT_ARG_ macros */
+
+
 /* ordering mode in which opt_parse() works */
 static enum {
     PERMUTE,           /* argument permutation performed, default */
     REQUIRE_ORDER,     /* POSIX-compliant mode */
     RETURN_IN_ORDER    /* operands act as if be option-arguments for '\001' option */
 } order;
-
-
-/* unique storages for OPT_ARG_ macros */
-int opt_arg_req, opt_arg_no, opt_arg_opt;
-
-
 static struct optl {
     const opt_t *tab;                 /* option description table from user */
     void (*cb)(int, const void *);    /* function to handle added options */
@@ -322,6 +323,7 @@ int (opt_parse)(void)
     argv = *pargv;
     retval = 0;
     arg = NULL;
+    opt_ambm[0] = NULL;
 
     if (argc < 0 || (nopt == (void *)&oargc) || argv[argc+1] == NULL) {    /* done */
         argv[oargc] = NULL;
@@ -366,12 +368,16 @@ int (opt_parse)(void)
                                             break;
                                         }
                                         p = q;
+                                        if (match < NELEM(opt_ambm))
+                                            opt_ambm[match] = q->lopt;
                                         match++;
                                     }
                                 } while((++q)->lopt);
                                 if (!match)
                                     break;    /* assigning q to p is equivalent */
                                 else if (match > 1) {    /* ambiguous prefix */
+                                    for (; match < NELEM(opt_ambm); match++)
+                                        opt_ambm[match] = NULL;
                                     retval = '*';
                                     arg = errlopt(argv[argc]+2);
                                     goto retcode;
@@ -539,6 +545,41 @@ void (opt_abort)(void)
 
 
 /*
+ *  constructs a string to show ambiguous matches
+ */
+const char *(opt_ambmstr)(void)
+{
+    static char buf[64];
+
+    int i;
+    size_t m, n;
+
+    if (!opt_ambm[0])
+        return "";
+
+    n = 0;
+    for (i = 0; i < NELEM(opt_ambm)-1 && opt_ambm[i]; i++) {
+        m = strlen(opt_ambm[i]);
+        if (n+m+((opt_ambm[i+1])? 5: 0) < NELEM(buf)) {
+            strcpy(buf+n, opt_ambm[i]);
+            n += m;
+            if (opt_ambm[i+1]) {
+                strcpy(buf+n, ", ");
+                n += 2;
+            }
+        } else
+            break;
+    }
+    if (opt_ambm[i]) {
+        assert(n+3 < NELEM(buf));
+        strcpy(buf+n, "...");
+    }
+
+    return buf;
+}
+
+
+/*
  *  returns a diagnostic format string for an error code
  */
 const char *(opt_errmsg)(int c)
@@ -548,7 +589,7 @@ const char *(opt_errmsg)(int c)
         "unknown option '%s'\n",
         "no or invalid argument given for '%s'\n",
         "option '%s' takes no argument\n",
-        "ambiguous option '%s'\n",
+        "ambiguous option '%s' (%s)\n",
         "not all options covered\n"
     };
 
@@ -747,7 +788,7 @@ int main(int argc, char *argv[])
             case '+':    /* argument given to option that takes none */
             case '*':    /* ambiguous option */
                 fprintf(stderr, "%s: ", option.prgname);
-                fprintf(stderr, opt_errmsg(c), (const char *)argptr);
+                fprintf(stderr, opt_errmsg(c), (const char *)argptr, opt_ambmstr());
                 opt_free();
                 return EXIT_FAILURE;
             default:
