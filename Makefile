@@ -17,6 +17,7 @@ MKDIR = mkdir
 RMDIR = rmdir
 TAR = tar
 CD = cd
+GCC = gcc
 LN = ln -sf
 
 SHAREDOPT = -shared
@@ -84,16 +85,16 @@ $L/libcel.a: $(CELOBJS)
 	$(AR) $@ $(CELOBJS); $(RANLIB) $@ || true
 
 $L/libcbl.so.$M.$N: $(CBLOBJS)
-	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcbl.so.$M -o $@ $(CBLOBJS)
+	$(GCC) $(CFLAGS) $(SHAREDOPT) -Wl,-soname,libcbl.so.$M -o $@ $(CBLOBJS)
 
 $L/libcbld.so.$M.$N: $(CBLDOBJS)
-	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcbld.so.$M -o $@ $(CBLDOBJS)
+	$(GCC) $(CFLAGS) $(SHAREDOPT) -Wl,-soname,libcbld.so.$M -o $@ $(CBLDOBJS)
 
 $L/libcdsl.so.$M.$N: $(CDSLOBJS)
-	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcdsl.so.$M -o $@ $(CDSLOBJS)
+	$(GCC) $(CFLAGS) $(SHAREDOPT) -Wl,-soname,libcdsl.so.$M -o $@ $(CDSLOBJS)
 
 $L/libcel.so.$M.$N: $(CELOBJS)
-	$(LD) $(SHAREDOPT) $(LDFLAGS) -soname=libcel.so.$M -o $@ $(CELOBJS)
+	$(GCC) $(CFLAGS) $(SHAREDOPT) -Wl,-soname,libcel.so.$M -o $@ $(CELOBJS)
 
 $L/libcbl.so: $L/libcbl.so.$M.$N
 	$(CD) $L; $(LN) libcbl.so.$M libcbl.so
