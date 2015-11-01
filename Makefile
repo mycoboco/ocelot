@@ -20,7 +20,7 @@ CD = cd
 LN = ln -sf
 
 SHAREDOPT = -shared
-ALL_CFLAGS = -I$I -Wall -W -fPIC $(CFLAGS)
+ALL_CFLAGS = -I$I -fPIC $(CFLAGS)
 
 .c.o:
 	$(CC) -o $@ -c $(CPPFLAGS) $(ALL_CFLAGS) $<
