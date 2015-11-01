@@ -175,6 +175,7 @@ is given here:
 
         option.prgname = opt_init(tab, &argc, &argv, &argptr, PRGNAME, '/');
         if (!option.prgname) {
+            opt_free();
             fprintf(stderr, "%s: failed to parse options\n", PRGNAME);
             return EXIT_FAILURE;
         }
@@ -265,8 +266,9 @@ Each row in the option description table specifies options to recognize:
   real type; and
 - `--help` has no short name and takes no option-arguments.
 
-The failure of `opt_init()` means memory allocation failed, you do not have to
-call `opt_free()` before terminating the program.
+The failure of `opt_init()` means memory allocation failed, but you may call
+`opt_free()` anyway before terminating the program; it does nothing if no
+deallocation is needed.
 
 The `case` labels above one handling `0` are for options given in `tab`. The
 labels below them are for exceptional cases and `opt_errmsg()` helps to
@@ -518,7 +520,7 @@ retain their values, thus should be initialized explicitly by a user code. A
 convenient way to handle the initialization is to introduce a structure
 grouping all such objects. For example:
 
-    struct option {
+    static struct option {
         int html;
         const char *input;
         double val;
@@ -568,10 +570,11 @@ The program name or a null pointer.
 It is sometimes convenient to let other modules set their own options in their
 code. For example, [`beluga`](http://code.woong.org/beluga/), a compiler has
 multiple back-end implementations and recognizes common options in the
-front-end while allowing each back-end to have its own set of options about
-which the front-end does not know. `opt_extend()` adds options to recognize by
-extending the option description table already set by `opt_init()`, and
-optionally registers a callback function to handle those added options.
+front-end while allowing each back-end target to have its own set of options
+about which the front-end does not know. `opt_extend()` adds options to
+recognize by extending the option description table already set by
+`opt_init()`, and optionally registers a callback function to handle those
+added options.
 
 `opt_extend()` must be invoked after a successful call to `opt_init()` and
 before `opt_parse()` starts to parse any options.
@@ -595,13 +598,19 @@ void module_init(void)
         NULL,
     };
 
-    opt_extend(tab, NULL);
+    if (!opt_extend(tab, NULL))
+        /* failure similar to that of opt_init() */
     /* ... */
 }
 ```
 
 All added options have flag variables in this case, thus unnecessary to provide
 a handler function, which is why the last argument to `opt_extend()` is `NULL`.
+
+`opt_extend()` allocates a small size of memory to link a new option
+description table to an existing one. When this allocation fails, it returns a
+null pointer, and this should be dealt with in a similar way to the failure of
+`opt_init()`.
 
 If an option takes an option-argument or needs a special handling, a pointer to
 a handler function should be given instead:
@@ -641,6 +650,8 @@ void module_init(void)
     };
 
     option.prgname = opt_extend(tab, cb);
+    if (!option.prgname)
+        /* failure similar to that of opt_init() */
     /* ... */
 }
 ```
@@ -666,8 +677,7 @@ Nothing.
 
 ##### Returns
 
-The program name. `opt_extend()` is invoked after `opt_init()` and never
-returns `NULL`.
+The program name or a null pointer.
 
 
 #### `int opt_parse(void)`
@@ -921,9 +931,10 @@ A format string for diagnostic message.
 
 #### `void opt_free(void)`
 
-`opt_free()` cleans up any storage allocated by `opt_init()`. It also
-initializes the internal state, which allows for multiple scans; see
-`opt_init()` for some caveat when scanning options multiple times.
+`opt_free()` cleans up any storage allocated by `opt_init()` and
+`opt_extend()`. It also initializes the internal state, which allows for
+multiple scans; see `opt_init()` for some caveat when scanning options multiple
+times.
 
 `opt_free()`, if invoked, should be invoked after all arguments including
 operands have been processed. Because `opt_init()` makes copies of pointers in
