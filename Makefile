@@ -10,32 +10,31 @@ SHELL = /bin/sh
 AR = ar ruv
 RANLIB = ranlib
 CP = cp -f
-CPR = cp -R
 RM = rm -f
-RMR = rm -rf
 MKDIR = mkdir
-RMDIR = rmdir
-TAR = tar
 CD = cd
 GCC = gcc
 LN = ln -sf
-
 SHAREDOPT = -shared
+
+BLDDIR = build
+SRCDIR = src
+INCDIR = $B/include
+LIBDIR = $B/lib
+B = $(BLDDIR)
+S = $(SRCDIR)
+I = $(INCDIR)
+L = $(LIBDIR)
+
+M = 0
+N = 4
+
+
 ALL_CFLAGS = -I$I -fPIC $(CFLAGS)
 
 .c.o:
 	$(CC) -o $@ -c $(CPPFLAGS) $(ALL_CFLAGS) $<
 
-
-SRCDIR = src
-S = $(SRCDIR)
-BLDDIR = build
-B = $(BLDDIR)
-INCDIR = $B/include
-I = $(INCDIR)
-LIBDIR = $B/lib
-L = $(LIBDIR)
-DOCDIR = doc
 
 CBLOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memory.o $S/cbl/text.o
 CBLDOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memoryd.o $S/cbl/text.o
@@ -52,12 +51,9 @@ CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl
 	$I/cdsl/stack.h $I/cdsl/table.h
 CELHCOPY = $I/cel/conf.h $I/cel/opt.h
 
-M = 0
-N = 4
-
 
 what:
-	-@echo make all cbl cdsl cel clean
+	-@echo make all static cbl cdsl cel clean
 
 cbl: $(CBLHCOPY) $L/libcbl.a $L/libcbl.so.$M.$N $L/libcbl.so $L/libcbld.a $L/libcbld.so.$M.$N \
 	$L/libcbld.so
@@ -65,6 +61,8 @@ cbl: $(CBLHCOPY) $L/libcbl.a $L/libcbl.so.$M.$N $L/libcbl.so $L/libcbld.a $L/lib
 cdsl: $(CBLHCOPY) $(CDSLHCOPY) $L/libcdsl.a $L/libcdsl.so.$M.$N $L/libcdsl.so
 
 cel: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcel.a $L/libcel.so.$M.$N $L/libcel.so
+
+static: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcbl.a $L/libcbld.a $L/libcdsl.a $L/libcel.a
 
 all: cbl cdsl cel
 
@@ -133,7 +131,6 @@ $I/cdsl:
 
 $I/cel:
 	$(MKDIR) $I/cel
-
 
 $S/cbl/arena.o:   $S/cbl/arena.c   $S/cbl/arena.h  $S/cbl/assert.h $S/cbl/except.h
 $S/cbl/assert.o:  $S/cbl/assert.c  $S/cbl/assert.h $S/cbl/except.h

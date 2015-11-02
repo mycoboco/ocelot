@@ -11,6 +11,9 @@ Executing the `make` utility with no target specified lists supported targets:
    two sub-directories, one for header files and the other for static(`.a`) and
    shared objects(`.so`).
 
+-  `static`: same as `all` except that only static libraries (`.a`) are built
+   into the build directory.
+
 -  `cbl`: builds only the libraries belonged to `cbl`. Because the memory
    library has two versions, two versions of `cbl` are generated with different
    names; `cbl` for production and `cbld` for debugging. Necessary headers are
