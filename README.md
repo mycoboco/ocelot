@@ -43,8 +43,8 @@ easier maintenance and access. The `doc` directory contains
 issues, see the accompanying `LICENSE.md` file.
 
 _As of the 0.4.0 release which breaks backward compatibility, the
-[soname](https://en.wikipedia.org/wiki/Soname) adjusted from 1.x to 0.x in
-order to match the release version._
+[soname](https://en.wikipedia.org/wiki/Soname) has been adjusted from 1.x to
+0.x in order to match the release version._
 
 If you have a question or suggestion, do not hesitate to contact me via email
 (woong.jun at gmail.com) or web (http://code.woong.org/).
