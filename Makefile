@@ -52,8 +52,8 @@ CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl
 	$I/cdsl/stack.h $I/cdsl/table.h
 CELHCOPY = $I/cel/conf.h $I/cel/opt.h
 
-M = 1
-N = 1
+M = 0
+N = 4
 
 
 what:
