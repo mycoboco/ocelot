@@ -463,7 +463,7 @@ These `enum` constants represent types of argument conversions:
 
 | Name          | Meaning                                 |
 |:-------------:|:----------------------------------------|
-| OPT_TYPE_NO,  | cannot have type                        |
+| OPT_TYPE_NO   | cannot have type                        |
 | OPT_TYPE_BOOL | boolean (`int`) type                    |
 | OPT_TYPE_INT  | integer (`long`) type                   |
 | OPT_TYPE_UINT | unsigned integer (`unsigned long`) type |
@@ -846,11 +846,13 @@ Nothing.
 
 When `opt_parse()` encounters an ambiguous option, it has a string array
 `opt_ambm[]` contain possible matches. `opt_ambm[]` has a fixed size (that is,
-not dynamically allocated) and it has up to 5 candidates. A diagnostic message
-can be constructed to show 4 candidates and to say "and more" or "..." if
-`opt_ambm[5]` is not null.
+not dynamically allocated) and has up to 5 candidates. A diagnostic message can
+be constructed to show 4 candidates and to say "and more" or "..." if
+`opt_ambm[4]` is not null. (_The size of `opt_ambm[]` may change in a future
+release and `sizeof(opt_ambm)/sizeof(opt_ambm[0])` is preferred to `4`, for
+example, to refer to the last element._)
 
-`opt_ambmstr()` does that job, and returns a string that looks like
+`opt_ambmstr()` does that job for you, and returns a string that looks like
 
     match1, match2, match3, match4, ...
 
