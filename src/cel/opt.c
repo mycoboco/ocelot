@@ -6,7 +6,7 @@
 #include <ctype.h>     /* isprint, isspace */
 #include <errno.h>     /* errno */
 #include <limits.h>    /* CHAR_BIT */
-#include <stddef.h>    /* NULL */
+#include <stddef.h>    /* NULL, size_t */
 #include <stdio.h>     /* sprintf */
 #include <string.h>    /* memcpy, strrchr, strlen, strchr, strncmp */
 #include <stdlib.h>    /* strtol, strtoul, strtod, malloc, free, getenv */
