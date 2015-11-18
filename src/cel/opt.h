@@ -46,7 +46,6 @@ extern int opt_arg_req, opt_arg_no, opt_arg_opt;    /* unique addresses for OPT_
 
 
 const char *opt_init(const opt_t *, int *, char **[], const void **, const char *, int);
-const char *opt_extend(const opt_t *, void (*)(int, const void *));
 int opt_parse(void);
 int opt_val(opt_val_t *, const char *, int);
 void opt_abort(void);
