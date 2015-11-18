@@ -51,6 +51,7 @@ static const void **parg;    /* object through which option-argument passed */
 static const char *nopt;     /* short-named option to see next in grouped one */
 static int oprdflag;         /* set if all remaining arguments are recognized as operands */
 static int oargc;            /* location to copy next operand */
+static int unrecog;          /* retains unrecognized arguments when set */
 
 
 /*
@@ -126,9 +127,11 @@ static const void *argconv(const char *arg, int type)
  *  checks consistency of an option description table
  *
  *  The requirements checked are:
- *  - if the first character of the first lopt member is '+', the member has to be "+" and its sopt
- *    member be 0;
- *  - if the first character of the first lopt member is '-', the member has to be "-" and its sopt
+ *  - if the first character of the first lopt member is '+' or '-',
+ *    - the member has to be a string with the sole character and its sopt member be 0; and
+ *    - if the first character of the second lopt member is ' ', the member has to be " " and its
+ *      sopt member be 0;
+ *  - if the first character of the first lopt member is ' ', the member has to be " " and its sopt
  *    member be 0;
  *  - the sopt member has a non-negative value;
  *  - the sopt member is not allowed to have '?', '-', '+', '*', '=', and -1;
@@ -143,9 +146,13 @@ static void chckvalid(const opt_t *o)
 {
     assert(o);
 
-    assert(!o->lopt || (o->lopt[0] != '+' && o->lopt[0] != '-') ||
-           (UC(o->lopt)[1] == '\0' && (o++)->sopt == 0));
-    for ( ; o->lopt; o++) {
+    if (!o->lopt)
+        return;
+    if (o->lopt[0] == '+' || o->lopt[0] == '-')
+        assert(UC(o->lopt)[1] == '\0' && (o++)->sopt == 0);
+    if (o->lopt[0] == ' ')
+        assert(UC(o->lopt)[1] == '\0' && (o++)->sopt == 0);
+    for (; o->lopt; o++) {
         assert(o->sopt >= 0);
         assert(o->sopt != '?' && o->sopt != '-' && o->sopt != '+' && o->sopt != '*' &&
                o->sopt != '=' && o->sopt != -1);
@@ -198,6 +205,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     nopt = NULL;
     oprdflag = 0;
     oargc = 1;
+    unrecog = 0;
 
     for (; o->lopt; o++)    /* initializes flag variables */
         if (o->flag && o->flag != OPT_ARG_REQ && o->flag != OPT_ARG_NO && o->flag != OPT_ARG_OPT)
@@ -216,14 +224,20 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     } else
         *pargc = -1;    /* no program name and options available */
 
-    if (getenv("POSIXLY_CORRECT") || opt->lopt[0] == '+') {
-        order = REQUIRE_ORDER;
-        if (opt->lopt[0] == '+') {
+    if (opt->lopt) {
+        if (getenv("POSIXLY_CORRECT") || opt->lopt[0] == '+') {
+            order = REQUIRE_ORDER;
+            if (opt->lopt[0] == '+')
+                opt++;
+        } else if (opt->lopt[0] == '-') {
+            order = RETURN_IN_ORDER;
             opt++;
-    } else if (opt->lopt[0] == '-') {
-        order = RETURN_IN_ORDER;
-        opt++;
-    }    /* else order = PERMUTE; */
+        }    /* order = PERMUTE; */
+        if (opt->lopt[0] == ' ') {
+            unrecog = 1;
+            opt++;
+        }
+    }
 
     return p;
 }
@@ -261,6 +275,8 @@ static const char *errlopt(const char *lopt)
     return msg;
 }
 
+
+#define ADDTOARGV() (argv[oargc++] = argv[argc])
 
 /*
  *  parses program options
@@ -394,9 +410,13 @@ int (opt_parse)(void)
                         }
                     }
                     if (!match) {
-                        retval = '?';
-                        arg = (kind == LONGOPT)? errlopt(argv[argc]+2): errsopt(argv[argc][i]);
-                        goto retcode;
+                        if (unrecog)
+                            ADDTOARGV();
+                        else {
+                            retval = '?';
+                            arg = (kind == LONGOPT)? errlopt(argv[argc]+2): errsopt(argv[argc][i]);
+                            goto retcode;
+                        }
                     }
                 }
                 break;
@@ -408,11 +428,12 @@ int (opt_parse)(void)
                 } else {    /* order == PERMUTE || order == REQUIRE_ORDER */
                     if (!oprdflag && order == REQUIRE_ORDER)
                         oprdflag = 1;
-                    argv[oargc++] = argv[argc];
+                    ADDTOARGV();
                 }
                 break;
             case DMINUS:    /* -- */
-                /* nothing to do */
+                if (unrecog)
+                    ADDTOARGV();
                 break;
             default:
                 assert(!"invalid type of arguments -- should never reach here");
@@ -425,6 +446,8 @@ int (opt_parse)(void)
         *pargc = argc;
         return retval;
 }
+
+#undef ADDTOARGV
 
 
 /*
@@ -482,9 +505,8 @@ void (opt_abort)(void)
     argc = *pargc;
     argv = *pargv;
 
-    while(argv[argc+1]) {
+    while(argv[argc+1])
         argv[oargc++] = argv[++argc];
-    }
     argv[oargc] = NULL;
 
     *pargc = oargc;
@@ -587,6 +609,10 @@ struct {
 int main(int argc, char *argv[])
 {
     static opt_t tab[] = {
+#if 0
+        "+",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
+        " ",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
+#endif
         "verbose",  0,           &(option.verbose), 1,
         "brief",    0,           &(option.verbose), 0,
         "add",      'a',         OPT_ARG_NO,        OPT_TYPE_NO,
@@ -605,6 +631,7 @@ int main(int argc, char *argv[])
         "bool",     UCHAR_MAX+5, OPT_ARG_REQ,       OPT_TYPE_BOOL,
         NULL,    /* must end with NULL */
     };
+
     int i;
     int c;
     int connect = 0;
