@@ -422,7 +422,7 @@ requires).
 
 In addition, setting the first long-named option to `"-"` makes `opt_parse()`
 returns the character value `1` when encounters an operand as if the operand is
-an option-argument for the option whose short name is `'1'`.
+an option-argument for the option whose short name is `'\001'` or `1`.
 
 
 #### `opt_val_t`
