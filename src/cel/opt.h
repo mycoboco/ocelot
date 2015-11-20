@@ -52,6 +52,7 @@ void opt_abort(void);
 const char *opt_ambmstr(void);
 const char *opt_errmsg(int);
 void opt_free(void);
+const char *opt_reinit(int *, char **[], const void **);
 
 
 /* option-arguments */
