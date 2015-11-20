@@ -151,7 +151,9 @@ after handling operands has finished.
 
 `opt_abort()` is a function that stops recognition of options being performed
 by `opt_parse()`. All remaining options are regarded as operands. It is useful
-when a program introduces an option stopper like `--` for its own purposes.
+when a program introduces an option stopper like `--` for its own purposes. It
+is preferable for a long-named option to trigger `opt_abort()` because
+short-named options can cause a problem when appearing in group.
 
 `opt.c` contains an example designed to use as many facilities of the library
 as possible and a boilerplate code that is a simplified version of the example
@@ -323,8 +325,8 @@ members, two of which have overloaded meanings:
 To mark the end of the table, `lopt` of the last element has to be set to a
 null pointer.
 
-_In earlier versions, flag variables pointed to by `flag` are initialized to be
-`0` by `opt_init()`, but this initialization is no longer performed to allow
+_In earlier versions, flag variables pointed to by `flag` were initialized to
+be `0` by `opt_init()`, but this initialization is no longer performed to allow
 them to have their own initial values._
 
 For `OPT_TYPE_INT` and `OPT_TYPE_UINT`, the conversion of a given
@@ -672,32 +674,9 @@ see the commented-out example code given in `opt.c`. Once `opt_parse()` starts
 the parsing, `argc` and the elements of `argv` are indeterminate, thus an
 access to them is not allowed.
 
-`opt_parse()` changes neither the original contents of `argv` nor strings
-pointed to by `argv`'s elements, thus by granting copies of `argc` and `argv`
-to `opt_init()` as in the following example, a user code can access to program
-arguments unchanged if necessary even after options have been parsed by
-`opt_parse()`.
-
-    int main(int argc, char *argv[])
-    {
-        const void *arg;
-        int argc2 = argc;
-        char **argv2 = argv;
-        /* ... */
-        pname = opt_init(options, &argc2, &argv2, &arg, "program", '/');
-        while (opt_parse() != -1) {
-            /* ... */
-        }
-
-        for (i = 1; i < argc2; i++)
-            printf("operands: %s\n", argv2[i]);
-
-        opt_free();
-
-        for (i = 1; i < argc; i++)
-            printf("untouched program arguments: %s\n", argv[i]);
-        /* ... */
-    }
+_In earlier versions, `opt_parse()` never touched the original contents of
+`argv` nor strings pointed to by it. This is not true anymore to remember
+unrecognized short-named options in group._
 
 _`opt_init()` has to be invoked successfully before calling `opt_parse()`._
 
