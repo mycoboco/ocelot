@@ -16,6 +16,8 @@ the library.
 Precisely, this library:
 - supports three ordering modes - argument permutation mode, POSIX-compliant
   mode and _return-in-order_ mode (see below);
+- supports a mode in which unrecognized options are preserved with operands for
+  separate handling (see "Handling unknown options" section of `opt_t`);
 - allows multiple scans of possibly multiple sets of program arguments;
 - preserves the original program arguments in its original order;
 - supports optional long-named options;
@@ -30,7 +32,7 @@ results in a warning for its ambiguity. This feature is called _abbreviated
 names for long-named options_.
 
 This library reserves identifiers starting with `opt_` and `OPT_`, and imports
-no other libraries except for the standard libraries.
+no other libraries except for the standard ones.
 
 
 ### 1.1. Concepts
@@ -135,19 +137,20 @@ process is made up of a loop containing jumps based on the return value of
 
 When it is necessary to compare a string argument (that is from an argument of
 the `OPT_TYPE_STR` type) with a set of strings to set a variable to an integral
-value depending on the string, `opt_val()` would help in most cases; see an
-example in `opt.c`.
+value depending on the string, `opt_val()` would help in most cases; see a
+commented-out example in `opt.c`.
 
 As `opt_prase()` reports that all options have been inspected, a program is
-granted an access to remaining non-option arguments. These operands are
-inspected as if they were only arguments to the program.
+granted an access to remaining non-option arguments; or with unrecognized
+options if you choose to do. These operands (and options) are inspected as if
+they were only arguments to the program.
 
 Because `opt_init()` allocates storages for duplicating pointers to program
 arguments, `opt_free()` should be invoked in order to avoid memory leakage
 after handling operands has finished.
 
 `opt_abort()` is a function that stops recognition of options being performed
-by `conf_parse()`. All remaining options are regarded as operands. It is useful
+by `opt_parse()`. All remaining options are regarded as operands. It is useful
 when a program introduces an option stopper like `--` for its own purposes.
 
 `opt.c` contains an example designed to use as many facilities of the library
@@ -320,8 +323,9 @@ members, two of which have overloaded meanings:
 To mark the end of the table, `lopt` of the last element has to be set to a
 null pointer.
 
-If `flag` points to a flag variable, the pointed integer object is initialized
-to be `0` by `opt_init()`.
+_In earlier versions, flag variables pointed to by `flag` are initialized to be
+`0` by `opt_init()`, but this initialization is no longer performed to allow
+them to have their own initial values._
 
 For `OPT_TYPE_INT` and `OPT_TYPE_UINT`, the conversion of a given
 option-argument recognizes the C-style prefixes; numbers starting with `0` are
@@ -364,7 +368,7 @@ arguments consumed after each of the options.
 
 When only long-named options need to be provided without introducing flag
 variables, values from `UCHAR_MAX+1` to `INT_MAX` (inclusive) can be used for
-`sopt`; both are from `<limits.h>`.
+`sopt`; both macros are from `<limits.h>`.
 
     static opt_t options[] = {
         "",   'x', OPT_ARG_NO, OPT_TYPE_NO,
@@ -422,7 +426,62 @@ requires).
 
 In addition, setting the first long-named option to `"-"` makes `opt_parse()`
 returns the character value `1` when encounters an operand as if the operand is
-an option-argument for the option whose short name is `'\001'` or `1`.
+an option-argument for the option whose short name is `'\001'` or `1`. Operands
+are not left in `argv` in this mode.
+
+##### Handling unknown options
+
+`opt_parse()` returns `'?'` as an error code when encountering an unknown
+option. In some cases, however, it is useful to preserve them in `argv` for
+later handling. For example, [`beluga`](http://code.woong.org/beluga/), a C
+compiler has multiple back-end implementations and recognizes common options in
+the front-end while allowing each back-end target to have its own set of
+options which the front-end knows nothing about. By leaving unrecognized
+arguments in `argv`, a back-end target has a chance to handle them without help
+from the front-end.
+
+Setting the first long-named option to `" "` (a string with a space) forces
+`opt_parse()` to silently keep unrecognized options instead of returning an
+error code (in this mode, `opt_parse()` never returns `'?'`):
+
+    static opt_t options[] = {
+        " ", 0, OPT_ARG_NO, OPT_TYPE_NO,
+        /* ... */
+        NULL,
+    };
+
+If the first long-named option is `"+"` or `"-"` to control the ordering mode,
+`" "` must come second:
+
+    static opt_t options[] = {
+        "+", 0, OPT_ARG_NO, OPT_TYPE_NO,
+        " ", 0, OPT_ARG_NO, OPT_TYPE_NO,
+        /* ... */
+        NULL,
+    };
+
+Due to ambiguities, it is _highly recommended_ that options to recognize later
+shall not take option-arguments or shall do by placing them immediatly after
+the option or with `=` as in `-Xvalue` and `--option=value`. To explain the
+ambiguities, suppose that all uppercase options denote unknown ones. Given
+these:
+
+    -X -a foo bar
+
+the first iteration of `opt_parse()` recognizes `-a` and removed it, which
+leaves in `argv` these:
+
+    -X foo bar
+
+Even if, in the original sequence, `foo` was an operand, but it may be taken as
+an option-argument of `-X` in a rescan. This and similar problems can arise in
+all ordering modes when allowing separate option-arguments in a rescan.
+
+Because two consective hyphens(`--`) make the following program argument be
+taken as operands even if they start with `-`, `--` is also preserved in
+`argv`.
+
+Refer to `opt_reinit()` how to rescan arguments left in `argv`.
 
 
 #### `opt_val_t`
@@ -885,6 +944,60 @@ Nothing.
 ##### Returns
 
 Nothing.
+
+
+#### `const char **opt_reinit(const opt_t *o, int *pc, char **pv[], const void **pa)`
+
+See "Handling unknown options" section of `opt_t` for how to leave unknown
+options in `argv`.
+
+To let `opt_parse()` rescan options left in `argv`, it is necessary to invoke
+`opt_init()` for reinitialization, which requires `opt_free()` before it. Since
+`opt_free()` frees storage allocated for `argv`, you are required to make a
+copy of `argv` before `opt_free()` as follows:
+
+    const char **p;
+    p = malloc(sizeof(*p) * (argc+1));    /* +1 for NULL */
+    assert(p);
+    memcpy(p, argv, sizeof(*p)*(argc+1));
+    opt_free();    /* frees argv */
+    argv = p;
+    if (opt_init(newtab, &argc, &argv, /* ... */))
+        /* handle opt_init()'s failure */
+    free(p);    /* opt_init() makes its own copy and sets argv to point to it */
+    /* use opt_parse() */
+    opt_free();
+
+This is cumbersome, so `opt_reinit()` is provided.
+
+`opt_reinit()` takes arguments similar to `opt_init()`'s and returns the
+program name or a null pointer.
+
+    /* no need to call opt_free() nor opt_init() */
+    if (!opt_reinit(new_tab, &argc, &argv, &argptr))
+        /* handle opt_reinit()'s failure */
+    /* use opt_parse() */
+    opt_free();
+
+The default program name and a directory seperator are not taken and what have
+been delivered through `opt_init()` are used.
+
+##### May raise
+
+Nothing.
+
+##### Takes
+
+| Name | In/out | Meaning                                                   |
+|:----:|:------:|:----------------------------------------------------------|
+| o    | in     | option description table                                  |
+| pc   | in     | pointer to `argc`                                         |
+| pv   | in     | pointer to `argv`                                         |
+| pa   | in     | pointer to object to contain argument or erroneous option |
+
+##### Returns
+
+The program name or a null pointer.
 
 
 ## 3. Contact me

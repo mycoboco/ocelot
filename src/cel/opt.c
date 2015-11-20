@@ -52,6 +52,8 @@ static const char *nopt;     /* short-named option to see next in grouped one */
 static int oprdflag;         /* set if all remaining arguments are recognized as operands */
 static int oargc;            /* location to copy next operand */
 static int unrecog;          /* retains unrecognized arguments when set */
+static const char *name;     /* program name */
+static int dsep;             /* directory separator */
 
 
 /*
@@ -206,10 +208,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     oprdflag = 0;
     oargc = 1;
     unrecog = 0;
-
-    for (; o->lopt; o++)    /* initializes flag variables */
-        if (o->flag && o->flag != OPT_ARG_REQ && o->flag != OPT_ARG_NO && o->flag != OPT_ARG_OPT)
-            *o->flag = 0;
+    dsep = sep;
 
     if (*pargc > 0) {
         if (UC((*pargv)[0])[0] != '\0') {    /* program name exists */
@@ -239,7 +238,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
         }
     }
 
-    return p;
+    return (name = p);
 }
 
 
@@ -589,6 +588,38 @@ void (opt_free)(void)
 }
 
 
+/*
+ *  prepares to rescan program arguments
+ */
+const char *(opt_reinit)(const opt_t *o, int *pc, char **pv[], void *pa)
+{
+    char **p;
+
+    assert(o);
+    assert(pc);
+    assert(pv);
+    assert(pa);
+
+    assert(name);
+    assert(dsep != '\0');
+
+    assert(opt);      /* opt_init() must be called before opt_abort() */
+    assert(pargc);
+    assert(pargv);
+    assert(parg);
+
+    if ((p = malloc((*pc+1)*sizeof(*p))) == NULL)
+        return NULL;
+    memcpy(p, *pv, sizeof(*p)*(*pc+1));
+    opt_free();    /* frees *pv */
+    *pv = p;
+    name = opt_init(o, pc, pv, pa, name, dsep);
+    free(p);
+
+    return name;
+}
+
+
 #if 0    /* example code */
 #include <assert.h>    /* assert */
 #include <stddef.h>    /* NULL */
@@ -604,15 +635,14 @@ void (opt_free)(void)
 struct {
     const char *prgname;    /* program name */
     int verbose;            /* set by "--verbose" and unset by "--brief" */
+    int xtra;               /* set by "--xtra" */
 } option;
 
 int main(int argc, char *argv[])
 {
     static opt_t tab[] = {
-#if 0
         "+",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
         " ",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
-#endif
         "verbose",  0,           &(option.verbose), 1,
         "brief",    0,           &(option.verbose), 0,
         "add",      'a',         OPT_ARG_NO,        OPT_TYPE_NO,
@@ -630,6 +660,10 @@ int main(int argc, char *argv[])
         "helpmore", UCHAR_MAX+4, OPT_ARG_NO,        OPT_TYPE_NO,
         "bool",     UCHAR_MAX+5, OPT_ARG_REQ,       OPT_TYPE_BOOL,
         NULL,    /* must end with NULL */
+    }, tab2[] = {
+        "xtra", 'x', &(option.xtra), 1,
+        "",     'y', OPT_ARG_NO,     OPT_TYPE_NO,
+        NULL,    /* must end with NULL */
     };
 
     int i;
@@ -637,6 +671,7 @@ int main(int argc, char *argv[])
     int connect = 0;
     const void *argptr;
 
+    /* initial scan */
     option.prgname = opt_init(tab, &argc, &argv, &argptr, PRGNAME, '/');
     if (!option.prgname) {
         opt_free();
@@ -733,6 +768,46 @@ int main(int argc, char *argv[])
     printf("connect option is set to %d\n", connect);
 
     if (argc > 1) {
+        printf("non-option and unrecognized ARGV-arguments:");
+        for (i = 1; i < argc; i++)
+            printf(" %s", argv[i]);
+        putchar('\n');
+    }
+
+    /* rescan */
+    if (!opt_reinit(tab2, &argc, &argv, &argptr)) {
+        opt_free();
+        fprintf(stderr, "%s: failed to parse options\n", PRGNAME);
+        return EXIT_FAILURE;
+    }
+
+    while ((c = opt_parse()) != -1) {
+        switch(c) {
+            case 'y':
+                printf("%s: option -y given\n", option.prgname);
+                break;
+
+            /* common case labels follow */
+            case 0:    /* flag variable set; do nothing else now */
+                break;
+            case '?':    /* unrecognized option */
+            case '-':    /* no or invalid argument given for option */
+            case '+':    /* argument given to option that takes none */
+            case '*':    /* ambiguous option */
+                fprintf(stderr, "%s: ", option.prgname);
+                fprintf(stderr, opt_errmsg(c), (const char *)argptr, opt_ambmstr());
+                opt_free();
+                return EXIT_FAILURE;
+            default:
+                assert(!"not all options covered -- should never reach here");
+                break;
+        }
+    }
+
+    if (option.xtra)
+        puts("xtra flag is set");
+
+    if (argc > 1) {
         printf("non-option ARGV-arguments:");
         for (i = 1; i < argc; i++)
             printf(" %s", argv[i]);
@@ -740,7 +815,6 @@ int main(int argc, char *argv[])
     }
 
     opt_free();
-
     return 0;
 }
 #endif    /* disabled */
