@@ -588,7 +588,7 @@ void (opt_free)(void)
 /*
  *  prepares to rescan program arguments
  */
-const char *(opt_reinit)(const opt_t *o, int *pc, char **pv[], void *pa)
+const char *(opt_reinit)(const opt_t *o, int *pc, char **pv[], const void **pa)
 {
     char **p;
 
