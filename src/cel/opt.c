@@ -669,6 +669,7 @@ int main(int argc, char *argv[])
         "help",     UCHAR_MAX+3, OPT_ARG_NO,        OPT_TYPE_NO,
         "helpmore", UCHAR_MAX+4, OPT_ARG_NO,        OPT_TYPE_NO,
         "bool",     UCHAR_MAX+5, OPT_ARG_REQ,       OPT_TYPE_BOOL,
+        "stop",     UCHAR_MAX+6, OPT_ARG_NO,        OPT_TYPE_NO,
         NULL,    /* must end with NULL */
     }, tab2[] = {
         "xtra", 'x', &(option.xtra), 1,
@@ -754,6 +755,9 @@ int main(int argc, char *argv[])
             case UCHAR_MAX+5:
                 printf("%s: option --boolean given with %s\n", option.prgname,
                        (*(const int *)argptr)? "true": "false");
+                break;
+            case UCHAR_MAX+6:
+                opt_abort();
                 break;
 
             /* common case labels follow */
