@@ -325,11 +325,8 @@ int (opt_parse)(void)
                     assert(*nopt != '\0');
                     i = nopt - argv[argc];
                     nopt = NULL;
-                } else {
+                } else
                     i = 1;
-                    if (unrecog)
-                        n = &argv[argc][1];
-                }
                 for (; kind != LONGOPT && argv[argc][i] != '\0'; i++) {
                     int match;
             case LONGOPT:     /* --f... */
@@ -416,9 +413,11 @@ int (opt_parse)(void)
                     }
                     if (!match) {
                         if (unrecog) {
-                            if (kind == SHORTOPT)
+                            if (kind == SHORTOPT) {
+                                if (!n)
+                                    n = &argv[argc][1];
                                 *n++ = argv[argc][i];
-                            else
+                            } else
                                 ADDTOARGV();
                         } else {
                             retval = '?';
@@ -651,7 +650,6 @@ struct {
 int main(int argc, char *argv[])
 {
     static opt_t tab[] = {
-        "+",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
         " ",        0,           OPT_ARG_NO,        OPT_TYPE_NO,
         "verbose",  0,           &(option.verbose), 1,
         "brief",    0,           &(option.verbose), 0,
