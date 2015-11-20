@@ -14,9 +14,6 @@
 #include "opt.h"
 
 
-/* short-hand notation for conversion to unsigned char * */
-#define UC(x) ((unsigned char *)(x))
-
 /* normalizes characters for space */
 #define normal(c) (((c) == ' ' || (c) == '_')? '-': (c))
 
@@ -61,17 +58,17 @@ static int dsep;             /* directory separator */
  */
 static int argcheck(const char *arg)
 {
-    if (!arg || UC(arg)[0] == '\0')
+    if (!arg || arg[0] == '\0')
         return INVALID;
 
     if (!oprdflag && arg[0] == '-') {    /* -... */
         if (arg[1] == '-') {    /* --... */
-            if (UC(arg)[2] == '\0') {    /* -- */
+            if (arg[2] == '\0') {    /* -- */
                 oprdflag = 1;
                 return DMINUS;
             } else    /* --f... */
                 return LONGOPT;
-        } else if (UC(arg)[1] == '\0')    /* - */
+        } else if (arg[1] == '\0')    /* - */
             return OPERAND;
         else    /* -f... */
             return SHORTOPT;
@@ -98,7 +95,7 @@ static const void *argconv(const char *arg, int type)
     errno = 0;
     switch(type) {
         case OPT_TYPE_BOOL:
-            while (*UC(arg) != '\0' && isspace(*UC(arg)))    /* ignores leading spaces */
+            while (*arg != '\0' && isspace(*(unsigned char *)arg))    /* ignores leading spaces */
                 arg++;
             if (*arg == 't' || *arg == 'T' || *arg == 'y' || *arg == 'Y' || *arg == '1')
                 boolean = 1;
@@ -107,13 +104,13 @@ static const void *argconv(const char *arg, int type)
             return &boolean;
         case OPT_TYPE_INT:
             inumber = strtol(arg, &endptr, 0);
-            return (*UC(endptr) != '\0' || errno)? NULL: &inumber;
+            return (*endptr != '\0' || errno)? NULL: &inumber;
         case OPT_TYPE_UINT:
             unumber = strtoul(arg, &endptr, 0);
-            return (*UC(endptr) != '\0' || errno)? NULL: &unumber;
+            return (*endptr != '\0' || errno)? NULL: &unumber;
         case OPT_TYPE_REAL:
             fnumber = strtod(arg, &endptr);
-            return (*UC(endptr) != '\0' || errno)? NULL: &fnumber;
+            return (*endptr != '\0' || errno)? NULL: &fnumber;
         case OPT_TYPE_STR:
             return arg;
         default:
@@ -151,14 +148,14 @@ static void chckvalid(const opt_t *o)
     if (!o->lopt)
         return;
     if (o->lopt[0] == '+' || o->lopt[0] == '-')
-        assert(UC(o->lopt)[1] == '\0' && (o++)->sopt == 0);
+        assert(o->lopt[1] == '\0' && (o++)->sopt == 0);
     if (o->lopt[0] == ' ')
-        assert(UC(o->lopt)[1] == '\0' && (o++)->sopt == 0);
+        assert(o->lopt[1] == '\0' && (o++)->sopt == 0);
     for (; o->lopt; o++) {
         assert(o->sopt >= 0);
         assert(o->sopt != '?' && o->sopt != '-' && o->sopt != '+' && o->sopt != '*' &&
                o->sopt != '=' && o->sopt != -1);
-        assert(o->sopt != 0 || (UC(o->lopt)[0] != '\0' && o->flag && o->flag != OPT_ARG_NO &&
+        assert(o->sopt != 0 || (o->lopt[0] != '\0' && o->flag && o->flag != OPT_ARG_NO &&
                                 o->flag != OPT_ARG_REQ && o->flag != OPT_ARG_OPT));
         assert(strchr(o->lopt, '=') == NULL);
         assert(!(o->flag == OPT_ARG_REQ || o->flag == OPT_ARG_OPT) ||
@@ -211,7 +208,7 @@ const char *(opt_init)(const opt_t *o, int *pc, char **pv[], const void **pa, co
     dsep = sep;
 
     if (*pargc > 0) {
-        if (UC((*pargv)[0])[0] != '\0') {    /* program name exists */
+        if ((*pargv)[0][0] != '\0') {    /* program name exists */
             p = strrchr((*pargv)[0], (unsigned char)sep);
             if (p)
                 p++;
@@ -266,10 +263,10 @@ static const char *errlopt(const char *lopt)
 
     assert(lopt);
 
-    for (p = lopt; *UC(p) != '\0' && *p != '=' && p-lopt < sizeof(msg)-3; p++)
+    for (p = lopt; *p != '\0' && *p != '=' && p-lopt < sizeof(msg)-3; p++)
         continue;
 
-    sprintf(msg, "--%.*s%s", (int)(p-lopt), lopt, (*UC(p) != '\0' && *p != '=')? "...": "");
+    sprintf(msg, "--%.*s%s", (int)(p-lopt), lopt, (*p != '\0' && *p != '=')? "...": "");
 
     return msg;
 }
@@ -319,19 +316,19 @@ int (opt_parse)(void)
         switch(kind = argcheck(argv[++argc])) {
             case SHORTOPT:    /* -f... */
                 if (nopt) {    /* starts at next in grouped options */
-                    assert(*UC(nopt) != '\0');
+                    assert(*nopt != '\0');
                     i = nopt - argv[argc];
                     nopt = NULL;
                 } else
                     i = 1;
-                for (; kind != LONGOPT && UC(argv[argc])[i] != '\0'; i++) {
+                for (; kind != LONGOPT && argv[argc][i] != '\0'; i++) {
                     int match;
             case LONGOPT:     /* --f... */
                     match = 0;    /* cannot be merged into initialization above */
                     for (p = opt; p->lopt; p++) {
-                        if (kind == SHORTOPT && UC(argv[argc])[i] == (unsigned char)p->sopt)
+                        if (kind == SHORTOPT && argv[argc][i] == (unsigned char)p->sopt)
                             match = 1;
-                        else if (kind == LONGOPT && UC(p->lopt)[0] == UC(argv[argc])[2]) {
+                        else if (kind == LONGOPT && p->lopt[0] == argv[argc][2]) {
                             char *s;
                             const opt_t *q;
                             if ((s = strchr(argv[argc]+3, '=')) != NULL)    /* --f...=... */
@@ -340,10 +337,10 @@ int (opt_parse)(void)
                                 i = strlen(argv[argc]+3);
                             q = p;
                             do {    /* checks ambiguity */
-                                if (UC(q->lopt)[0] == UC(argv[argc])[2] &&
+                                if (q->lopt[0] == argv[argc][2] &&
                                     strncmp(q->lopt+1, argv[argc]+3, i) == 0) {
                                     /* prefix matched */
-                                    if (UC(q->lopt)[1+i] == '\0') {    /* exact match */
+                                    if (q->lopt[1+i] == '\0') {    /* exact match */
                                         p = q;
                                         match = 1;
                                         break;
@@ -364,12 +361,12 @@ int (opt_parse)(void)
                                 goto retcode;
                             }
                             i += 2;    /* adjusts i for use below */
-                            assert(UC(argv[argc])[i+1] == '\0' || argv[argc][i+1] == '=');
+                            assert(argv[argc][i+1] == '\0' || argv[argc][i+1] == '=');
                         }
                         if (match) {
                             retval = p->sopt;
                             if (p->flag == OPT_ARG_REQ || p->flag == OPT_ARG_OPT) {
-                                if (UC(argv[argc])[i+1] != '\0')    /* -f..., -f=..., --f...=... */
+                                if (argv[argc][i+1] != '\0')    /* -f..., -f=..., --f...=... */
                                     arg = argconv(&argv[argc][i+1+(argv[argc][i+1]=='=')], p->arg);
                                 else if (argcheck(argv[argc+1]) == OPERAND) {
                                     arg = argconv(argv[argc+1], p->arg);
@@ -380,7 +377,7 @@ int (opt_parse)(void)
                                 if (!arg) {
                                     if (p->flag == OPT_ARG_OPT && argv[argc][i+1] != '=') {
                                         /* argv[argc][i+1] != '\0' implies kind == SHORTOPT */
-                                        if (UC(argv[argc])[i+1] != '\0') {
+                                        if (argv[argc][i+1] != '\0') {
                                             nopt = &argv[argc][i+1];
                                             argc--;
                                         }
@@ -400,7 +397,7 @@ int (opt_parse)(void)
                                 break;
                             } else {    /* no flag variable, so returns option */
                                 assert(kind == SHORTOPT || retval != 0);
-                                if (kind == SHORTOPT && UC(argv[argc])[i+1] != '\0') {
+                                if (kind == SHORTOPT && argv[argc][i+1] != '\0') {
                                     nopt = &argv[argc][i+1];
                                     argc--;
                                 }
