@@ -273,6 +273,8 @@ static const char *errlopt(const char *lopt)
 
 
 #define ADDTOARGV() (argv[oargc++] = argv[argc])
+#define CHKNSETN()  if (n && !nopt)    /* !!n implies unrecog */    \
+                        (*n='\0', n=NULL, ADDTOARGV())
 
 /*
  *  parses program options
@@ -285,7 +287,7 @@ static const char *errlopt(const char *lopt)
  */
 int (opt_parse)(void)
 {
-    static char buf[1+127+1] = "-";
+    static char *n;
 
     int i;
     int kind;
@@ -306,11 +308,7 @@ int (opt_parse)(void)
     arg = NULL;
     opt_ambm[0] = NULL;
 
-    if (buf[1] != '\0' && !nopt) {    /* buf[1] != '\0' implies unrecog */
-        strcpy(argv[oargc++], buf);
-        buf[1] = '\0';
-    }
-
+    CHKNSETN();
     if (argc < 0 || (nopt == (void *)&oargc) || argv[argc+1] == NULL) {    /* done */
         argv[oargc] = NULL;
         retval = -1;
@@ -320,14 +318,18 @@ int (opt_parse)(void)
     }
 
     do {
+        CHKNSETN();
         switch(kind = argcheck(argv[++argc])) {
             case SHORTOPT:    /* -f... */
                 if (nopt) {    /* starts at next in grouped options */
                     assert(*nopt != '\0');
                     i = nopt - argv[argc];
                     nopt = NULL;
-                } else
+                } else {
                     i = 1;
+                    if (unrecog)
+                        n = &argv[argc][1];
+                }
                 for (; kind != LONGOPT && argv[argc][i] != '\0'; i++) {
                     int match;
             case LONGOPT:     /* --f... */
@@ -414,12 +416,9 @@ int (opt_parse)(void)
                     }
                     if (!match) {
                         if (unrecog) {
-                            if (kind == SHORTOPT) {
-                                char s[2] = { 0, };
-                                s[0] = argv[argc][i];
-                                if (strlen(buf) < NELEM(buf)-1)
-                                    strcat(buf+1, s);
-                            } else
+                            if (kind == SHORTOPT)
+                                *n++ = argv[argc][i];
+                            else
                                 ADDTOARGV();
                         } else {
                             retval = '?';
@@ -457,6 +456,7 @@ int (opt_parse)(void)
 }
 
 #undef ADDTOARGV
+#undef CHKNSETN
 
 
 /*
