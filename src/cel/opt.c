@@ -285,6 +285,8 @@ static const char *errlopt(const char *lopt)
  */
 int (opt_parse)(void)
 {
+    static char buf[1+127+1] = "-";
+
     int i;
     int kind;
     int retval;
@@ -303,6 +305,11 @@ int (opt_parse)(void)
     retval = 0;
     arg = NULL;
     opt_ambm[0] = NULL;
+
+    if (buf[1] != '\0' && !nopt) {    /* buf[1] != '\0' implies unrecog */
+        strcpy(argv[oargc++], buf);
+        buf[1] = '\0';
+    }
 
     if (argc < 0 || (nopt == (void *)&oargc) || argv[argc+1] == NULL) {    /* done */
         argv[oargc] = NULL;
@@ -406,9 +413,15 @@ int (opt_parse)(void)
                         }
                     }
                     if (!match) {
-                        if (unrecog)
-                            ADDTOARGV();
-                        else {
+                        if (unrecog) {
+                            if (kind == SHORTOPT) {
+                                char s[2] = { 0, };
+                                s[0] = argv[argc][i];
+                                if (strlen(buf) < NELEM(buf)-1)
+                                    strcat(buf+1, s);
+                            } else
+                                ADDTOARGV();
+                        } else {
                             retval = '?';
                             arg = (kind == LONGOPT)? errlopt(argv[argc]+2): errsopt(argv[argc][i]);
                             goto retcode;
