@@ -30,10 +30,10 @@ M = 1
 N = 0
 
 
-ALL_CFLAGS = -fPIC $(CFLAGS)
+ALL_CFLAGS = -I$I -fPIC $(CFLAGS)
 
 .c.o:
-	$(CC) -I$I -o $@ -c $(CPPFLAGS) $(ALL_CFLAGS) $<
+	$(CC) -o $@ -c $(CPPFLAGS) $(ALL_CFLAGS) $<
 
 
 CBLOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memory.o $S/cbl/text.o
