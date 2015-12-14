@@ -52,7 +52,7 @@ After the libraries built, you can use them by linking and delivering with
 your product, or install them on your system.
 
 
-### System-wide installation
+#### System-wide installation
 
 You need to identify proper places to put the libraries (e.g., `/usr/local/lib`
 in most cases, `/usr/local/lib32` for 32-bit builds on a 64-bit machine and
@@ -95,7 +95,7 @@ all of `cdsl` depend on `cbl`, which is the reason `-lcbl` follows `-lcdsl` in
 the arguments for the compiler.
 
 
-### Local installation
+#### Local installation
 
 You can copy or move built libraries and headers to whatever place you want,
 and simply link them with your code as in:
