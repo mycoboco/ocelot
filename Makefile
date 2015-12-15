@@ -52,8 +52,7 @@ CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl
 CELHCOPY = $I/cel/conf.h $I/cel/opt.h
 
 
-what:
-	-@echo make all static cbl cdsl cel clean
+all: cbl cdsl cel
 
 cbl: $(CBLHCOPY) $L/libcbl.a $L/libcbl.so.$M.$N $L/libcbl.so $L/libcbld.a $L/libcbld.so.$M.$N \
 	$L/libcbld.so
@@ -63,8 +62,6 @@ cdsl: $(CBLHCOPY) $(CDSLHCOPY) $L/libcdsl.a $L/libcdsl.so.$M.$N $L/libcdsl.so
 cel: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcel.a $L/libcel.so.$M.$N $L/libcel.so
 
 static: $(CBLHCOPY) $(CDSLHCOPY) $(CELHCOPY) $L/libcbl.a $L/libcbld.a $L/libcdsl.a $L/libcel.a
-
-all: cbl cdsl cel
 
 clean:
 	$(RM) $(CBLOBJS) $(CBLDOBJS) $(CDSLOBJS) $(CELOBJS)
