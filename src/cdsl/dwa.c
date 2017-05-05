@@ -344,10 +344,8 @@ dwa_t (dwa_div)(dwa_t x, dwa_t y, int mod)
  */
 dwa_t (dwa_bcom)(dwa_t x)
 {
-    int i;
-
-    for (i = 0; i < SIZE; i++)
-        x.u.v[i] = ~x.u.v[i];
+    x.u.w[0] = ~x.u.w[0];
+    x.u.w[1] = ~x.u.w[1];
 
     return x;
 }
@@ -424,21 +422,20 @@ dwa_t (dwa_rsha)(dwa_t x, int n)
  */
 dwa_t (dwa_bit)(dwa_t x, dwa_t y, int op)
 {
-    int i;
     dwa_t t;
 
     switch(op) {
         case 0:    /* and */
-            for (i = 0; i < SIZE; i++)
-                t.u.v[i] = x.u.v[i] & y.u.v[i];
+            t.u.w[0] = x.u.w[0] & y.u.w[0];
+            t.u.w[1] = x.u.w[1] & y.u.w[1];
             break;
         case 1:    /* xor */
-            for (i = 0; i < SIZE; i++)
-                t.u.v[i] = x.u.v[i] ^ y.u.v[i];
+            t.u.w[0] = x.u.w[0] ^ y.u.w[0];
+            t.u.w[1] = x.u.w[1] ^ y.u.w[1];
             break;
         case 2:    /* or */
-            for (i = 0; i < SIZE; i++)
-                t.u.v[i] = x.u.v[i] | y.u.v[i];
+            t.u.w[0] = x.u.w[0] | y.u.w[0];
+            t.u.w[1] = x.u.w[1] | y.u.w[1];
             break;
         default:
             assert(!"invalid bit-wise operation code");
