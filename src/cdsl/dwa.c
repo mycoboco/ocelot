@@ -22,7 +22,7 @@ long double fmodl(long double, long double);
 #endif    /* !HUGE_VALL */
 
 
-static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";
+static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";    /* mapping for digits */
 
 
 /* conversion from and to native integers */
