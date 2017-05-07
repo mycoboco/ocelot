@@ -850,6 +850,12 @@ int main(void)
     puts(dwa_tostru(NULL, t1, 16));                /* ffe0000000000000 */
     t1 = dwa_rsha(t1, 23);
     puts(dwa_tostru(NULL, t1, 16));                /* ffffffffc0000000 */
+    t1 = dwa_lsh(dwa_fromint(1), 63);
+    t1 = dwa_rsha(t1, 56);
+    puts(dwa_tostru(NULL, t1, 16));                /* ffffffffffffff80 */
+    t1 = dwa_lsh(dwa_fromint(1), 62);
+    t1 = dwa_rsha(t1, 56);
+    puts(dwa_tostru(NULL, t1, 16));                /* 0000000000000040 */
 
     t2 = t1;
     printf("\n%s\n", dwa_tostru(NULL, dwa_bit(t1, t2, 1), 16));    /* 0 */
