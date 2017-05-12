@@ -38,8 +38,8 @@ ALL_CFLAGS = -I$I -fPIC $(CFLAGS)
 
 CBLOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memory.o $S/cbl/text.o
 CBLDOBJS = $S/cbl/arena.o $S/cbl/assert.o $S/cbl/except.o $S/cbl/memoryd.o $S/cbl/text.o
-CDSLOBJS = $S/cdsl/bitv.o $S/cdsl/dlist.o $S/cdsl/hash.o $S/cdsl/list.o $S/cdsl/set.o \
-	$S/cdsl/stack.o $S/cdsl/table.o
+CDSLOBJS = $S/cdsl/bitv.o $S/cdsl/dlist.o $S/cdsl/dwa.o $S/cdsl/hash.o $S/cdsl/list.o \
+	$S/cdsl/set.o $S/cdsl/stack.o $S/cdsl/table.o
 CELOBJS = $S/cel/conf.o $S/cel/opt.o
 
 CBLHORIG = $(CBLOBJS:.o=.h)
@@ -47,8 +47,8 @@ CDSLHORIG = $(CDSLOBJS:.o=.h)
 CELHORIG = $(CELOBJS:.o=.h)
 
 CBLHCOPY = $I/cbl/arena.h $I/cbl/assert.h $I/cbl/except.h $I/cbl/memory.h $I/cbl/text.h
-CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/hash.h $I/cdsl/list.h $I/cdsl/set.h \
-	$I/cdsl/stack.h $I/cdsl/table.h
+CDSLHCOPY = $I/cdsl/bitv.h $I/cdsl/dlist.h $I/cdsl/dwa.h $I/cdsl/hash.h $I/cdsl/list.h \
+	$I/cdsl/set.h $I/cdsl/stack.h $I/cdsl/table.h
 CELHCOPY = $I/cel/conf.h $I/cel/opt.h
 
 
@@ -138,6 +138,7 @@ $S/cbl/text.o:    $S/cbl/text.c    $S/cbl/text.h   $S/cbl/assert.h $S/cbl/except
 
 $S/cdsl/bitv.o:  $S/cdsl/bitv.c  $S/cdsl/bitv.h  $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
 $S/cdsl/dlist.o: $S/cdsl/dlist.c $S/cdsl/dlist.h $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/dwa.o:   $S/cdsl/dwa.c   $S/cdsl/dwa.h   $S/cbl/assert.h $S/cbl/except.h
 $S/cdsl/hash.o:  $S/cdsl/hash.c  $S/cdsl/hash.h  $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
 $S/cdsl/list.o:  $S/cdsl/list.c  $S/cdsl/list.h	 $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
 $S/cdsl/set.o:   $S/cdsl/set.c   $S/cdsl/set.h   $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
