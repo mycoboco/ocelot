@@ -134,18 +134,18 @@ $S/cbl/assert.o:  $S/cbl/assert.c  $S/cbl/assert.h $S/cbl/except.h
 $S/cbl/except.o:  $S/cbl/except.c  $S/cbl/except.h $S/cbl/assert.h
 $S/cbl/memory.o:  $S/cbl/memory.c  $S/cbl/memory.h $S/cbl/assert.h $S/cbl/except.h
 $S/cbl/memoryd.o: $S/cbl/memoryd.c $S/cbl/memory.h $S/cbl/assert.h $S/cbl/except.h
-$S/cbl/text.o:    $S/cbl/text.c    $S/cbl/text.h   $S/cbl/assert.h $S/cbl/memory.h
+$S/cbl/text.o:    $S/cbl/text.c    $S/cbl/text.h   $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
 
-$S/cdsl/bitv.o:  $S/cdsl/bitv.c  $S/cdsl/bitv.h  $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/dlist.o: $S/cdsl/dlist.c $S/cdsl/dlist.h $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/hash.o:  $S/cdsl/hash.c  $S/cdsl/hash.h  $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/list.o:  $S/cdsl/list.c  $S/cdsl/list.h	 $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/set.o:   $S/cdsl/set.c   $S/cdsl/set.h   $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/stack.o: $S/cdsl/stack.c $S/cdsl/stack.h $S/cbl/assert.h $S/cbl/memory.h
-$S/cdsl/table.o: $S/cdsl/table.c $S/cdsl/table.h $S/cbl/assert.h $S/cbl/memory.h
+$S/cdsl/bitv.o:  $S/cdsl/bitv.c  $S/cdsl/bitv.h  $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/dlist.o: $S/cdsl/dlist.c $S/cdsl/dlist.h $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/hash.o:  $S/cdsl/hash.c  $S/cdsl/hash.h  $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/list.o:  $S/cdsl/list.c  $S/cdsl/list.h	 $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/set.o:   $S/cdsl/set.c   $S/cdsl/set.h   $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/stack.o: $S/cdsl/stack.c $S/cdsl/stack.h $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
+$S/cdsl/table.o: $S/cdsl/table.c $S/cdsl/table.h $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h
 
-$S/cel/conf.o: $S/cel/conf.c $S/cel/conf.h $S/cbl/assert.h $S/cbl/memory.h $S/cdsl/hash.h \
-	$S/cdsl/table.h
+$S/cel/conf.o: $S/cel/conf.c $S/cel/conf.h $S/cbl/assert.h $S/cbl/except.h $S/cbl/memory.h \
+	$S/cdsl/hash.h $S/cdsl/table.h
 $S/cel/opt.o:  $S/cel/opt.c  $S/cel/opt.h
 
 # end of Makefile
