@@ -10,10 +10,14 @@ typedef unsigned long dwa_base_t;    /* single-word base type */
 /* represents double-word integers */
 typedef struct dwa_t {
     union {
-        unsigned char v[sizeof(dwa_base_t) * 2];    /* base-256 representation; little endian */
         dwa_base_t w[2];                            /* single-word alias */
+        unsigned char v[sizeof(dwa_base_t) * 2];    /* base-256 representation; little endian */
     } u;
 } dwa_t;
+
+
+/* min/max values for dwa_t */
+const dwa_t dwa_umax, dwa_max, dwa_min;
 
 
 /* conversion from and to native integers */

@@ -30,6 +30,12 @@ long double fmodl(long double, long double);
 #endif    /* !HUGE_VALL */
 
 
+/* min/max values for dwa_t */
+const dwa_t dwa_umax = { -1, -1 },
+            dwa_max = { -1, (dwa_base_t)-1 >> 1 },
+            dwa_min = { 0,  (dwa_base_t)1 << (CHAR_BIT*sizeof(dwa_base_t) - 1) };
+
+
 static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";    /* mapping for digits */
 
 
