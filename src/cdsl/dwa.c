@@ -748,6 +748,10 @@ int main(void)
     char *p;
     const char *q;
 
+    puts(dwa_tostru(NULL, dwa_umax, 10));    /* 18446744073709551615 */
+    puts(dwa_tostr(NULL, dwa_max, 10));      /* 9223372036854775807 */
+    puts(dwa_tostr(NULL, dwa_min, 10));      /* -9223372036854775808 */
+
     puts(dwa_tostru(NULL, dwa_fromuint(0), 10));              /* 0 */
     puts(dwa_tostru(NULL, dwa_fromuint(1), 10));              /* 1 */
     puts(dwa_tostru(NULL, dwa_fromuint(0xffffffff), 10));     /* 4294967295 */
