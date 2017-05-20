@@ -739,6 +739,7 @@ long double (dwa_tofp)(dwa_t x)
 
 
 #if 0    /* test code */
+#include <float.h>       /* DBL_MAX */
 #include <stdio.h>       /* puts, printf */
 #include <cdsl/dwa.h>    /* dwa_t, dwa_lsh, dwa_tostru */
 
@@ -908,6 +909,10 @@ int main(void)
     puts(dwa_tostr(NULL, dwa_fromfp(-9223372036854775808.0), 10));     /* -9223372036854775808 */
     puts(dwa_tostr(NULL, dwa_fromfp(-18446744073709551615.0), 10));    /* -9223372036854775808 */
     puts(dwa_tostr(NULL, dwa_fromfp(-18446744073709551610.0), 10));    /* -9223372036854775808 */
+#if 0    /* enable to test conversions from NaNs and Infs */
+    puts(dwa_tostr(NULL, dwa_fromfp(0.0 / 0), 10));
+    puts(dwa_tostr(NULL, dwa_fromfp(DBL_MAX * DBL_MAX), 10));
+#endif
 
     q = dwa_tostr(NULL, dwa_fromstr("+1234567890", &p, 0), 10);
     printf("\n%s:%s\n", q, p);                                                    /* 1234567890: */
