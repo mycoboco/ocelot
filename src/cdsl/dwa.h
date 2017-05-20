@@ -10,14 +10,19 @@
 #define DWA_XOR 1
 #define DWA_OR  2
 
+#ifndef BASE_TYPE
+#define BASE_TYPE long
+#endif    /* !BASE_TYPE */
 
-typedef unsigned long dwa_base_t;    /* single-word base type */
+
+typedef unsigned BASE_TYPE dwa_ubase_t;    /* unsigned single-word base type */
+typedef signed   BASE_TYPE dwa_base_t;     /* signed single-word base type */
 
 /* represents double-word integers */
 typedef struct dwa_t {
     union {
-        dwa_base_t w[2];                            /* single-word alias */
-        unsigned char v[sizeof(dwa_base_t) * 2];    /* base-256 representation; little endian */
+        dwa_ubase_t w[2];                            /* single-word alias */
+        unsigned char v[sizeof(dwa_ubase_t) * 2];    /* radix-256 representation; little endian */
     } u;
 } dwa_t;
 
@@ -27,10 +32,10 @@ const dwa_t dwa_umax, dwa_max, dwa_min;
 
 
 /* conversion from and to native integers */
-dwa_t dwa_fromuint(unsigned long);
-dwa_t dwa_fromint(long);
-unsigned long dwa_touint(dwa_t);
-long dwa_toint(dwa_t);
+dwa_t dwa_fromuint(dwa_ubase_t);
+dwa_t dwa_fromint(dwa_base_t);
+dwa_ubase_t dwa_touint(dwa_t);
+dwa_base_t dwa_toint(dwa_t);
 
 /* arithmetic */
 dwa_t dwa_neg(dwa_t);

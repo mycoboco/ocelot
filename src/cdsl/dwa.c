@@ -32,8 +32,8 @@ long double fmodl(long double, long double);
 
 /* min/max values for dwa_t */
 const dwa_t dwa_umax = { -1, -1 },
-            dwa_max = { -1, (dwa_base_t)-1 >> 1 },
-            dwa_min = { 0,  (dwa_base_t)1 << (CHAR_BIT*sizeof(dwa_base_t) - 1) };
+            dwa_max = { -1, (dwa_ubase_t)-1 >> 1 },
+            dwa_min = { 0,  (dwa_ubase_t)1 << (CHAR_BIT*sizeof(dwa_base_t) - 1) };
 
 
 static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";    /* mapping for digits */
@@ -42,9 +42,9 @@ static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";    /* mapping f
 /* conversion from and to native integers */
 
 /*
- *  generates a double-word integer from an unsigned long
+ *  generates a double-word integer from an unsigned single-word integer
  */
-dwa_t (dwa_fromuint)(unsigned long v)
+dwa_t (dwa_fromuint)(dwa_ubase_t v)
 {
     dwa_t t = { 0, };
 
@@ -63,26 +63,28 @@ dwa_t (dwa_fromuint)(unsigned long v)
 
 
 /*
- *  generates a double-word integer from a signed long;
+ *  generates a double-word integer from a signed single-word integer;
  *  ASSUMPTION: 2sC is used for native integer types
  */
-dwa_t (dwa_fromint)(long v)
+dwa_t (dwa_fromint)(dwa_base_t v)
 {
-    return (v < 0)? dwa_neg(dwa_fromuint((v == LONG_MIN)? LONG_MAX+1ul: -v)):
+    dwa_base_t m = ~(dwa_ubase_t)0 >> 1;
+
+    return (v < 0)? dwa_neg(dwa_fromuint((v == -m-1)? (dwa_ubase_t)m+1: -v)):
                     dwa_fromuint(v);
 }
 
 
 /*
- *  generates an unsigned long from a double-word integer
+ *  generates an unsigned single-word integer from a double-word integer
  */
-unsigned long (dwa_touint)(dwa_t x)
+dwa_ubase_t (dwa_touint)(dwa_t x)
 {
 #if USE_W
     return x.u.w[0];
 #else    /* !USE_W */
     int i;
-    unsigned long v = 0;
+    dwa_ubase_t v = 0;
 
     for (i = SIZE / 2; i > 0;)
         v = v*BASE + x.u.v[--i];
@@ -93,10 +95,10 @@ unsigned long (dwa_touint)(dwa_t x)
 
 
 /*
- *  generates a signed long from a double-word integer;
+ *  generates a signed single-word integer from a double-word integer;
  *  ASSUMPTION: overflows are benign
  */
-long (dwa_toint)(dwa_t x)
+dwa_base_t (dwa_toint)(dwa_t x)
 {
     return (sign(x))? -(long)dwa_touint(dwa_neg(x)): dwa_touint(x);
 }
@@ -463,7 +465,7 @@ dwa_t (dwa_rshl)(dwa_t x, int n)
 dwa_t (dwa_rsha)(dwa_t x, int n)
 {
     dwa_t t;
-    dwa_base_t fill = (sign(x))? ~(dwa_base_t)0: 0;
+    dwa_ubase_t fill = (sign(x))? ~(dwa_ubase_t)0: 0;
 
 #if USE_W
 #define SHA(x, n) (((x) >> (n)) | (fill << (WBIT-(n))))
