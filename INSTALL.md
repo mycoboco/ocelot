@@ -51,7 +51,7 @@ of 64-bit environments yet._
 Some operations in the `dwa` library for double-word arithmetic perform much
 more efficiently when built with `USE_W` defined if your machine has 8-bit
 bytes and uses _little-endian_ byte order like
-[x86](://en.wikipedia.org/wiki/X86):
+[x86](https://en.wikipedia.org/wiki/X86):
 
     CFLAGS="-DMEM_MAXALIGN=8 -DUSE_W" make
 
