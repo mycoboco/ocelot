@@ -868,15 +868,15 @@ int main(void)
     puts(dwa_tostru(NULL, t1, 16));                /* 40 */
 
     t2 = dwa_lsh(dwa_fromuint(0xFFFFFFFFu), 32);
-    printf("\n%s\n", dwa_tostru(NULL, dwa_bit(t2, t2, 1), 16));    /* 0 */
+    printf("\n%s\n", dwa_tostru(NULL, dwa_bit(t2, t2, DWA_XOR), 16));    /* 0 */
     t1 = dwa_fromuint(0xFFFFFFFFu);
-    puts(dwa_tostru(NULL, dwa_bit(t1, t2, 2), 16));                /* ffffffffffffffff */
+    puts(dwa_tostru(NULL, dwa_bit(t1, t2, DWA_OR), 16));                 /* ffffffffffffffff */
     t1 = dwa_lsh(t1, 33);
-    puts(dwa_tostru(NULL, dwa_bit(t1, t2, 0), 16));                /* fffffffe00000000 */
+    puts(dwa_tostru(NULL, dwa_bit(t1, t2, DWA_AND), 16));                /* fffffffe00000000 */
     t1 = dwa_fromuint(123456789), t2 = dwa_fromint(1);
     t1 = dwa_mulu(t1, t1);
-    puts(dwa_tostr(NULL, dwa_add(dwa_bcom(t1), t2), 10));          /* -15241578750190521 */
-    puts(dwa_tostr(NULL, dwa_neg(t1), 10));                        /* -15241578750190521 */
+    puts(dwa_tostr(NULL, dwa_add(dwa_bcom(t1), t2), 10));                /* -15241578750190521 */
+    puts(dwa_tostr(NULL, dwa_neg(t1), 10));                              /* -15241578750190521 */
 
     t1 = dwa_fromuint(123456789), t2 = dwa_fromuint(123456788);
     printf("\n%d\n", dwa_cmpu(t1, t2));                             /* > */

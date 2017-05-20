@@ -5,6 +5,12 @@
 #ifndef DWA_H
 #define DWA_H
 
+/* operation type for dwa_bit() */
+#define DWA_AND 0
+#define DWA_XOR 1
+#define DWA_OR  2
+
+
 typedef unsigned long dwa_base_t;    /* single-word base type */
 
 /* represents double-word integers */
