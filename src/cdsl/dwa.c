@@ -865,10 +865,10 @@ int main(void)
     puts(dwa_tostru(NULL, t1, 16));                /* ffffffffffffff80 */
     t1 = dwa_lsh(dwa_fromint(1), 62);
     t1 = dwa_rsha(t1, 56);
-    puts(dwa_tostru(NULL, t1, 16));                /* 0000000000000040 */
+    puts(dwa_tostru(NULL, t1, 16));                /* 40 */
 
-    t2 = t1;
-    printf("\n%s\n", dwa_tostru(NULL, dwa_bit(t1, t2, 1), 16));    /* 0 */
+    t2 = dwa_lsh(dwa_fromuint(0xFFFFFFFFu), 32);
+    printf("\n%s\n", dwa_tostru(NULL, dwa_bit(t2, t2, 1), 16));    /* 0 */
     t1 = dwa_fromuint(0xFFFFFFFFu);
     puts(dwa_tostru(NULL, dwa_bit(t1, t2, 2), 16));                /* ffffffffffffffff */
     t1 = dwa_lsh(t1, 33);
