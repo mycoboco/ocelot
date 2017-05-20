@@ -13,7 +13,7 @@ APIs, however, are given to aid the use of the library.
 
 ## 1. Introduction
 
-This library implements double-word arithmetic that provides all of basic
+This library implements double-word arithmetic that provides all of the basic
 operations on signed and unsigned integers whose precision can be large as
 twice as the biggest native integer type; for example, with 64-bit `long long`,
 the library lets you have 128-bit integer types. It is intended to mimic native
@@ -44,7 +44,7 @@ Choosing a `struct` instead of an array as the representation for double-word
 integers simplifies the use of the library because no storage management is
 required.
 
-All functions with `u` in thier names, `dwa_addu` and `dwa_fromuint` for
+All functions with `u` in their names, `dwa_addu` and `dwa_fromuint` for
 example, always perform unsigned arithmetic, while their counterparts without
 `u` interpret internal bit patterns as 2's complement forms and perform signed
 operations.
@@ -154,7 +154,7 @@ system where a compiler supports no `long long`. You can, however, change those
 types for your needs as long as the chosen types have a conversion rank equal
 to or greater than `int`, which includes `int`, `long` and `long long`.
 
-The base types are defined in code as follows:
+The base types are defined in the code as follows:
 
     typedef unsigned BASE_TYPE dwa_ubase_t;
     typedef signed   BASE_TYPE dwa_base_t;
@@ -480,9 +480,9 @@ The left-shifted result of `x`.
 #### `dwa_t dwa_rshl(dwa_t x, int n)`
 
 `dwa_rshl()` computes `x` >> `n`, which is `x` right-shited `n` bit positions.
-Vacated bits are filled with zeros, thus an logical shift is performed. `n`
-must be equal to or greater than 0, and be less than the number of bits in
-`dwa_t`. The behavior is undefined otherwise.
+Vacated bits are filled with zeros, thus a logical shift is performed. `n` must
+be equal to or greater than 0, and be less than the number of bits in `dwa_t`.
+The behavior is undefined otherwise.
 
 ##### May raise
 
@@ -548,11 +548,11 @@ XOR and `DWA_OR` the bitwise OR.
 The result of a bitwise operation.
 
 
-### 2.5. Comparions
+### 2.5. Comparisons
 
 #### `dwa_t dwa_cmpu(dwa_t x, dwa_t y)`
 
-`dwa_cmpu()` performs unsigned comparison of `x` and `y`.
+`dwa_cmpu()` performs an unsigned comparison of `x` and `y`.
 
 ##### May raise
 
@@ -578,7 +578,7 @@ The comparison result.
 
 #### `dwa_t dwa_cmp(dwa_t x, dwa_t y)`
 
-`dwa_cmp()` performs signed comparison of `x` and `y`.
+`dwa_cmp()` performs a signed comparison of `x` and `y`.
 
 ##### May raise
 
@@ -611,9 +611,9 @@ representation.
 
 `s`, if not `NULL`, must have a space enough to contain the resulting string
 representation including a terminating `NUL`. No `+` sign is placed in the
-result. The macro `DWA_BUFSIZE` is useful for allocationg the conversion
-buffer; it specifies the size enough to convert double-word integers in any
-radix. That is,
+result. The macro `DWA_BUFSIZE` is useful for allocating the conversion buffer;
+it specifies the size enough to convert double-word integers in any radix. That
+is,
 
     char s[DWA_BUFSIZE];
     dwa_tostru(s, x, radix);
@@ -652,7 +652,7 @@ The converted string.
 `s`, if not `NULL`, must have a space enough to contain the resulting string
 representation including a terminating `NUL`. A `-` sign is placed for negative
 results, but a `+` sign is never placed. The macro `DWA_BUFSIZE` is useful for
-allocationg the conversion buffer; it specifies the size enough to convert
+allocating the conversion buffer; it specifies the size enough to convert
 double-word integers in any radix. That is,
 
     char s[DWA_BUFSIZE];
@@ -734,7 +734,7 @@ The converted double-word value.
 To avoid dependency on a specific format of floating-point types, conversions
 between double-word integers and floating-point values are performed
 arithmetically and work best on floating-point formats with radix 2. If a value
-from conversion cannot be represented, the behavior is undefined. Note that
+from the conversion cannot be represented, the behavior is undefined. Note that
 this includes special values like
 [NaNs](https://en.wikipedia.org/wiki/NaN) and infinities.
 
@@ -758,7 +758,7 @@ Nothing.
 The converted double-word value.
 
 
-#### `long doule dwa_tofpu(dwa_t x)`
+#### `long double dwa_tofpu(dwa_t x)`
 
 `dwa_tofpu()` converts an unsigned double-word value to a floating-point value.
 
