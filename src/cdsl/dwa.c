@@ -565,19 +565,19 @@ int (dwa_cmp)(dwa_t x, dwa_t y)
 /*
  *  converts an unsigned double-word integer to a string
  */
-char *(dwa_tostru)(char *s, dwa_t x, int base)
+char *(dwa_tostru)(char *s, dwa_t x, int radix)
 {
     static char buf[SIZE*8 + 1];
 
     int i, j;
     char *p = (s)? s: buf;
 
-    assert(base >= 2 && base <= 36);
+    assert(radix >= 2 && radix <= 36);
 
     i = 0, j = SIZE;
     do {
-        unsigned long r = dwa_touint(quot(x, base, 1));
-        x = quot(x, base, 0);
+        unsigned long r = dwa_touint(quot(x, radix, 1));
+        x = quot(x, radix, 0);
         p[i++] = map[r];
         while (j > 1 && x.u.v[j-1] == 0)
             j--;
@@ -596,7 +596,7 @@ char *(dwa_tostru)(char *s, dwa_t x, int base)
 /*
  *  converts a signed double-word integer to a string
  */
-char *(dwa_tostr)(char *s, dwa_t x, int base)
+char *(dwa_tostr)(char *s, dwa_t x, int radix)
 {
     static char buf[SIZE*8 + 1];
 
@@ -605,21 +605,21 @@ char *(dwa_tostr)(char *s, dwa_t x, int base)
     s[0] = '-';
 
     if (sign(x))
-        dwa_tostru(s+1, dwa_neg(x), base);
+        dwa_tostru(s+1, dwa_neg(x), radix);
     else
-        dwa_tostru(s, x, base);
+        dwa_tostru(s, x, radix);
 
     return s;
 }
 
 
 #define hprefix() (p[0] == '0' && (p[1] == 'x' || p[1] == 'X') && isxdigit(p[2]))
-#define valid()   ((q = strchr(map, tolower(*p))) != NULL && q-map < base)
+#define valid()   ((q = strchr(map, tolower(*p))) != NULL && q-map < radix)
 
 /*
  *  converts a string to a double-word integer
  */
-dwa_t (dwa_fromstr)(const char *str, int base, char **end)
+dwa_t (dwa_fromstr)(const char *str, int radix, char **end)
 {
     int s = 0;
     dwa_t t = { 0, };
@@ -627,7 +627,7 @@ dwa_t (dwa_fromstr)(const char *str, int base, char **end)
     unsigned char *p = (unsigned char *)str;
 
     assert(p);
-    assert(base == 0 || (base >= 2 && base <= 36));
+    assert(radix == 0 || (radix >= 2 && radix <= 36));
 
     while (isspace(*p))
         p++;
@@ -636,15 +636,15 @@ dwa_t (dwa_fromstr)(const char *str, int base, char **end)
         p++, s = 1;
     else if (*p == '+')
         p++;
-    if (base == 0)
-        base = (*p != '0')? 10:
-               (hprefix())? (p+=2, 16): 8;
-    else if (base == 16 && hprefix())
+    if (radix == 0)
+        radix = (*p != '0')? 10:
+                (hprefix())? (p+=2, 16): 8;
+    else if (radix == 16 && hprefix())
         p += 2;
 
     if (valid()) {
         do {
-            if (prod(SIZE, t.u.v, t.u.v, base) > 0)
+            if (prod(SIZE, t.u.v, t.u.v, radix) > 0)
                 break;
             t = dwa_add(t, dwa_fromuint(q - map));
             p++;
