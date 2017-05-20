@@ -165,7 +165,17 @@ sets `dwa_ubase_t` and `dwa_base_t` to be `unsigned long long` and
 `signed long` respectively.
 
 
-### 2.2. Conversion from and to native integers
+### 2.2. Limit values
+
+#### `dwa_umax`, `dwa_max` and `dwa_min`
+
+The range of _unsigned_ `dwa_t` values is [0, `dwa_umax`] and that of _signed_
+one [`dwa_min`, `dwa_max`]. These objects, even if not constants, are intended
+to play roles of macros from `<limits.h>`. Note that their type is qualifed as
+`const` to preclude accidental chage on their values.
+
+
+### 2.3. Conversion from and to native integers
 
 #### `dwa_t dwa_fromuint(dwa_ubase_t v)`
 
@@ -245,7 +255,7 @@ Nothing.
 The extracted signed single-word value.
 
 
-### 2.3. Arithmetic operations
+### 2.4. Arithmetic operations
 
 #### `dwa_t dwa_neg(dwa_t x)`
 
@@ -432,7 +442,7 @@ Nothing.
 The signed result of `x` / `y` or `x` % `y`.
 
 
-### 2.4. Bitwise operations
+### 2.5. Bitwise operations
 
 #### `dwa_t dwa_bcom(dwa_t x)`
 
@@ -548,7 +558,7 @@ XOR and `DWA_OR` the bitwise OR.
 The result of a bitwise operation.
 
 
-### 2.5. Comparisons
+### 2.6. Comparisons
 
 #### `dwa_t dwa_cmpu(dwa_t x, dwa_t y)`
 
@@ -602,7 +612,7 @@ The comparison result.
 | positive | `x` is greater than `y` |
 
 
-### 2.6. Conversion from and to strings
+### 2.7. Conversion from and to strings
 
 #### `char *dwa_tostru(char *s, dwa_t x, int radix)`
 
@@ -729,7 +739,7 @@ string is valid.
 The converted double-word value.
 
 
-### 2.7. Conversion from and to floating-points
+### 2.8. Conversion from and to floating-points
 
 To avoid dependency on a specific format of floating-point types, conversions
 between double-word integers and floating-point values are performed
