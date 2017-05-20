@@ -27,7 +27,7 @@ I = $(INCDIR)
 L = $(LIBDIR)
 
 M = 1
-N = 0
+N = 1
 
 
 ALL_CFLAGS = -I$I -fPIC $(CFLAGS)
