@@ -740,8 +740,9 @@ long double (dwa_tofp)(dwa_t x)
 
 #if 0    /* test code */
 #include <float.h>       /* DBL_MAX */
+#include <stddef.h>      /* NULL */
 #include <stdio.h>       /* puts, printf */
-#include <cdsl/dwa.h>    /* dwa_t, dwa_lsh, dwa_tostru */
+#include <cdsl/dwa.h>
 
 
 int main(void)
