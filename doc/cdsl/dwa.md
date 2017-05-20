@@ -685,7 +685,7 @@ lowercase characters from `a` to `z` are used to represent digits from 10 to
 The converted string.
 
 
-#### `dwa_t dwa_fromstr(const char *str, int radix, char **end)`
+#### `dwa_t dwa_fromstr(const char *str, char **end, int radix)`
 
 `dwa_fromstr()` constructs a new double-word integer from the initial part of a
 string representation in a similar way to
@@ -721,8 +721,8 @@ string is valid.
 | Name  | In/out | Meaning                                               |
 |:-----:|:------:|:------------------------------------------------------|
 | str   | in     | string to convert                                     |
-| radix | in     | radix for string representation                       |
 | end   | out    | object into which pointer to invalid character stored |
+| radix | in     | radix for string representation                       |
 
 ##### Returns
 
