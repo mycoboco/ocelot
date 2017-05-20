@@ -51,7 +51,7 @@ int dwa_cmp(dwa_t, dwa_t);
 /* conversion from and to string */
 char *dwa_tostru(char *, dwa_t, int);
 char *dwa_tostr(char *, dwa_t, int);
-dwa_t dwa_fromstr(const char *, int, char **);
+dwa_t dwa_fromstr(const char *, char **, int);
 
 /* conversion from and to floating-point */
 dwa_t dwa_fromfp(long double);

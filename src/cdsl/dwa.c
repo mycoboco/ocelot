@@ -619,7 +619,7 @@ char *(dwa_tostr)(char *s, dwa_t x, int radix)
 /*
  *  converts a string to a double-word integer
  */
-dwa_t (dwa_fromstr)(const char *str, int radix, char **end)
+dwa_t (dwa_fromstr)(const char *str, char **end, int radix)
 {
     int s = 0;
     dwa_t t = { 0, };
@@ -907,41 +907,41 @@ int main(void)
     puts(dwa_tostr(NULL, dwa_fromfp(-18446744073709551615.0), 10));    /* -9223372036854775808 */
     puts(dwa_tostr(NULL, dwa_fromfp(-18446744073709551610.0), 10));    /* -9223372036854775808 */
 
-    q = dwa_tostr(NULL, dwa_fromstr("+1234567890", 0, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("+1234567890", &p, 0), 10);
     printf("\n%s:%s\n", q, p);                                                    /* 1234567890: */
-    q = dwa_tostr(NULL, dwa_fromstr("1234567891234567890a", 0, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("1234567891234567890a", &p, 0), 10);
     printf("%s:%s\n", q, p);                                            /* 1234567891234567890:a */
-    q = dwa_tostr(NULL, dwa_fromstr(" \t  -1234567891234567890a", 0, NULL), 10);
+    q = dwa_tostr(NULL, dwa_fromstr(" \t  -1234567891234567890a", NULL, 0), 10);
     printf("%s:%s\n", q, p);                                           /* -1234567891234567890:a */
-    q = dwa_tostru(NULL, dwa_fromstr("0Xffffffffffffffffg", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("0Xffffffffffffffffg", &p, 0), 10);
     printf("%s:%s\n", q, p);                                           /* 18446744073709551615:g */
-    q = dwa_tostr(NULL, dwa_fromstr("ffffffffffffffffg", 16, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("ffffffffffffffffg", &p, 16), 10);
     printf("%s:%s\n", q, p);                                                             /* -1:g */
-    q = dwa_tostr(NULL, dwa_fromstr("ffffffffffffffff!", 16, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("ffffffffffffffff!", &p, 16), 10);
     printf("%s:%s\n", q, p);                                                             /* -1:! */
-    q = dwa_tostr(NULL, dwa_fromstr("00008000000000000000g", 16, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("00008000000000000000g", &p, 16), 10);
     printf("%s:%s\n", q, p);                                           /* -9223372036854775808:g */
-    q = dwa_tostr(NULL, dwa_fromstr("-9223372036854775808+", 0, &p), 10);
+    q = dwa_tostr(NULL, dwa_fromstr("-9223372036854775808+", &p, 0), 10);
     printf("%s:%s\n", q, p);                                           /* -9223372036854775808:+ */
-    q = dwa_tostru(NULL, dwa_fromstr("  07777777777777777777778", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("  07777777777777777777778", &p, 0), 10);
     printf("%s:%s\n", q, p);                                            /* 9223372036854775807:8 */
-    q = dwa_tostru(NULL, dwa_fromstr("000111111111111111111111111111111112", 2, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("000111111111111111111111111111111112", &p, 2), 10);
     printf("%s:%s\n", q, p);                                                     /* 4294967295:2 */
-    q = dwa_tostru(NULL, dwa_fromstr("000ZZZZZZZZZZZ", 36, &p), 36);
+    q = dwa_tostru(NULL, dwa_fromstr("000ZZZZZZZZZZZ", &p, 36), 36);
     printf("%s:%s\n", q, p);                                                     /* zzzzzzzzzzz: */
-    q = dwa_tostru(NULL, dwa_fromstr("fffffffffffffffff!", 16, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("fffffffffffffffff!", &p, 16), 10);
     printf("%s:%s\n", q, p);                                          /* 18446744073709551600:f! */
-    q = dwa_tostru(NULL, dwa_fromstr("0z", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("0z", &p, 0), 10);
     printf("%s:%s\n", q, p);                                                              /* 0:z */
-    q = dwa_tostru(NULL, dwa_fromstr("0xz", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("0xz", &p, 0), 10);
     printf("%s:%s\n", q, p);                                                             /* 0:xz */
-    q = dwa_tostru(NULL, dwa_fromstr("0xz", 16, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr("0xz", &p, 16), 10);
     printf("%s:%s\n", q, p);                                                             /* 0:xz */
-    q = dwa_tostru(NULL, dwa_fromstr(" +", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr(" +", &p, 0), 10);
     printf("%s:%s\n", q, p);                                                             /* 0: + */
-    q = dwa_tostru(NULL, dwa_fromstr(" +z", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr(" +z", &p, 0), 10);
     printf("%s:%s\n", q, p);                                                            /* 0: +z */
-    q = dwa_tostru(NULL, dwa_fromstr(" +0X", 0, &p), 10);
+    q = dwa_tostru(NULL, dwa_fromstr(" +0X", &p, 0), 10);
     printf("%s:%s\n", q, p);                                                              /* 0:X */
 
     return 0;
