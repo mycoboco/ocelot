@@ -632,7 +632,8 @@ is guaranteed to be safe for any valid `radix` values.
 
 If `s` is `NULL`, `dwa_tostru()` uses an internal buffer that is statically
 allocated, which makes `dwa_tostru()` non-reentrant. A subsequent call to
-`dwa_tostru()` with `s` set to `NULL` might overwrite the internal buffer.
+`dwa_tostru()` or `dwa_tostr()` with `s` set to `NULL` might overwrite the
+internal buffer.
 
 `radix` must be between 2 and 36 inclusive. When it is greater than 10,
 lowercase characters from `a` to `z` are used to represent digits from 10 to
@@ -672,7 +673,8 @@ is guaranteed to be safe for any valid `radix` values.
 
 If `s` is `NULL`, `dwa_tostr()` uses an internal buffer that is statically
 allocated, which makes `dwa_tostr()` non-reentrant. A subsequent call to
-`dwa_tostr()` with `s` set to `NULL` might overwrite the internal buffer.
+`dwa_tostr()` or `dwa_tostru()` with `s` set to `NULL` might overwrite the
+internal buffer.
 
 `radix` must be between 2 and 36 inclusive. When it is greater than 10,
 lowercase characters from `a` to `z` are used to represent digits from 10 to
