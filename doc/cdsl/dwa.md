@@ -53,8 +53,8 @@ You can construct a new double-word integer from a native integer value
 using `dwa_fromuint()` or `dwa_fromint()`, from a string representation using
 `dwa_fromstr()`, or from a floating-point value using `dwa_fromfp()`.
 
-All operations, except unary `+`, that C offers with usual operators are
-supported:
+All operations, except unary `+` and `!`, that C offers with usual operators
+are supported:
 
 - unary `-`: `dwa_neg()`;
 - `+`: `dwa_addu()` and `dwa_add()`;
@@ -67,6 +67,9 @@ supported:
   arithmetic shift);
 - `&`, `^` and `|`: `dwa_bit()`; and
 - `<`, `<=`, `==`, `!=`, `>=`, `>`: `dwa_cmpu()` and `dwa_cmp()`.
+
+The logical negation operator(`!`) can be achieved by a comparison to zero
+using `dwa_cmpu()`.
 
 `dwa_touint()` or `dwa_toint()` extracts the least significant word from a
 `dwa_t` value. Conversion to a string representation is supported by
