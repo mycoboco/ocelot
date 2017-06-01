@@ -14,12 +14,12 @@
 #if CHAR_BIT != 8
 #error "USE_W must be disabled with bizarre byte size"
 #endif    /* CHAR_BIT != 8 */
-#define WBIT  (CHAR_BIT*sizeof(dwa_base_t))    /* bits in single-word */
+#define WBIT  (DWA_WIDTH / 2)                          /* bits in single-word */
 #define WBASE ((1U << (WBIT - 1)) * 2.0L)      /* single-word radix in long double */
 #endif    /* USE_W */
 
-#define BASE (1 << 8)                          /* radix */
-#define SIZE (sizeof(((dwa_t *)NULL)->u.v))    /* size of double word in bytes */
+#define BASE (1 << 8)           /* radix */
+#define SIZE (DWA_WIDTH / 8)    /* # of bytes in double-word */
 
 #define sign(x) ((x).u.v[SIZE-1] >> 7)    /* true if msb is set */
 
@@ -31,13 +31,29 @@ long double fmodl(long double, long double);
 
 
 /* min/max values for dwa_t */
-const dwa_t dwa_umax = { -1, -1 },
-            dwa_max = { -1, (dwa_ubase_t)-1 >> 1 },
-            dwa_min = { 0,  (dwa_ubase_t)1 << (CHAR_BIT*sizeof(dwa_base_t) - 1) };
+dwa_t dwa_umax = { -1, -1 };
+dwa_t dwa_max = { -1, -1 };
+dwa_t dwa_min;
+
+/* useful constants */
+dwa_t dwa_0;
+dwa_t dwa_1;
+dwa_t dwa_neg1 = { -1, -1 };
 
 
 static const char *map = "0123456789abcdefghijklmnopqrstuvwxyz";    /* mapping for digits */
 static char buf[DWA_BUFSIZE];                                       /* internal buffer */
+
+
+/*
+ *  prepares useful values to be available
+ */
+void (dwa_prep)(void)
+{
+    dwa_max.u.v[SIZE-1] = 0x7f;
+    dwa_min.u.v[SIZE-1] = 0x80;
+    dwa_1.u.v[0] = 0x01;
+}
 
 
 /* conversion from and to native integers */
@@ -749,20 +765,26 @@ int main(void)
     char *p;
     const char *q;
 
+    dwa_prep();
+
     puts(dwa_tostru(NULL, dwa_umax, 10));    /* 18446744073709551615 */
     puts(dwa_tostr(NULL, dwa_max, 10));      /* 9223372036854775807 */
     puts(dwa_tostr(NULL, dwa_min, 10));      /* -9223372036854775808 */
+    puts(dwa_tostr(NULL, dwa_0, 10));        /* 0 */
+    puts(dwa_tostr(NULL, dwa_1, 10));        /* 1 */
+    puts(dwa_tostr(NULL, dwa_neg1, 10));     /* -1 */
+    puts(dwa_tostru(NULL, dwa_neg1, 10));    /* 18446744073709551615 */
 
-    puts(dwa_tostru(NULL, dwa_fromuint(0), 10));              /* 0 */
-    puts(dwa_tostru(NULL, dwa_fromuint(1), 10));              /* 1 */
-    puts(dwa_tostru(NULL, dwa_fromuint(0xffffffff), 10));     /* 4294967295 */
-    puts(dwa_tostru(NULL, dwa_fromuint(-2), 10));             /* 4294967294 */
-    puts(dwa_tostr(NULL, dwa_fromuint(-2), 10));              /* 4294967294 */
-    puts(dwa_tostru(NULL, dwa_fromint(0), 10));               /* 0 */
-    puts(dwa_tostru(NULL, dwa_fromint(-1), 10));              /* 18446744073709551615 */
-    puts(dwa_tostr(NULL, dwa_fromint(-1), 10));               /* -1 */
-    puts(dwa_tostr(NULL, dwa_fromint(-2), 10));               /* -2 */
-    puts(dwa_tostr(NULL, dwa_fromint(-2147483647-1), 10));    /* -2147483648 */
+    printf("\n%s\n", dwa_tostru(NULL, dwa_fromuint(0), 10));    /* 0 */
+    puts(dwa_tostru(NULL, dwa_fromuint(1), 10));                /* 1 */
+    puts(dwa_tostru(NULL, dwa_fromuint(0xffffffff), 10));       /* 4294967295 */
+    puts(dwa_tostru(NULL, dwa_fromuint(-2), 10));               /* 4294967294 */
+    puts(dwa_tostr(NULL, dwa_fromuint(-2), 10));                /* 4294967294 */
+    puts(dwa_tostru(NULL, dwa_fromint(0), 10));                 /* 0 */
+    puts(dwa_tostru(NULL, dwa_fromint(-1), 10));                /* 18446744073709551615 */
+    puts(dwa_tostr(NULL, dwa_fromint(-1), 10));                 /* -1 */
+    puts(dwa_tostr(NULL, dwa_fromint(-2), 10));                 /* -2 */
+    puts(dwa_tostr(NULL, dwa_fromint(-2147483647-1), 10));      /* -2147483648 */
 
     printf("\n%lu\n", dwa_touint(dwa_fromuint(0)));            /* 0 */
     printf("%lu\n", dwa_touint(dwa_fromuint(1)));              /* 1 */

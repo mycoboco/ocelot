@@ -127,16 +127,23 @@ The following example code shows how to perform 64-bit operations by macroizing
     char buf[DWA_BUFSIZE];
     sint_t foo = is(-1);             // long long foo = -1;
     uint_t bar = max;                // unsigned long long bar = ULLONG_MAX;
+
+    dwa_prep();
+
     printf("%d\n", eu(foo, bar));    // printf("%d\n", foo == bar);
     printf("%d\n", es(foo, bar));    // printf("%d\n", foo == (long long)bar);
 
     str(au(foo, bar));
     puts(buf);                       // printf("%lld\n", foo + bar);
 
+`dwa_prep()` prepares `dwa_umax`, `dwa_max` and `dwa_min` properly.
+
 `DWA_BUFSIZE` is useful when preparing a buffer to contain string
 representations of double-word integers. Note how conversion and
 [type-punning](https://en.wikipedia.org/wiki/Type_punning) between signed and
 unsigned types are achieved by properly selected `dwa` functions.
+
+See [`beluga`](https://github.com/mycoboco/beluga) for a more complete example.
 
 
 ## 2. APIs
@@ -167,15 +174,50 @@ sets `dwa_ubase_t` and `dwa_base_t` to be `unsigned long long` and
 `signed long` respectively.
 
 
-### 2.2. Limit values
+### 2.2. Width and useful values
+
+#### `DWA_WIDTH`
+
+The number of bits `dwa_t` contains to represent double-word integers can be
+accessed via a macro named `DWA_WIDTH`. For example, you can get a `dwa_t`
+value with `n` lower bits set to 1 as follows:
+
+    dwa_rshl(dwa_fromuint(-1), DWA_WIDTH - n)
+
+or
+
+    dwa_rshl(dwa_neg1, DWA_WIDTH - n)
+
+; see below for `dwa_neg1`.
 
 #### `dwa_umax`, `dwa_max` and `dwa_min`
 
 The range of _unsigned_ `dwa_t` values is [0, `dwa_umax`] and that of _signed_
-one [`dwa_min`, `dwa_max`]. These objects, even if not constants, are intended
-to play roles of macros from `<limits.h>`. Note that their type is qualifed as
-`const` to preclude accidental chage on the values.
+one [`dwa_min`, `dwa_max`]. These globals, even if not constants, are intended
+to play roles of macros from `<limits.h>`.
 
+`dwa_prep()` has to be invoked for proper initialization before use, and trying
+to modify the variables results in undefined behavior.
+
+#### `dwa_0`, `dwa_1` and `dwa_neg1`
+
+When mixing double-word integers with native ones in expressions, converting
+integer constants 0, 1 and -1 to double-word ones is frequent and may lead to
+performance degradation. These variables can be used to replace, respectively,
+calls to `dwa_fromint(0)`, `dwa_fromint(1)` and `dwa_fromint(-1)`, where
+`dwa_fromint()` constructs double-word integers from signed base type values.
+
+`dwa_prep()` has to be invoked for proper initialization before use, and trying
+to modify the variables results in undefined behavior.
+
+#### `void dwa_prep(void)`
+
+`dwa_prep()` prepares `dwa_umax`, `dwa_max` and `dwa_min` for limit values, and
+`dwa_0`, `dwa_1` and `dwa_neg1` for constant values, and must precede their
+use.
+
+`dwa_prep()` need not be invoked if those globals are not necessary, and
+redundant calls to it have no harm; it is idempotent.
 
 ### 2.3. Conversion from and to native integers
 
