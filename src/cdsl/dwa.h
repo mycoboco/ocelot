@@ -13,13 +13,13 @@
 #define DWA_WIDTH   (sizeof(((dwa_t *)0)->u.v) * 8)    /* # of bits in double-word */
 #define DWA_BUFSIZE (1 + DWA_WIDTH + 1)                /* buffer size for stringization */
 
-#ifndef BASE_TYPE
-#define BASE_TYPE long
-#endif    /* !BASE_TYPE */
+#ifndef DWA_BASE_T
+#define DWA_BASE_T long
+#endif    /* !DWA_BASE_T */
 
 
-typedef unsigned BASE_TYPE dwa_ubase_t;    /* unsigned single-word base type */
-typedef signed   BASE_TYPE dwa_base_t;     /* signed single-word base type */
+typedef unsigned DWA_BASE_T dwa_ubase_t;    /* unsigned single-word base type */
+typedef signed   DWA_BASE_T dwa_base_t;     /* signed single-word base type */
 
 /* represents double-word integers */
 typedef struct dwa_t {

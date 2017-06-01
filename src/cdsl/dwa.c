@@ -10,13 +10,13 @@
 #include "cbl/assert.h"    /* assert with exception support */
 #include "dwa.h"
 
-#ifdef USE_W
+#ifdef DWA_USE_W
 #if CHAR_BIT != 8
-#error "USE_W must be disabled with bizarre byte size"
+#error "DWA_USE_W must be disabled with bizarre byte size"
 #endif    /* CHAR_BIT != 8 */
 #define WBIT  (DWA_WIDTH / 2)                          /* bits in single-word */
 #define WBASE (((dwa_ubase_t)1 << (WBIT-1)) * 2.0L)    /* single-word radix in long double */
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
 #define BASE (1 << 8)           /* radix */
 #define SIZE (DWA_WIDTH / 8)    /* # of bytes in double-word */
@@ -65,15 +65,15 @@ dwa_t (dwa_fromuint)(dwa_ubase_t v)
 {
     dwa_t t = { 0, };
 
-#if USE_W
+#if DWA_USE_W
     t.u.w[0] = v;
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i = 0;
 
     do {
         t.u.v[i++] = v % BASE;
     } while((v /= BASE) > 0 && i < SIZE);
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -97,9 +97,9 @@ dwa_t (dwa_fromint)(dwa_base_t v)
  */
 dwa_ubase_t (dwa_touint)(dwa_t x)
 {
-#if USE_W
+#if DWA_USE_W
     return x.u.w[0];
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i;
     dwa_ubase_t v = 0;
 
@@ -107,7 +107,7 @@ dwa_ubase_t (dwa_touint)(dwa_t x)
         v = v*BASE + x.u.v[--i];
 
     return v;
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 }
 
 
@@ -130,10 +130,10 @@ dwa_t (dwa_neg)(dwa_t x)
 {
     dwa_t t;
 
-#if USE_W
+#if DWA_USE_W
     t.u.w[0] = ~x.u.w[0] + 1;
     t.u.w[1] = ~x.u.w[1] + (t.u.w[0] < ~x.u.w[0]);
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i;
     unsigned c = 1;    /* 2sC */
 
@@ -142,7 +142,7 @@ dwa_t (dwa_neg)(dwa_t x)
         t.u.v[i] = c % BASE;
         c /= BASE;
     }
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -155,10 +155,10 @@ dwa_t (dwa_addu)(dwa_t x, dwa_t y)
 {
     dwa_t t;
 
-#if USE_W
+#if DWA_USE_W
     t.u.w[0] = x.u.w[0] + y.u.w[0];
     t.u.w[1] = x.u.w[1] + y.u.w[1] + (t.u.w[0] < x.u.w[0]);
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i;
     unsigned c = 0;
 
@@ -167,7 +167,7 @@ dwa_t (dwa_addu)(dwa_t x, dwa_t y)
         t.u.v[i] = c % BASE;
         c /= BASE;
     }
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -412,7 +412,7 @@ dwa_t (dwa_lsh)(dwa_t x, int n)
 {
     dwa_t t;
 
-#if USE_W
+#if DWA_USE_W
     /* checks are necessary for x86 */
     if (n == 0)
         return x;
@@ -423,7 +423,7 @@ dwa_t (dwa_lsh)(dwa_t x, int n)
         t.u.w[1] = x.u.w[0] << (n-WBIT);
         t.u.w[0] = 0;
     }
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i, j = SIZE-1;
 
     i = SIZE - n/8 - 1;
@@ -436,7 +436,7 @@ dwa_t (dwa_lsh)(dwa_t x, int n)
     n %= 8;
     if (n > 0)
         prod(SIZE, t.u.v, t.u.v, 1 << n);
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -449,7 +449,7 @@ dwa_t (dwa_rshl)(dwa_t x, int n)
 {
     dwa_t t;
 
-#if USE_W
+#if DWA_USE_W
     /* checks are necessary for x86 */
     if (n == 0)
         return x;
@@ -460,7 +460,7 @@ dwa_t (dwa_rshl)(dwa_t x, int n)
         t.u.w[0] = x.u.w[1] >> (n-WBIT);
         t.u.w[1] = 0;
     }
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i, j = 0;
 
     for (i = n / 8; i < SIZE && j < SIZE; i++, j++)
@@ -470,7 +470,7 @@ dwa_t (dwa_rshl)(dwa_t x, int n)
     n %= 8;
     if (n > 0)
         t = quot(t, 1 << n, 0);
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -484,7 +484,7 @@ dwa_t (dwa_rsha)(dwa_t x, int n)
     dwa_t t;
     dwa_ubase_t fill = (sign(x))? ~(dwa_ubase_t)0: 0;
 
-#if USE_W
+#if DWA_USE_W
 #define SHA(x, n) (((x) >> (n)) | (fill << (WBIT-(n))))
     /* checks are necessary for x86 */
     if (n == 0)
@@ -497,7 +497,7 @@ dwa_t (dwa_rsha)(dwa_t x, int n)
         t.u.w[1] = fill;
     }
 #undef SHA
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i, j = 0;
 
     for (i = n / 8; i < SIZE && j < SIZE; i++, j++)
@@ -509,7 +509,7 @@ dwa_t (dwa_rsha)(dwa_t x, int n)
         t = quot(t, 1 << n, 0);
         t.u.v[SIZE-1] |= fill << (8-n);
     }
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return t;
 }
@@ -551,20 +551,20 @@ dwa_t (dwa_bit)(dwa_t x, dwa_t y, int op)
  */
 int (dwa_cmpu)(dwa_t x, dwa_t y)
 {
-#if USE_W
+#if DWA_USE_W
     if (x.u.w[1] == y.u.w[1])
         return (x.u.w[0] == y.u.w[0])? 0:
                (x.u.w[0] > y.u.w[0])? 1: -1;
     else
         return (x.u.w[1] > y.u.w[1])? 1: -1;
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i = SIZE - 1;
 
     while (i > 0 && x.u.v[i] == y.u.v[i])
         i--;
 
     return x.u.v[i] - y.u.v[i];
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 }
 
 
@@ -693,12 +693,12 @@ dwa_t (dwa_fromfp)(long double v)
     } else
         s = 0;
 
-#if USE_W
+#if DWA_USE_W
     t.u.w[0] = fmodl(v, WBASE);
     v /= WBASE;
     t.u.w[1] = fmodl(v, WBASE);
     v /= WBASE;
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     {
         int i;
 
@@ -707,7 +707,7 @@ dwa_t (dwa_fromfp)(long double v)
             v /= BASE;
         }
     }
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     if (v >= 1.0) {    /* overflow */
         if (s) {
@@ -729,14 +729,14 @@ long double (dwa_tofpu)(dwa_t x)
 {
     long double v = 0.0;
 
-#if USE_W
+#if DWA_USE_W
     v = x.u.w[1]*WBASE + x.u.w[0];
-#else    /* !USE_W */
+#else    /* !DWA_USE_W */
     int i;
 
     for (i = SIZE-1; i >= 0; i--)
         v = v*BASE + x.u.v[i];
-#endif    /* USE_W */
+#endif    /* DWA_USE_W */
 
     return v;
 }

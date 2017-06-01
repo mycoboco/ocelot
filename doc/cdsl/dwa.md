@@ -34,8 +34,8 @@ integer arithmetic on common systems and has the following properties:
 
 This library reserves identifiers starting with `dwa_` and `DWA_`, and imports
 the assertion library (which requires the exception library). Some behaviors of
-the library are controlled by macros `USE_W` and `BASE_TYPE`; see below for
-details.
+the library are controlled by macros `DWA_USE_W` and `DWA_BASE_T`; see below
+for details.
 
 
 ### 1.1. How to use the library
@@ -168,11 +168,11 @@ to or greater than `int`, which includes `int`, `long` and `long long`.
 
 The base types are defined in the code as follows:
 
-    typedef unsigned BASE_TYPE dwa_ubase_t;
-    typedef signed   BASE_TYPE dwa_base_t;
+    typedef unsigned DWA_BASE_T dwa_ubase_t;
+    typedef signed   DWA_BASE_T dwa_base_t;
 
-and defining the macro `BASE_TYPE` (through `-D` compiler option, for example)
-when compiling the library controls them; defining `BASE_TYPE` as `long long`
+and defining the macro `DWA_BASE_T` (through `-D` compiler option, for example)
+when compiling the library controls them; defining `DWA_BASE_T` as `long long`
 sets `dwa_ubase_t` and `dwa_base_t` to be `unsigned long long` and
 `signed long` respectively.
 
@@ -855,13 +855,13 @@ Nothing.
 The converted floating-point value.
 
 
-## 3. The `USE_W` macro
+## 3. The `DWA_USE_W` macro
 
 Internally, the `dwa` library stores a double-word integer in radix-256 digits
 and puts the least significant digit first (_little-endian_). If the underlying
 machine has 8-bit bytes and uses the little-endian byte order, however, it is
 much more efficient for some operations to consider a single word a single
-digit. Defining `USE_W` when compiling the library allows this; see
+digit. Defining `DWA_USE_W` when compiling the library allows this; see
 `INSTALL.md` for details.
 
 
