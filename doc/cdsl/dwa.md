@@ -103,9 +103,9 @@ The following example code shows how to perform 64-bit operations by macroizing
         typedef long long sint_t;
         typedef unsigned long long uint_t;
 
-        #define umax (ULLONG_MAX)
-        #define max  (LLONG_MAX)
-        #define min  (LLONG_MIN)
+        #define umax ULLONG_MAX
+        #define max  LLONG_MAX
+        #define min  LLONG_MIN
 
         #define is(x)    (x)
         #define au(x, y) ((x) + (y))
@@ -116,9 +116,9 @@ The following example code shows how to perform 64-bit operations by macroizing
         typedef dwa_t sint_t;
         typedef dwa_t uint_t;
 
-        #define umax (dwa_umax)
-        #define max  (dwa_max)
-        #define min  (dwa_min)
+        #define umax dwa_umax
+        #define max  dwa_max
+        #define min  dwa_min
 
         #define is(x)    (dwa_fromint(x))
         #define au(x, y) (dwa_addu((x), (y)))
