@@ -3,7 +3,7 @@
  */
 
 #include <ctype.h>     /* isxdigit, isspace */
-#include <limits.h>    /* CHAR_BIT, LONG_MAX, LONG_MIN */
+#include <limits.h>    /* CHAR_BIT */
 #include <math.h>      /* fmodl */
 #include <string.h>    /* strchr, memcpy, memset */
 
