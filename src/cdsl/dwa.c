@@ -15,7 +15,7 @@
 #error "USE_W must be disabled with bizarre byte size"
 #endif    /* CHAR_BIT != 8 */
 #define WBIT  (DWA_WIDTH / 2)                          /* bits in single-word */
-#define WBASE ((1U << (WBIT - 1)) * 2.0L)      /* single-word radix in long double */
+#define WBASE (((dwa_ubase_t)1 << (WBIT-1)) * 2.0L)    /* single-word radix in long double */
 #endif    /* USE_W */
 
 #define BASE (1 << 8)           /* radix */
